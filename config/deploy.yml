@@ -1,46 +1,46 @@
 # Name of your application. Used to uniquely configure containers.
-service: chat_app
+service: denta_co_marketing
 
-# Name of the container image (use your-user/app-name on external registries).
-image: chat_app
+# Name of the container image.
+image: adenta/denta_co_marketing
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 178.156.134.191
   # job:
   #   hosts:
-  #     - 192.168.0.1
+  #     - 178.156.134.191
   #   cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
-# If used with Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
+# Remove this section when using multiple web servers and ensure you terminate SSL at your load balancer.
 #
-# Using an SSL proxy like this requires turning on config.assume_ssl and config.force_ssl in production.rb!
-#
-# Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
-#
-# proxy:
-#   ssl: true
-#   host: app.example.com
+# Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
+proxy:
+  ssl: true
+  hosts:
+    - denta.co
 
-# Where you keep your container images.
+# Credentials for your image host.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
-
-  # Needed for authenticated registries.
-  # username: your-user
+  server: ghcr.io
+  username: adenta
 
   # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   secret:
     - SECRET_KEY_BASE
+    - OPENROUTER_API_KEY
+    - CLOUDFLARE_TOKEN
+    - POSTMARK_ACCOUNT_TOKEN
     - POSTMARK_API_TOKEN
+    - RAILS_INBOUND_EMAIL_PASSWORD
+    - RAILS_MASTER_KEY
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -53,7 +53,7 @@ env:
     # WEB_CONCURRENCY: 2
 
     # Match this to any external database server to configure Active Record correctly
-    # Use chat_app-db for a db accessory server on same machine via local kamal docker network.
+    # Use denta_co_marketing-db for a db accessory server on same machine via local kamal docker network.
     # DB_HOST: 192.168.0.2
 
     # Log everything from Rails
@@ -70,7 +70,7 @@ aliases:
 # Use a persistent storage volume for sqlite database files and local Active Storage files.
 # Recommended to change this to a mounted volume path that is backed up off server.
 volumes:
-  - "chat_app_storage:/rails/storage"
+  - "denta_co_marketing_storage:/rails/storage"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
 # hitting 404 on in-flight requests. Combines all files from new and old
@@ -80,15 +80,12 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
-
-  # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
-  # remote: ssh://docker@docker-builder-server
-  #
-  # # Pass arguments and secrets to the Docker build process
-  # args:
-  #   RUBY_VERSION: 3.3.2
-  # secrets:
-  #   - GITHUB_TOKEN
+  remote: ssh://root@178.156.134.191
+  cache:
+    type: registry
+    options: mode=max
+  secrets:
+    - GITHUB_TOKEN
 
 # Use a different ssh user than root
 # ssh:

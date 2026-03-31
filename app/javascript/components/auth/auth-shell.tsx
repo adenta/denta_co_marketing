@@ -31,7 +31,7 @@ export function AuthShell({
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <section className="hidden space-y-6 lg:block">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              chat_app
+              denta_co_marketing
             </p>
             <div className="space-y-4">
               <h1 className="max-w-xl text-4xl font-semibold tracking-tight text-foreground">

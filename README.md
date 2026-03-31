@@ -1,4 +1,4 @@
-# Chat App
+# Denta Co Marketing
 
 ## Development Workflow
 

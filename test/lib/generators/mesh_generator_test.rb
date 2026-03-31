@@ -25,7 +25,7 @@ class MeshGeneratorTest < Rails::Generators::TestCase
       import { CardTitle } from "@/components/ui/card";
 
       export default function HomeIndex() {
-        return <CardTitle>Chat App</CardTitle>;
+        return <CardTitle>Denta Co Marketing</CardTitle>;
       }
     TSX
 
@@ -158,8 +158,8 @@ class MeshGeneratorTest < Rails::Generators::TestCase
 
   test "interactive prompts explain hardcoded fallbacks when config values are missing" do
     File.write(destination_root.join("config/deploy.yml"), <<~YAML)
-      service: chat_app
-      image: chat_app
+      service: denta_co_marketing
+      image: denta_co_marketing
       servers:
         web:
           - 192.168.0.1
@@ -168,7 +168,7 @@ class MeshGeneratorTest < Rails::Generators::TestCase
     YAML
 
     write_fixture(".kamal/secrets", <<~SECRETS)
-      # SECRETS=$(kamal secrets fetch --adapter 1password --account your-account --from Personal/chat_app SECRET_KEY_BASE)
+      # SECRETS=$(kamal secrets fetch --adapter 1password --account your-account --from Personal/denta_co_marketing SECRET_KEY_BASE)
       SECRET_KEY_BASE=$SECRET_KEY_BASE
     SECRETS
 
@@ -190,8 +190,8 @@ class MeshGeneratorTest < Rails::Generators::TestCase
 
   test "interactive prompts identify inferred values and their sources" do
     File.write(destination_root.join("config/deploy.yml"), <<~YAML)
-      service: chat_app
-      image: chat_app
+      service: denta_co_marketing
+      image: denta_co_marketing
       proxy:
         host: video_studio.midwestdads.com
       registry:
@@ -203,7 +203,7 @@ class MeshGeneratorTest < Rails::Generators::TestCase
     YAML
 
     write_fixture(".kamal/secrets", <<~SECRETS)
-      SECRETS=$(kamal secrets fetch --adapter 1password --account ACCOUNT123 --from Personal/chat_app SECRET_KEY_BASE)
+      SECRETS=$(kamal secrets fetch --adapter 1password --account ACCOUNT123 --from Personal/denta_co_marketing SECRET_KEY_BASE)
       SECRET_KEY_BASE=$(kamal secrets extract SECRET_KEY_BASE ${SECRETS})
     SECRETS
 
@@ -275,7 +275,7 @@ class MeshGeneratorTest < Rails::Generators::TestCase
     candidate_files.each do |file|
       next unless File.file?(file)
 
-      refute_match(/chat_app|ChatApp|Chat App|chat-app|CHAT_APP/, File.read(file), "#{file} still contains a baseline app-name variant")
+      refute_match(/denta_co_marketing|DentaCoMarketing|Denta Co Marketing|denta-co-marketing|DENTA_CO_MARKETING/, File.read(file), "#{file} still contains a baseline app-name variant")
     end
   end
 end

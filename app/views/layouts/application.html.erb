@@ -2,10 +2,10 @@
 <html>
   <head>
     <% favicon = favicon_paths %>
-    <title><%= content_for(:title) || "Chat App" %></title>
+    <title><%= content_for(:title) || "Denta Co Marketing" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Chat App">
+    <meta name="application-name" content="Denta Co Marketing">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -31,7 +31,7 @@
     <%= turbo_mount(
       "navigation/Navbar",
       props: {
-        app_name: "chat_app",
+        app_name: "denta_co_marketing",
         authenticated: authenticated?,
         current_user_email: Current.user&.email_address,
         home_path: root_path,
