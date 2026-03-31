@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+PWCLI="${PWCLI:-$CODEX_HOME/skills/playwright/scripts/playwright_cli.sh}"
+
+if [[ ! -x "$PWCLI" ]]; then
+  printf 'Playwright skill wrapper not found or not executable: %s\n' "$PWCLI" >&2
+  exit 1
+fi
+
+has_session_flag="false"
+for arg in "$@"; do
+  case "$arg" in
+    --session|--session=*)
+      has_session_flag="true"
+      break
+      ;;
+  esac
+done
+
+export PLAYWRIGHT_CLI_SESSION="${PLAYWRIGHT_CLI_SESSION:-chat-app}"
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$ROOT/tmp/playwright/browsers}"
+export PLAYWRIGHT_DAEMON_SESSION_DIR="${PLAYWRIGHT_DAEMON_SESSION_DIR:-$ROOT/tmp/playwright/daemon}"
+export PLAYWRIGHT_MCP_OUTPUT_DIR="${PLAYWRIGHT_MCP_OUTPUT_DIR:-$ROOT/tmp/playwright/output}"
+export PLAYWRIGHT_MCP_USER_DATA_DIR="${PLAYWRIGHT_MCP_USER_DATA_DIR:-$ROOT/tmp/playwright/user-data}"
+
+mkdir -p \
+  "$PLAYWRIGHT_BROWSERS_PATH" \
+  "$PLAYWRIGHT_DAEMON_SESSION_DIR" \
+  "$PLAYWRIGHT_MCP_OUTPUT_DIR" \
+  "$PLAYWRIGHT_MCP_USER_DATA_DIR"
+
+cmd=("$PWCLI")
+if [[ "$has_session_flag" != "true" ]]; then
+  cmd+=(--session "$PLAYWRIGHT_CLI_SESSION")
+fi
+cmd+=("$@")
+
+exec "${cmd[@]}"

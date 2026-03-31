@@ -1,0 +1,28 @@
+Description:
+    Rebuild this template app's "mesh" setup for a new app name and production deployment.
+
+Example:
+    bin/rails generate mesh midwest_dads \
+      --domain midwestdads.example.com \
+      --github-username your-github-user \
+      --server-ip 203.0.113.10 \
+      --onepassword-account ABC123XYZ
+
+What it does:
+    1. Renames chat_app placeholders to the new app name
+    2. Updates production SSL and URL configuration
+    3. Generates a GHCR-based Kamal deploy config
+    4. Generates a 1Password-backed .kamal/secrets file
+    5. Writes or updates Personal/<new app name> with the managed secret set
+    6. Ensures the deploy secret set includes SECRET_KEY_BASE without relying on Rails credentials
+
+Options:
+    --source-item             1Password item used as the bootstrap source (default: chat_app)
+    --registry-source-item    1Password item used to source KAMAL_REGISTRY_PASSWORD when needed
+    --skip-onepassword        Skip reading and writing 1Password items
+    --vault                   1Password vault name (default: Personal)
+
+Notes:
+    - This generator expects to run inside this app template structure.
+    - It does not migrate plinth generators or copy baseline deployment files verbatim.
+    - Source-item fields with labels and non-empty values are imported into the managed secret set.

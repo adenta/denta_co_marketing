@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-03-31T00:40:59Z",
+  "zone": {
+    "id": "b8ac329fe308b4f87a780796b6978ca1",
+    "name": "denta.co",
+    "account_id": "36c493b5797cb1e2232b254798e1ec24",
+    "permissions": [
+      "#dns_records:read",
+      "#zone:read",
+      "#dns_records:edit"
+    ]
+  },
+  "postmark_domains": [
+    {
+      "ID": 4347736,
+      "Name": "denta.co",
+      "SPFVerified": true,
+      "DKIMVerified": false,
+      "WeakDKIM": false,
+      "ReturnPathDomainVerified": false
+    }
+  ]
+}

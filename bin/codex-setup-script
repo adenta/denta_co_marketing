@@ -1,0 +1,273 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly ENV_FILE="$ROOT/.env"
+readonly ONEPASSWORD_VAULT="Personal"
+readonly ONEPASSWORD_ITEM="codex_local_workspace"
+readonly LOCAL_ENV_EXCLUDED_KEYS="SECRET_KEY_BASE,GITHUB_TOKEN"
+readonly LOCAL_FAVICON_DIR="$ROOT/public/codex-local-favicons"
+readonly LOCAL_FAVICON_PNG="$LOCAL_FAVICON_DIR/favicon.png"
+readonly LOCAL_FAVICON_SVG="$LOCAL_FAVICON_DIR/favicon.svg"
+readonly LOCAL_FAVICON_EXCLUDE_ENTRY="/public/codex-local-favicons/"
+
+SKIP_BUNDLE=0
+SKIP_NODE=0
+SKIP_CSS=0
+SKIP_DB=0
+RESET_DB=0
+SKIP_MODELS=0
+OPENROUTER_API_KEY=""
+
+usage() {
+  cat <<'EOF'
+Usage: bin/codex-setup-script [options]
+
+Sets up this worktree for Codex-driven testing without starting the dev server.
+
+Options:
+  --skip-bundle  Skip bundle check/install
+  --skip-node    Skip npm install
+  --skip-css     Skip CSS build
+  --skip-db      Skip database preparation
+  --skip-models  Skip refreshing the RubyLLM model registry
+  --reset-db     Reset the database after db:prepare
+  -h, --help     Show this help text
+EOF
+}
+
+log_step() {
+  printf '\n==> %s\n' "$1"
+}
+
+run() {
+  log_step "$*"
+  "$@"
+}
+
+run_with_openrouter_key() {
+  log_step "$*"
+  OPENROUTER_API_KEY="$OPENROUTER_API_KEY" "$@"
+}
+
+require_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    printf 'Missing required command: %s\n' "$1" >&2
+    exit 1
+  fi
+}
+
+seed_local_env_from_onepassword() {
+  ruby -I"$ROOT/lib" -rsetup/one_password_secret_resolver -e '
+    env_path = ARGV.fetch(0)
+    vault = ARGV.fetch(1)
+    item = ARGV.fetch(2)
+    exclude_keys = ARGV.fetch(3).split(",").reject(&:empty?)
+    assignments = Setup::OnePasswordSecretResolver.fetch_env_values_from_item(
+      vault: vault,
+      item: item,
+      exclude_keys: exclude_keys,
+    )
+
+    lines = File.exist?(env_path) ? File.readlines(env_path, chomp: false) : []
+
+    assignments.each do |key, value|
+      line = "#{key}=#{value}\n"
+      index = lines.index { |existing| existing.match?(/\A\s*(?:export\s+)?#{Regexp.escape(key)}=/) }
+
+      if index
+        lines[index] = line
+      else
+        lines << line
+      end
+    end
+
+    File.write(env_path, lines.join)
+    print assignments.keys.sort.join(",")
+  ' "$ENV_FILE" "$ONEPASSWORD_VAULT" "$ONEPASSWORD_ITEM" "$LOCAL_ENV_EXCLUDED_KEYS"
+}
+
+read_env_value() {
+  ruby -e '
+    path = ARGV.fetch(0)
+    key = ARGV.fetch(1)
+    exit 0 unless File.exist?(path)
+
+    File.foreach(path) do |line|
+      next unless line.match?(/\A\s*(?:export\s+)?#{Regexp.escape(key)}=/)
+
+      print line.split("=", 2).last.to_s.strip
+      break
+    end
+  ' "$ENV_FILE" "$1"
+}
+
+require_openrouter_api_key() {
+  OPENROUTER_API_KEY="$(read_env_value OPENROUTER_API_KEY)"
+  [[ -n "$OPENROUTER_API_KEY" ]] && return 0
+
+  printf '\n'
+  printf '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n' >&2
+  printf 'FATAL: OPENROUTER_API_KEY is missing from .env after setup.\n' >&2
+  printf 'bin/codex-setup-script will not continue without it.\n' >&2
+  printf 'Check Personal/codex_local_workspace, ensure the 1Password CLI is installed and signed in,\n' >&2
+  printf 'and confirm OPENROUTER_API_KEY exists in that 1Password item.\n' >&2
+  printf '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n' >&2
+  exit 1
+}
+
+ensure_local_dev_ports() {
+  ruby -I"$ROOT/lib" -rsetup/local_dev_ports -e '
+    ports = Setup::LocalDevPorts.ensure_env_file_ports(ARGV.fetch(0), root: ARGV.fetch(1))
+    puts "Configured local dev ports: Rails #{ports.fetch("PORT")}, Vite #{ports.fetch("VITE_RUBY_PORT")}"
+  ' "$ENV_FILE" "$ROOT"
+}
+
+ensure_local_favicon_git_exclude() {
+  command -v git >/dev/null 2>&1 || return 0
+
+  local exclude_file
+  exclude_file="$(git rev-parse --git-path info/exclude 2>/dev/null || true)"
+  [[ -n "$exclude_file" ]] || return 0
+
+  if [[ "$exclude_file" != /* ]]; then
+    exclude_file="$ROOT/$exclude_file"
+  fi
+
+  mkdir -p "$(dirname "$exclude_file")"
+  touch "$exclude_file"
+
+  if ! grep -Fxq "$LOCAL_FAVICON_EXCLUDE_ENTRY" "$exclude_file"; then
+    printf '%s\n' "$LOCAL_FAVICON_EXCLUDE_ENTRY" >> "$exclude_file"
+  fi
+}
+
+ensure_local_favicon() {
+  ruby -I"$ROOT/lib" -rsetup/local_favicon -e '
+    color = Setup::LocalFavicon.generate(
+      root: ARGV.fetch(0),
+      svg_path: ARGV.fetch(1),
+      png_path: ARGV.fetch(2),
+    )
+
+    puts "Generated local favicon assets (#{color})."
+  ' "$ROOT" "$LOCAL_FAVICON_SVG" "$LOCAL_FAVICON_PNG"
+
+  ensure_local_favicon_git_exclude
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --skip-bundle)
+      SKIP_BUNDLE=1
+      ;;
+    --skip-node)
+      SKIP_NODE=1
+      ;;
+    --skip-css)
+      SKIP_CSS=1
+      ;;
+    --skip-db)
+      SKIP_DB=1
+      ;;
+    --skip-models)
+      SKIP_MODELS=1
+      ;;
+    --reset-db)
+      RESET_DB=1
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      printf 'Unknown option: %s\n\n' "$1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+cd "$ROOT"
+
+export BUNDLE_USER_HOME="${BUNDLE_USER_HOME:-$ROOT/tmp/bundle}"
+export BUNDLE_USER_CACHE="${BUNDLE_USER_CACHE:-$BUNDLE_USER_HOME/cache}"
+export BUNDLE_USER_CONFIG="${BUNDLE_USER_CONFIG:-$BUNDLE_USER_HOME/config}"
+export BUNDLE_USER_PLUGIN="${BUNDLE_USER_PLUGIN:-$BUNDLE_USER_HOME/plugin}"
+export npm_config_cache="${npm_config_cache:-$ROOT/tmp/npm}"
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$ROOT/tmp/playwright/browsers}"
+
+mkdir -p \
+  "$BUNDLE_USER_HOME" \
+  "$BUNDLE_USER_CACHE" \
+  "$BUNDLE_USER_PLUGIN" \
+  "$npm_config_cache" \
+  "$PLAYWRIGHT_BROWSERS_PATH" \
+  "$ROOT/app/assets/builds"
+
+log_step "Generating local favicon variant"
+ensure_local_favicon
+
+require_command bundle
+require_command npm
+
+log_step "Seeding .env from 1Password (Personal/codex_local_workspace)"
+seeded_keys="$(seed_local_env_from_onepassword)"
+if [[ -n "$seeded_keys" ]]; then
+  printf 'Updated .env values from 1Password: %s\n' "$seeded_keys"
+else
+  printf 'No .env values were refreshed from 1Password; preserving existing .env entries.\n'
+fi
+
+log_step "Ensuring local development ports"
+ensure_local_dev_ports
+
+require_openrouter_api_key
+
+if ((SKIP_BUNDLE == 0)); then
+  log_step "Checking Ruby gems"
+  if bundle check; then
+    printf 'Bundle is already satisfied.\n'
+  else
+    run bundle install
+  fi
+fi
+
+if ((SKIP_NODE == 0)); then
+  if [[ -d node_modules ]]; then
+    log_step "JavaScript dependencies already installed"
+    printf 'node_modules is present; skipping npm install.\n'
+  else
+    run npm install
+  fi
+fi
+
+if ((SKIP_CSS == 0)); then
+  if [[ -d node_modules ]]; then
+    run npm run build:css
+  else
+    printf '\n==> Skipping CSS build because node_modules is missing\n' >&2
+    printf 'Run without --skip-node or install dependencies first.\n' >&2
+    exit 1
+  fi
+fi
+
+if ((SKIP_DB == 0)); then
+  run bin/rails db:prepare
+
+  if ((RESET_DB == 1)); then
+    run bin/rails db:reset
+  fi
+fi
+
+if ((SKIP_MODELS == 0)); then
+  if ! run_with_openrouter_key bin/rails runner "Model.refresh!"; then
+    printf '\n==> Model refresh failed\n' >&2
+    printf 'Continuing without refreshing the RubyLLM model registry.\n' >&2
+  fi
+fi
+
+printf '\nSetup complete.\n'
+printf 'Smoke test: bundle exec rails test test/models/user_test.rb\n'

@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ENV_FILE="$ROOT/.env"
+
+if gem list --no-installed --exact --silent foreman; then
+  echo "Installing foreman..."
+  gem install foreman
+fi
+
+RAILS_PORT="$(
+  ruby -I"$ROOT/lib" -rsetup/local_dev_ports -e '
+    env_file = ARGV.fetch(0)
+    root = ARGV.fetch(1)
+    lines = File.exist?(env_file) ? File.readlines(env_file, chomp: false) : []
+    env_vars = Setup::LocalDevPorts.parse_env_lines(lines)
+    env_vars["PORT"] = ENV["PORT"] if ENV["PORT"]
+    env_vars["VITE_RUBY_PORT"] = ENV["VITE_RUBY_PORT"] if ENV["VITE_RUBY_PORT"]
+    ports = Setup::LocalDevPorts.resolve_ports(root: root, env_vars: env_vars)
+    print ports.fetch("PORT")
+  ' "$ENV_FILE" "$ROOT"
+)"
+
+echo "Starting app at http://localhost:$RAILS_PORT"
+
+exec foreman start -f Procfile.dev "$@"

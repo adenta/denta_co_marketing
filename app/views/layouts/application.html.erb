@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% favicon = favicon_paths %>
+    <title><%= content_for(:title) || "Chat App" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Chat App">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="<%= favicon.fetch(:png) %>" type="image/png">
+    <link rel="icon" href="<%= favicon.fetch(:svg) %>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<%= favicon.fetch(:png) %>">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= vite_client_tag %>
+    <%= vite_react_refresh_tag %>
+    <%= vite_typescript_tag "application" %>
+
+  </head>
+
+  <body>
+    <%= turbo_mount(
+      "navigation/Navbar",
+      props: {
+        app_name: "chat_app",
+        authenticated: authenticated?,
+        current_user_email: Current.user&.email_address,
+        home_path: root_path,
+        sign_in_path: new_session_path,
+        sign_up_path: new_registration_path,
+        developer_sign_in_path: api_v1_developer_session_path,
+        developer_sign_in_enabled: Rails.env.development? || Rails.env.test?,
+        logout_path: api_v1_session_path,
+      },
+    ) %>
+    <main>
+      <%= yield %>
+    </main>
+    <%= turbo_mount("utils/ToastContainer", props: FlashBlueprint.render_as_hash(flash).compact) %>
+  </body>
+</html>

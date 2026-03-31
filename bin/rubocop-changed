@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+require "open3"
+require "pathname"
+
+APP_ROOT = Pathname(__dir__).join("..").expand_path
+Dir.chdir(APP_ROOT)
+
+def capture!(*command)
+  output, status = Open3.capture2(*command)
+  raise "Command failed: #{command.join(' ')}" unless status.success?
+
+  output.lines.map(&:chomp)
+end
+
+def ruby_file?(path)
+  return false unless File.file?(path)
+
+  basename = File.basename(path)
+  return true if basename.match?(/\A(?:Gemfile|Rakefile|Capfile|Guardfile|Podfile|Thorfile|Vagrantfile)\z/)
+  return true if path.match?(/\.(?:rb|rake|ru)\z/)
+
+  first_line = File.open(path, &:readline)
+  first_line.include?("ruby")
+rescue EOFError, Errno::ENOENT
+  false
+end
+
+staged_files = capture!("git", "diff", "--cached", "--name-only", "--diff-filter=ACMR")
+target_files = staged_files.select { |path| ruby_file?(path) }
+
+if target_files.empty?
+  puts "rubocop-changed: no staged Ruby files"
+  exit 0
+end
+
+dirty_files = capture!("git", "diff", "--name-only", "--", *target_files)
+if dirty_files.any?
+  warn "rubocop-changed: staged Ruby files also have unstaged changes:"
+  dirty_files.each { |path| warn "  #{path}" }
+  warn "Stage or stash those changes before committing so auto-correct can safely restage files."
+  exit 1
+end
+
+success = system("bin/rubocop", "-A", "--force-exclusion", *target_files)
+system("git", "add", "--", *target_files)
+
+exit(success ? 0 : 1)
