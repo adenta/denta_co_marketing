@@ -20,6 +20,7 @@ servers:
 proxy:
   ssl: true
   hosts:
+    - mail.denta.co
     - denta.co
 
 # Credentials for your image host.

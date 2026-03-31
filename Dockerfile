@@ -63,7 +63,7 @@ COPY . .
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 # Precompiling assets for production without requiring runtime secrets
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 POSTMARK_API_TOKEN=dummy ./bin/rails assets:precompile
 
 
 RUN rm -rf node_modules
