@@ -8,8 +8,6 @@ type NavbarProps = {
   authenticated: boolean;
   current_user_email?: string | null;
   home_path: string;
-  sign_in_path: string;
-  sign_up_path: string;
   developer_sign_in_path: string;
   developer_sign_in_enabled: boolean;
   logout_path: string;
@@ -20,8 +18,6 @@ export default function Navbar({
   authenticated,
   current_user_email,
   home_path,
-  sign_in_path,
-  sign_up_path,
   developer_sign_in_path,
   developer_sign_in_enabled,
   logout_path,
@@ -33,7 +29,7 @@ export default function Navbar({
         toast.success(payload.message);
       }
 
-      visit(payload?.redirect_to ?? sign_in_path);
+      visit(payload?.redirect_to ?? home_path);
     },
     onError: message => {
       toast.error(message);
@@ -82,12 +78,6 @@ export default function Navbar({
                   {loading ? "Signing in..." : "Developer Sign In"}
                 </Button>
               ) : null}
-              <Button type="button" variant="ghost" asChild>
-                <a href={sign_in_path}>Sign in</a>
-              </Button>
-              <Button type="button" asChild>
-                <a href={sign_up_path}>Sign up</a>
-              </Button>
             </>
           )}
         </div>

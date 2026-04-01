@@ -1,7 +1,6 @@
 module Api
   module V1
     class DeveloperSessionsController < ApplicationController
-      allow_unauthenticated_access only: :create
       disallow_authenticated_api_access only: :create
 
       def create

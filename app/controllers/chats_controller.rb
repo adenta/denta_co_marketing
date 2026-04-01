@@ -1,4 +1,5 @@
 class ChatsController < ApplicationController
+  require_authenticated_access
   before_action :set_chat, only: [ :show ]
 
   def index

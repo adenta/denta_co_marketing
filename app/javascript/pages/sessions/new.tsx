@@ -8,15 +8,9 @@ import { Input } from "@/components/ui/input";
 
 type SessionsNewProps = {
   create_path: string;
-  forgot_password_path: string;
-  sign_up_path: string;
 };
 
-export default function SessionsNew({
-  create_path,
-  forgot_password_path,
-  sign_up_path,
-}: SessionsNewProps) {
+export default function SessionsNew({ create_path }: SessionsNewProps) {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
@@ -51,24 +45,6 @@ export default function SessionsNew({
       eyebrow="Account Access"
       title="Sign in"
       description="Use your email address and password to pick up where you left off."
-      footer={
-        <div className="space-y-2">
-          <p>
-            Forgot your password?{" "}
-            <a className="font-medium text-foreground underline underline-offset-4" href={forgot_password_path}>
-              Reset it here
-            </a>
-            .
-          </p>
-          <p>
-            Need an account?{" "}
-            <a className="font-medium text-foreground underline underline-offset-4" href={sign_up_path}>
-              Create one
-            </a>
-            .
-          </p>
-        </div>
-      }
     >
       <form className="space-y-4" onSubmit={onSubmit}>
         {getBaseErrors().length > 0 ? (
