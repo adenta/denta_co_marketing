@@ -2,19 +2,19 @@ import { ArrowRight } from "lucide-react";
 import { HeadshotCard, ExternalMangroveLink } from "@/components/home/shared";
 import { Button } from "@/components/ui/button";
 
-type RecentArticle = {
+type RecentPost = {
   path: string;
-  category: string;
+  author: string;
   published_at: string;
   title: string;
-  summary: string;
+  excerpt: string;
 };
 
 type HomeIndexProps = {
-  recent_articles: RecentArticle[];
+  recent_posts: RecentPost[];
 };
 
-export default function HomeIndex({ recent_articles }: HomeIndexProps) {
+export default function HomeIndex({ recent_posts }: HomeIndexProps) {
   return (
     <section className="relative isolate overflow-hidden bg-background">
       <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(234,240,238,0.22),rgba(243,246,244,0.92)_35%,rgba(244,247,245,1)),radial-gradient(circle_at_top_left,rgba(114,142,146,0.22),transparent_33%),radial-gradient(circle_at_82%_12%,rgba(121,153,136,0.18),transparent_30%),radial-gradient(circle_at_50%_90%,rgba(92,116,123,0.11),transparent_28%)]" />
@@ -52,20 +52,20 @@ export default function HomeIndex({ recent_articles }: HomeIndexProps) {
           id="recent-writing"
           className="mt-14 grid gap-4 border-t border-foreground/8 pt-8 md:grid-cols-3"
         >
-          {recent_articles.map(post => (
+          {recent_posts.map(post => (
             <a
               key={post.path}
               href={post.path}
               className="group rounded-[1.7rem] border border-foreground/10 bg-white/72 p-5 shadow-[0_16px_50px_rgba(42,61,67,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5"
             >
               <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                <p>{post.category}</p>
+                <p>{post.author}</p>
                 <p>{post.published_at}</p>
               </div>
               <h2 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-[#22383d] group-hover:text-[#314f55]">
                 {post.title}
               </h2>
-              <p className="mt-3 text-sm leading-7 text-[#4a6469]">{post.summary}</p>
+              <p className="mt-3 text-sm leading-7 text-[#4a6469]">{post.excerpt}</p>
             </a>
           ))}
         </div>

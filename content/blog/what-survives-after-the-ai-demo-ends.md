@@ -1,8 +1,11 @@
 ---
 title: What Survives After the AI Demo Ends
-category: Applied AI
+excerpt: A practical look at the difference between impressive prototypes and tools that teams can trust in everyday work.
 published_on: 2026-03-01
-summary: A practical look at the difference between impressive prototypes and tools that teams can trust in everyday work.
+author: Andrew Denta
+tags:
+  - applied ai
+  - product
 ---
 
 There is a predictable moment in a lot of AI projects when the first version works well enough to impress people in a room. A model responds quickly, a workflow gets compressed, and the conversation turns from curiosity to possibility.

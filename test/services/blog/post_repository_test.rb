@@ -196,7 +196,7 @@ module Blog
       end
     end
 
-    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Denta Co", draft: false)
+    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Andrew Denta", draft: false)
       File.write(
         path,
         <<~MARKDOWN
