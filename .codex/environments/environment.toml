@@ -4,3 +4,8 @@ name = "chat_app"
 
 [setup]
 script = "./bin/codex-setup-script"
+
+[[actions]]
+name = "Deploy"
+icon = "run"
+command = "kamal deploy"
