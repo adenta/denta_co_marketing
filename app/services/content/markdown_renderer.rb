@@ -1,4 +1,5 @@
 require "commonmarker"
+require "uri"
 
 module Content
   class MarkdownRenderer
@@ -30,6 +31,14 @@ module Content
     PLUGINS = {
       syntax_highlighter: nil
     }.freeze
+    YOUTUBE_COMPONENT_NAME = "blog/YouTubeEmbed".freeze
+    YOUTUBE_HOSTS = %w[
+      youtube.com
+      www.youtube.com
+      m.youtube.com
+      youtu.be
+      www.youtu.be
+    ].freeze
 
     def render(markdown)
       raw_html = Commonmarker.to_html(markdown.to_s.encode("UTF-8"), options: OPTIONS, plugins: PLUGINS)
@@ -38,6 +47,7 @@ module Content
 
       sanitized_html = sanitize(fragment.to_html, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES)
       sanitized_fragment = Nokogiri::HTML::DocumentFragment.parse(sanitized_html)
+      replace_youtube_embeds!(sanitized_fragment)
       normalize_heading_ids!(sanitized_fragment)
 
       RenderedContent.new(
@@ -49,6 +59,45 @@ module Content
     private
 
     include ActionView::Helpers::SanitizeHelper
+    include ERB::Util
+
+    def replace_youtube_embeds!(fragment)
+      fragment.css("p").each do |paragraph|
+        anchor = youtube_embed_anchor_for(paragraph)
+        next unless anchor
+
+        paragraph.replace(turbo_mount_html(YOUTUBE_COMPONENT_NAME, props: { url: anchor["href"] }))
+      end
+    end
+
+    def youtube_embed_anchor_for(paragraph)
+      children = paragraph.children.reject { |node| node.text? && node.text.strip.empty? }
+      return unless children.one?
+
+      anchor = children.first
+      return unless anchor.element? && anchor.name == "a"
+      return unless youtube_url?(anchor["href"])
+
+      anchor
+    end
+
+    def youtube_url?(value)
+      uri = URI.parse(value.to_s)
+      return false unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+
+      YOUTUBE_HOSTS.include?(uri.host.to_s.downcase)
+    rescue URI::InvalidURIError
+      false
+    end
+
+    def turbo_mount_html(component_name, props:)
+      controller_name = "turbo-mount-#{component_name.underscore.dasherize.gsub("/", "--")}"
+      props_attribute = %(data-#{controller_name}-props-value="#{html_escape(props.to_json)}")
+
+      <<~HTML.chomp
+        <div data-controller="#{html_escape(controller_name)}" data-#{controller_name}-component-value="#{html_escape(component_name)}" #{props_attribute}></div>
+      HTML
+    end
 
     def normalize_heading_ids!(fragment)
       fragment.css("h1 > a.anchor[id]:first-child, h2 > a.anchor[id]:first-child, h3 > a.anchor[id]:first-child, h4 > a.anchor[id]:first-child, h5 > a.anchor[id]:first-child, h6 > a.anchor[id]:first-child").each do |anchor|
