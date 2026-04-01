@@ -1,11 +1,7 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: :show
 
-  def show
-    @props = {
-      article: ArticleBlueprint.render_as_hash(@article, view: :detail)
-    }
-  end
+  def show; end
 
   private
 

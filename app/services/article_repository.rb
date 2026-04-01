@@ -3,6 +3,16 @@ require "yaml"
 class ArticleRepository
   CONTENT_ROOT = Rails.root.join("app/content/articles").freeze
   CACHE_NAMESPACE = "article_repository/v1".freeze
+  FRONT_MATTER_PARSER = Content::FrontMatterParser.new
+  MARKDOWN_RENDERER = Content::MarkdownRenderer.new
+  METADATA_SCHEMA = Content::MetadataSchema.new(
+    required: {
+      "title" => :string,
+      "category" => :string,
+      "published_on" => :date,
+      "summary" => :string
+    }
+  )
 
   class << self
     def all
@@ -34,29 +44,19 @@ class ArticleRepository
     end
 
     def load_article(path)
-      front_matter, body = parse_file(path)
-
-      raw_published_on = front_matter.fetch("published_on")
-      published_on = raw_published_on.is_a?(Date) ? raw_published_on : Date.parse(raw_published_on)
-      paragraphs = body.split(/\n{2,}/).map(&:strip).reject(&:empty?)
+      parsed = FRONT_MATTER_PARSER.parse(path.read, path:)
+      metadata = METADATA_SCHEMA.validate!(parsed.metadata, path:)
+      rendered = MARKDOWN_RENDERER.render(parsed.body)
 
       Article.new(
         slug: path.basename(".md").to_s,
-        title: front_matter.fetch("title"),
-        category: front_matter.fetch("category"),
-        published_on: published_on,
-        summary: front_matter.fetch("summary"),
-        body: paragraphs
+        title: metadata.fetch("title"),
+        category: metadata.fetch("category"),
+        published_on: metadata.fetch("published_on"),
+        summary: metadata.fetch("summary"),
+        html_body: rendered.html,
+        headings: rendered.headings
       )
-    end
-
-    def parse_file(path)
-      raw = path.read
-      match = raw.match(/\A---\s*\n(?<front_matter>.*?)\n---\s*\n(?<body>.*)\z/m)
-      raise "Article file #{path} is missing YAML front matter" unless match
-
-      front_matter = YAML.safe_load(match[:front_matter], permitted_classes: [ Date ]) || {}
-      [ front_matter, match[:body] ]
     end
   end
 end

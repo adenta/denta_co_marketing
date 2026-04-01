@@ -101,6 +101,41 @@ module Blog
       end
     end
 
+    test "raises for unknown front matter keys" do
+      with_repository do |repository, root:, **|
+        File.write(
+          root.join("unknown.md"),
+          <<~MARKDOWN
+            ---
+            title: Example
+            excerpt: Example excerpt
+            published_on: 2026-04-01
+            unknown: nope
+            ---
+
+            Body
+          MARKDOWN
+        )
+
+        error = assert_raises(Blog::PostRepository::InvalidPostError) { repository.published_posts }
+        assert_includes error.message, "Unknown front matter keys"
+      end
+    end
+
+    test "raises for invalid published_on format" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("bad-date.md"),
+          title: "Bad Date",
+          excerpt: "Excerpt",
+          published_on: "04/01/2026"
+        )
+
+        error = assert_raises(Blog::PostRepository::InvalidPostError) { repository.published_posts }
+        assert_includes error.message, "must be an ISO 8601 date"
+      end
+    end
+
     test "reuses cached rendered posts until the file mtime changes" do
       with_repository(renderer: CountingRenderer.new) do |repository, published_root:, renderer:, **|
         path = published_root.join("cached.md")

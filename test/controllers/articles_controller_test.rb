@@ -5,8 +5,9 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     get article_path("what-survives-after-the-ai-demo-ends")
 
     assert_response :success
-    assert_includes @response.body, "articles/show"
     assert_includes @response.body, "What Survives After the AI Demo Ends"
+    assert_includes @response.body, "There is a predictable moment in a lot of AI projects"
+    refute_includes @response.body, "data-turbo-mount-articles--show-component-value"
   end
 
   test "show raises not found for an unknown slug" do

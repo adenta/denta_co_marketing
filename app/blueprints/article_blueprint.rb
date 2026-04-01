@@ -8,6 +8,7 @@ class ArticleBlueprint < Blueprinter::Base
   field :summary
 
   view :detail do
-    field :body
+    field :html_body
+    field :headings
   end
 end
