@@ -8,6 +8,7 @@ type NavbarProps = {
   authenticated: boolean;
   current_user_email?: string | null;
   home_path: string;
+  blog_path: string;
   sign_in_path: string;
   sign_up_path: string;
   developer_sign_in_path: string;
@@ -20,6 +21,7 @@ export default function Navbar({
   authenticated,
   current_user_email,
   home_path,
+  blog_path,
   sign_in_path,
   sign_up_path,
   developer_sign_in_path,
@@ -59,6 +61,10 @@ export default function Navbar({
         </a>
 
         <div className="flex items-center gap-3">
+          <Button type="button" variant="ghost" asChild>
+            <a href={blog_path}>Blog</a>
+          </Button>
+
           {authenticated ? (
             <>
               {current_user_email ? (
