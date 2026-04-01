@@ -5,6 +5,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get new_session_path
     assert_response :success
     assert_page_mount "sessions/new"
+    refute_includes @response.body, "Reset it here"
+    refute_includes @response.body, "Create one"
   end
 
   test "new redirects authenticated users to the root path" do

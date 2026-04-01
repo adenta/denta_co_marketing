@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resource :registration, only: [ :new ]
   resource :session, only: [ :new ]
   resources :passwords, only: [ :new, :edit ], param: :token
   resources :chats, only: [ :index, :show ]
@@ -7,7 +6,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resource :developer_session, only: [ :create ]
-      resource :registration, only: [ :create ]
       resource :session, only: [ :create, :destroy ]
       resources :passwords, only: [ :create, :update ], param: :token
       resources :chats, only: [ :create ]

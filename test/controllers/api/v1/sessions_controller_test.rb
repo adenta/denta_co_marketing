@@ -46,4 +46,11 @@ class Api::V1::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal new_session_path, response.parsed_body["redirect_to"]
     assert_empty cookies[:session_id]
   end
+
+  test "destroy requires authentication" do
+    delete api_v1_session_path, as: :json
+
+    assert_response :unauthorized
+    assert_equal new_session_path, response.parsed_body["redirect_to"]
+  end
 end

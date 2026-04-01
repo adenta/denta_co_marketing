@@ -35,8 +35,6 @@
         authenticated: authenticated?,
         current_user_email: Current.user&.email_address,
         home_path: root_path,
-        sign_in_path: new_session_path,
-        sign_up_path: new_registration_path,
         developer_sign_in_path: api_v1_developer_session_path,
         developer_sign_in_enabled: Rails.env.development? || Rails.env.test?,
         logout_path: api_v1_session_path,

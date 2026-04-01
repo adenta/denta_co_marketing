@@ -1,6 +1,8 @@
 module Api
   module V1
     class ChatsController < ApplicationController
+      require_authenticated_access only: :create
+
       def create
         authorize Chat, :create?
 
