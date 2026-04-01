@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resource :session, only: [ :new ]
   resources :passwords, only: [ :new, :edit ], param: :token
+  get "blog" => "blog_posts#index", as: :blog_posts
+  get "blog/:slug" => "blog_posts#show", as: :blog_post
   resources :chats, only: [ :index, :show ]
 
   namespace :api do
