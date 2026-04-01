@@ -6,6 +6,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
+    assert_includes @response.body, "navigation/AuthControls"
+    refute_includes @response.body, "navigation/Navbar"
     assert_includes @response.body, "&quot;developer_sign_in_enabled&quot;:true"
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
@@ -19,7 +21,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, users(:one).email_address
+    assert_includes @response.body, "navigation/AuthControls"
+    refute_includes @response.body, "navigation/Navbar"
+    refute_includes @response.body, users(:one).email_address
     refute_includes @response.body, "available_agents"
   end
 
@@ -30,5 +34,17 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "home/index"
     refute_includes @response.body, "home/splash1"
     assert_includes @response.body, "&quot;recent_articles&quot;:"
+  end
+
+  test "index omits auth controls for signed out visitors when developer sign in is disabled" do
+    original_env_method = Rails.method(:env)
+    Rails.define_singleton_method(:env) { ActiveSupport::StringInquirer.new("production") }
+
+    get root_path
+
+    assert_response :success
+    refute_includes @response.body, "navigation/AuthControls"
+  ensure
+    Rails.define_singleton_method(:env, original_env_method)
   end
 end

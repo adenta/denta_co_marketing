@@ -31,18 +31,19 @@
   </head>
 
   <body>
-    <%= turbo_mount(
-      "navigation/Navbar",
-      props: {
-        app_name: "Andrew Denta",
-        authenticated: authenticated?,
-        current_user_email: Current.user&.email_address,
-        home_path: root_path,
-        developer_sign_in_path: api_v1_developer_session_path,
-        developer_sign_in_enabled: Rails.env.development? || Rails.env.test?,
-        logout_path: api_v1_session_path,
-      },
-    ) %>
+    <% developer_sign_in_enabled = Rails.env.development? || Rails.env.test? %>
+    <% if authenticated? || developer_sign_in_enabled %>
+      <%= turbo_mount(
+        "navigation/AuthControls",
+        props: {
+          authenticated: authenticated?,
+          developer_sign_in_path: api_v1_developer_session_path,
+          developer_sign_in_enabled: developer_sign_in_enabled,
+          home_path: root_path,
+          logout_path: api_v1_session_path,
+        },
+      ) %>
+    <% end %>
     <main>
       <%= yield %>
     </main>

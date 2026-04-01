@@ -11,7 +11,8 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "Draft"
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Essays, experiments, and practical notes on growth, conversion, and how modern websites should perform.">'
-    assert_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, "navigation/AuthControls"
+    refute_includes @response.body, "navigation/Navbar"
   end
 
   test "blog show is publicly accessible and includes server rendered article html" do
@@ -24,7 +25,8 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "blog/PostEnhancements"
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Small conversion leaks compound fast when patients are comparing practices and trying to book quickly.">'
-    assert_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, "navigation/AuthControls"
+    refute_includes @response.body, "navigation/Navbar"
   end
 
   test "draft post renders on the normal blog route in test" do
