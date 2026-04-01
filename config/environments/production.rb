@@ -59,6 +59,7 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
 
+  config.action_mailbox.ingress = :postmark
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = {
     api_token: ENV.fetch("POSTMARK_API_TOKEN")

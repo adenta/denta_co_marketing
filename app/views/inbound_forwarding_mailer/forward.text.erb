@@ -1,0 +1,12 @@
+Inbound email received by Denta.
+
+From: <%= Array(@mail.from).join(", ") %>
+To: <%= Array(@mail.to).join(", ") %>
+Cc: <%= Array(@mail.cc).join(", ") %>
+Subject: <%= @mail.subject.presence || "(no subject)" %>
+Date: <%= @mail.date %>
+Message-ID: <%= @mail.message_id %>
+
+Body:
+
+<%= @mail.text_part&.decoded || @mail.body.decoded %>
