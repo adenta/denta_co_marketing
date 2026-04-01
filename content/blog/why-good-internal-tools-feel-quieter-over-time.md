@@ -1,8 +1,11 @@
 ---
 title: Why Good Internal Tools Feel Quieter Over Time
-category: Software Craft
+excerpt: On product judgment, system design, and the small decisions that make software easier to live with six months later.
 published_on: 2026-02-01
-summary: On product judgment, system design, and the small decisions that make software easier to live with six months later.
+author: Andrew Denta
+tags:
+  - software craft
+  - product
 ---
 
 A lot of internal tools are evaluated too early. If a tool launches with enough visible energy, people assume it is working. In practice, the better signal usually shows up later, when the tool stops creating chatter.

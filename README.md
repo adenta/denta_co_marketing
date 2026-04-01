@@ -29,9 +29,9 @@ This convention is intentional. `config/initializers/generators.rb` sets `g.temp
 
 Use ERB for shared layout/shell concerns and non-page views only, such as `app/views/layouts/application.html.erb`, `app/views/shared/page_fallback.html.erb`, mailers, and PWA assets. If both an ERB template and a matching React page exist for the same action, the ERB template wins.
 
-## Blog Authoring
+## Writing Authoring
 
-The blog is markdown-backed and server-rendered.
+All long-form writing is markdown-backed and server-rendered through one pipeline.
 
 - Published posts live in `content/blog/*.md`
 - Public routes:
@@ -54,4 +54,4 @@ Set `draft: true` in frontmatter to keep a post hidden in production while still
 
 Posts render dynamically at request time through the `Blog::PostRepository` and `Blog::MarkdownRenderer` pipeline, then cache by file path plus file modification time. That means editing a markdown file locally shows up on refresh, while deploys remain the publish step in production.
 
-Blog-specific typography lives in `app/assets/stylesheets/blog.css` and is only linked from the blog and draft views.
+Blog-specific typography lives in `app/assets/stylesheets/blog.css` and is only linked from the writing views.

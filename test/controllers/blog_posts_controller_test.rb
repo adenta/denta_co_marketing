@@ -5,12 +5,13 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     get blog_posts_path
 
     assert_response :success
-    assert_includes @response.body, "Denta Co Journal"
+    assert_includes @response.body, "Writing on AI, software, and the systems that make ambitious work feel calmer."
     assert_includes @response.body, "Why Dental Practices Lose High-Intent Leads"
     assert_includes @response.body, "Your Website Is Your Best Front Desk"
+    assert_includes @response.body, "What Survives After the AI Demo Ends"
     assert_includes @response.body, "Draft"
     assert_includes @response.body, '<html lang="en">'
-    assert_includes @response.body, '<meta name="description" content="Essays, experiments, and practical notes on growth, conversion, and how modern websites should perform.">'
+    assert_includes @response.body, '<meta name="description" content="Essays, notes, and practical writing on AI, software, systems, and the operational edges where products either hold up or fail.">'
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
   end
@@ -53,4 +54,5 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
   ensure
     Rails.define_singleton_method(:env, original_env_method)
   end
+
 end

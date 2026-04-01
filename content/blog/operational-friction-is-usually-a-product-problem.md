@@ -1,8 +1,11 @@
 ---
 title: Operational Friction Is Usually a Product Problem
-category: Operations
+excerpt: Workflow-heavy environments make weak assumptions visible fast, which is why they are so useful when thinking about better systems.
 published_on: 2026-01-01
-summary: Workflow-heavy environments make weak assumptions visible fast, which is why they are so useful when thinking about better systems.
+author: Andrew Denta
+tags:
+  - operations
+  - product
 ---
 
 When a team describes a workflow as messy, they are often describing product debt in operational language. There are extra steps, duplicate entries, side conversations, and manual checks because the software model of the work does not match the real one closely enough.
