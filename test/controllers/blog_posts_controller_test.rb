@@ -37,6 +37,14 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "This is a local-only draft"
   end
 
+  test "walkthrough post renders the youtube embed shortcode" do
+    get blog_post_path("website-walkthrough-video")
+
+    assert_response :success
+    assert_includes @response.body, "blog/YouTubeEmbed"
+    assert_includes @response.body, "zBPc6Ims1Bc"
+  end
+
   test "unknown published post returns not found" do
     get blog_post_path("missing-post")
 

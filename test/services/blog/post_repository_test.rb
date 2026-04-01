@@ -136,6 +136,21 @@ module Blog
       end
     end
 
+    test "raises for invalid youtube shortcodes in post bodies" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("bad-shortcode.md"),
+          title: "Bad Shortcode",
+          excerpt: "Excerpt",
+          published_on: "2026-04-01",
+          body: "{{ youtube url=\"https://example.com/video\" }}"
+        )
+
+        error = assert_raises(Blog::PostRepository::InvalidPostError) { repository.published_posts }
+        assert_includes error.message, "requires a valid YouTube URL"
+      end
+    end
+
     test "reuses cached rendered posts until the file mtime changes" do
       with_repository(renderer: CountingRenderer.new) do |repository, published_root:, renderer:, **|
         path = published_root.join("cached.md")

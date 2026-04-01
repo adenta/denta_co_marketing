@@ -82,7 +82,7 @@ module Blog
         headings: rendered.headings,
         draft: metadata["draft"]
       )
-    rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError => error
+    rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError, Content::MarkdownRenderer::ShortcodeError => error
       raise InvalidPostError, error.message
     end
 
@@ -102,7 +102,7 @@ module Blog
         "blog-post",
         Digest::SHA256.hexdigest(path.to_s),
         path.mtime.to_f,
-        "v1"
+        "v2"
       ]
     end
   end
