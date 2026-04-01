@@ -1,6 +1,6 @@
 require "test_helper"
 
-module Blog
+module Content
   class MarkdownRendererTest < ActiveSupport::TestCase
     test "renders core markdown structures to sanitized html" do
       result = MarkdownRenderer.new.render(<<~MARKDOWN)
@@ -25,7 +25,7 @@ module Blog
       assert_includes result.html, %(<h1 id="title">)
       assert_includes result.html, %(<a href="https://example.com">a link</a>)
       assert_includes result.html, "<blockquote>"
-      assert_includes result.html, "<pre class=\"ruby\">"
+      assert_includes result.html, "<pre lang=\"rb\"><code>"
       assert_includes result.html, "<table>"
       assert_equal [ { "id" => "title", "level" => 1, "text" => "Title" } ], result.headings
     end
@@ -39,6 +39,12 @@ module Blog
 
       refute_includes result.html, "<script"
       refute_includes result.html, "alert"
+    end
+
+    test "removes unsafe link protocols" do
+      result = MarkdownRenderer.new.render("[bad](javascript:alert('xss'))")
+
+      refute_includes result.html, "javascript:"
     end
   end
 end

@@ -6,17 +6,32 @@ module Blog
   class PostRepository
     class InvalidPostError < StandardError; end
 
-    FRONTMATTER_PATTERN = /\A---\s*\n(?<frontmatter>.*?)\n---\s*\n?(?<body>.*)\z/m
-    REQUIRED_FIELDS = %w[title excerpt published_on].freeze
+    METADATA_SCHEMA = Content::MetadataSchema.new(
+      required: {
+        "title" => :string,
+        "excerpt" => :string,
+        "published_on" => :date
+      },
+      optional: {
+        "author" => :string,
+        "tags" => :string_array,
+        "cover_image" => :string,
+        "draft" => :boolean
+      }
+    )
 
     def initialize(
       root: Rails.root.join("content/blog"),
-      renderer: Blog::MarkdownRenderer.new,
-      cache: Rails.cache
+      renderer: Content::MarkdownRenderer.new,
+      cache: Rails.cache,
+      front_matter_parser: Content::FrontMatterParser.new,
+      metadata_schema: METADATA_SCHEMA
     )
       @root = Pathname(root)
       @renderer = renderer
       @cache = cache
+      @front_matter_parser = front_matter_parser
+      @metadata_schema = metadata_schema
     end
 
     def published_posts(include_drafts: false)
@@ -50,49 +65,25 @@ module Blog
     end
 
     def build_post(path)
-      source = path.read
-      match = FRONTMATTER_PATTERN.match(source)
-      raise InvalidPostError, "Missing frontmatter in #{path.basename}" unless match
-
-      metadata = YAML.safe_load(
-        match[:frontmatter],
-        permitted_classes: [ Date ],
-        aliases: false
-      ) || {}
-
-      metadata = metadata.stringify_keys
-      validate_metadata!(metadata, path)
-
-      rendered = @renderer.render(match[:body])
+      parsed = @front_matter_parser.parse(path.read, path:)
+      metadata = @metadata_schema.validate!(parsed.metadata, path:)
+      rendered = @renderer.render(parsed.body)
 
       Blog::Post.new(
         slug: path.basename(".md").to_s,
         title: metadata.fetch("title").to_s,
         excerpt: metadata.fetch("excerpt").to_s,
-        published_on: coerce_date(metadata.fetch("published_on"), path:),
+        published_on: metadata.fetch("published_on"),
         author: metadata["author"],
         tags: metadata["tags"],
         cover_image: metadata["cover_image"],
         html_body: rendered.html,
-        reading_time_minutes: reading_time_for(match[:body]),
+        reading_time_minutes: reading_time_for(parsed.body),
         headings: rendered.headings,
-        draft: ActiveModel::Type::Boolean.new.cast(metadata["draft"])
+        draft: metadata["draft"]
       )
-    end
-
-    def validate_metadata!(metadata, path)
-      missing_fields = REQUIRED_FIELDS.reject { |field| metadata[field].present? }
-      return if missing_fields.empty?
-
-      raise InvalidPostError, "Missing #{missing_fields.join(', ')} in #{path.basename}"
-    end
-
-    def coerce_date(value, path:)
-      return value if value.is_a?(Date)
-
-      Date.iso8601(value.to_s)
-    rescue Date::Error
-      raise InvalidPostError, "Invalid published_on in #{path.basename}"
+    rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError => error
+      raise InvalidPostError, error.message
     end
 
     def reading_time_for(markdown)

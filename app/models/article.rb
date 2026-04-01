@@ -1,13 +1,14 @@
 class Article
-  attr_reader :slug, :title, :category, :published_on, :summary, :body
+  attr_reader :slug, :title, :category, :published_on, :summary, :html_body, :headings
 
-  def initialize(slug:, title:, category:, published_on:, summary:, body:)
+  def initialize(slug:, title:, category:, published_on:, summary:, html_body:, headings: [])
     @slug = slug
     @title = title
     @category = category
     @published_on = published_on
     @summary = summary
-    @body = body
+    @html_body = html_body
+    @headings = Array(headings).map { |heading| heading.stringify_keys.freeze }.freeze
   end
 
   def published_at

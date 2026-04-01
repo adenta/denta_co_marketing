@@ -72,6 +72,7 @@ gem "blueprinter"
 gem "oj"
 gem "pundit"
 gem "postmark-rails"
+gem "commonmarker", "~> 2.6"
 
 gem "ruby_llm", "~> 1.13"
 gem "openssl", "~> 3.3.1"
