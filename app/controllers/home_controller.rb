@@ -1,3 +1,7 @@
 class HomeController < ApplicationController
-  def index; end
+  def index
+    @props = {
+      recent_articles: ArticleBlueprint.render_as_hash(ArticleRepository.recent)
+    }
+  end
 end

@@ -22,4 +22,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, users(:one).email_address
     refute_includes @response.body, "available_agents"
   end
+
+  test "index renders the production splash page" do
+    get root_path
+
+    assert_response :success
+    assert_includes @response.body, "home/index"
+    refute_includes @response.body, "home/splash1"
+    assert_includes @response.body, "&quot;recent_articles&quot;:"
+  end
 end
