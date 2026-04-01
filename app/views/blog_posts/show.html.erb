@@ -1,4 +1,5 @@
 <% content_for :title, "#{@post.title} | Denta Co Marketing" %>
+<% provide :meta_description, @post.excerpt %>
 <% content_for :head do %>
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
