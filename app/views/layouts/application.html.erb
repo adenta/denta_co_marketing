@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <% favicon = favicon_paths %>
     <title><%= content_for(:title) || "Andrew Denta" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <% if content_for?(:meta_description) %>
-      <meta name="description" content="<%= content_for(:meta_description) %>">
-    <% end %>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Andrew Denta">
     <meta name="mobile-web-app-capable" content="yes">
