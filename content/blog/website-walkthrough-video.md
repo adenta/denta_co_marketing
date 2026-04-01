@@ -13,6 +13,6 @@ tags:
 
 This post uses the new embedded YouTube player block for blog content.
 
-https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&t=1675
+{{ youtube url="https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&t=1675" }}
 
 If this format works well, we can add a dedicated shortcode later for captions, transcripts, or video callouts.

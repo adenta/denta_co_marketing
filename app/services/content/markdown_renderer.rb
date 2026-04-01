@@ -3,6 +3,7 @@ require "uri"
 
 module Content
   class MarkdownRenderer
+    ShortcodeError = Class.new(StandardError)
     RenderedContent = Struct.new(:html, :headings, keyword_init: true)
 
     ALLOWED_TAGS = %w[
@@ -61,24 +62,34 @@ module Content
     include ActionView::Helpers::SanitizeHelper
     include ERB::Util
 
+    YOUTUBE_SHORTCODE_NAME = "youtube".freeze
+    SHORTCODE_REGEX = /\A\{\{\s*(?<name>[a-z0-9_-]+)(?:\s+url=(?<quote>["“])(?<url>.+?)(?<closing_quote>["”]))?\s*\}\}\z/.freeze
+
     def replace_youtube_embeds!(fragment)
       fragment.css("p").each do |paragraph|
-        anchor = youtube_embed_anchor_for(paragraph)
-        next unless anchor
+        shortcode = shortcode_for(paragraph)
+        next unless shortcode
 
-        paragraph.replace(turbo_mount_html(YOUTUBE_COMPONENT_NAME, props: { url: anchor["href"] }))
+        paragraph.replace(turbo_mount_html(YOUTUBE_COMPONENT_NAME, props: { url: shortcode.fetch(:url) }))
       end
     end
 
-    def youtube_embed_anchor_for(paragraph)
-      children = paragraph.children.reject { |node| node.text? && node.text.strip.empty? }
-      return unless children.one?
+    def shortcode_for(paragraph)
+      text = paragraph.text.to_s.strip
+      return if text.blank?
+      return unless text.start_with?("{{") || text.end_with?("}}")
 
-      anchor = children.first
-      return unless anchor.element? && anchor.name == "a"
-      return unless youtube_url?(anchor["href"])
+      match = SHORTCODE_REGEX.match(text)
+      raise ShortcodeError, %(Invalid content shortcode: #{text}) unless match
 
-      anchor
+      name = match[:name]
+      raise ShortcodeError, %(Unsupported content shortcode "#{name}") unless name == YOUTUBE_SHORTCODE_NAME
+      raise ShortcodeError, %(YouTube shortcode must include a url: #{text}) if match[:url].blank?
+
+      url = match[:url]
+      raise ShortcodeError, %(YouTube shortcode requires a valid YouTube URL: #{url}) unless youtube_url?(url)
+
+      { url: }
     end
 
     def youtube_url?(value)

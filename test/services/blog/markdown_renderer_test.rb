@@ -47,11 +47,11 @@ module Content
       refute_includes result.html, "javascript:"
     end
 
-    test "turns standalone youtube links into turbo mount embeds" do
+    test "turns explicit youtube shortcodes into turbo mount embeds" do
       result = MarkdownRenderer.new.render(<<~MARKDOWN)
         Before
 
-        https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&t=1675
+        {{ youtube url="https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&t=1675" }}
 
         After
       MARKDOWN
@@ -62,6 +62,45 @@ module Content
       assert_includes result.html, "\\u0026t=1675"
       assert_includes result.html, "<p>Before</p>"
       assert_includes result.html, "<p>After</p>"
+    end
+
+    test "leaves standalone youtube links as regular links" do
+      result = MarkdownRenderer.new.render(<<~MARKDOWN)
+        https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&t=1675
+      MARKDOWN
+
+      refute_includes result.html, %(data-controller="turbo-mount-blog--you-tube-embed")
+      assert_includes result.html, %(href="https://youtu.be/zBPc6Ims1Bc?si=W2pKuAq7oS6i1uHc&amp;t=1675")
+    end
+
+    test "raises for malformed youtube shortcodes" do
+      error = assert_raises(MarkdownRenderer::ShortcodeError) do
+        MarkdownRenderer.new.render(<<~MARKDOWN)
+          {{ youtube url="https://youtu.be/zBPc6Ims1Bc"
+        MARKDOWN
+      end
+
+      assert_includes error.message, "Invalid content shortcode"
+    end
+
+    test "raises for youtube shortcodes without urls" do
+      error = assert_raises(MarkdownRenderer::ShortcodeError) do
+        MarkdownRenderer.new.render(<<~MARKDOWN)
+          {{ youtube }}
+        MARKDOWN
+      end
+
+      assert_includes error.message, "must include a url"
+    end
+
+    test "raises for non-youtube shortcode urls" do
+      error = assert_raises(MarkdownRenderer::ShortcodeError) do
+        MarkdownRenderer.new.render(<<~MARKDOWN)
+          {{ youtube url="https://example.com/video" }}
+        MARKDOWN
+      end
+
+      assert_includes error.message, "requires a valid YouTube URL"
     end
   end
 end
