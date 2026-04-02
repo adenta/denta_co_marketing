@@ -31,9 +31,9 @@ export default function PostEnhancements({ headings, title }: PostEnhancementsPr
 
   return (
     <div className="space-y-4">
-      <Card className="rounded-3xl border-border/70 bg-card/90 shadow-sm shadow-black/5">
-        <CardHeader className="border-b border-border/70">
-          <CardTitle className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+      <Card className="rounded-3xl border-[#237671]/12 bg-white shadow-[0_18px_52px_rgba(17,52,49,0.05)]">
+        <CardHeader className="border-b border-[#237671]/10">
+          <CardTitle className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-[#237671] uppercase">
             <Share2Icon className="size-4" />
             Share
           </CardTitle>
@@ -50,9 +50,9 @@ export default function PostEnhancements({ headings, title }: PostEnhancementsPr
       </Card>
 
       {headings.length > 0 ? (
-        <Card className="rounded-3xl border-border/70 bg-card/90 shadow-sm shadow-black/5">
-          <CardHeader className="border-b border-border/70">
-            <CardTitle className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+        <Card className="rounded-3xl border-[#237671]/12 bg-white shadow-[0_18px_52px_rgba(17,52,49,0.05)]">
+          <CardHeader className="border-b border-[#237671]/10">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-[#237671] uppercase">
               <ListTreeIcon className="size-4" />
               On this page
             </CardTitle>
@@ -68,7 +68,7 @@ export default function PostEnhancements({ headings, title }: PostEnhancementsPr
                         <li key={heading.id}>
                           <a
                             href={`#${heading.id}`}
-                            className="block text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground"
+                            className="block text-sm leading-6 text-muted-foreground transition-colors hover:text-[#174f4b]"
                             style={{ paddingLeft: `${Math.max(heading.level - 1, 0) * 0.75}rem` }}
                           >
                             {heading.text}
