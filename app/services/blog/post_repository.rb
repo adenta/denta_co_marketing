@@ -14,8 +14,6 @@ module Blog
       },
       optional: {
         "author" => :string,
-        "tags" => :string_array,
-        "cover_image" => :string,
         "draft" => :boolean
       }
     )
@@ -75,22 +73,11 @@ module Blog
         excerpt: metadata.fetch("excerpt").to_s,
         published_on: metadata.fetch("published_on"),
         author: metadata["author"],
-        tags: metadata["tags"],
-        cover_image: metadata["cover_image"],
         html_body: rendered.html,
-        reading_time_minutes: reading_time_for(parsed.body),
-        headings: rendered.headings,
         draft: metadata["draft"]
       )
     rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError, Content::MarkdownRenderer::ShortcodeError => error
       raise InvalidPostError, error.message
-    end
-
-    def reading_time_for(markdown)
-      word_count = markdown.to_s.scan(/\b[\p{Alnum}][\p{Alnum}'-]*\b/).size
-      return 0 if word_count.zero?
-
-      [(word_count / 200.0).ceil, 1].max
     end
 
     def path_for(slug)
@@ -102,7 +89,7 @@ module Blog
         "blog-post",
         Digest::SHA256.hexdigest(path.to_s),
         path.mtime.to_f,
-        "v2"
+        "v4"
       ]
     end
   end

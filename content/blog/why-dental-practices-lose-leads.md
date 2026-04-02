@@ -3,10 +3,6 @@ title: Why Dental Practices Lose High-Intent Leads
 excerpt: Small conversion leaks compound fast when patients are comparing practices and trying to book quickly.
 published_on: 2026-04-01
 author: Denta Co
-tags:
-  - marketing
-  - dental
-  - websites
 ---
 
 # Attention does not equal intent

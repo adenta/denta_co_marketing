@@ -27,7 +27,6 @@ module Content
       assert_includes result.html, "<blockquote>"
       assert_includes result.html, "<pre lang=\"rb\"><code>"
       assert_includes result.html, "<table>"
-      assert_equal [ { "id" => "title", "level" => 1, "text" => "Title" } ], result.headings
     end
 
     test "removes unsafe script tags entirely" do

@@ -189,8 +189,7 @@ module Blog
         self.calls ||= 0
         self.calls += 1
         Blog::MarkdownRenderer::RenderedContent.new(
-          html: "<p>#{ERB::Util.html_escape(markdown)}</p>",
-          headings: []
+          html: "<p>#{ERB::Util.html_escape(markdown)}</p>"
         )
       end
     end
