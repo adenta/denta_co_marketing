@@ -35,8 +35,8 @@ en:
     manifest:
       name: "DentaCoMarketing"
       description: "DentaCoMarketing."
-      theme_color: "red"
-      background_color: "red"
+      theme_color: "#237671"
+      background_color: "#237671"
   pages:
     home:
       meta:
