@@ -4,9 +4,6 @@ excerpt: A draft exploring how modern practice websites should handle trust, urg
 published_on: 2026-04-02
 author: Denta Co
 draft: true
-tags:
-  - drafts
-  - conversion
 ---
 
 # This is a local-only draft

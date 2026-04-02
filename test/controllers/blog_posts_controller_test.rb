@@ -24,11 +24,11 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "<article class=\"blog-prose\">"
     assert_includes @response.body, "Attention does not equal intent"
     assert_includes @response.body, "Most practice websites are built as brochures"
-    assert_includes @response.body, "blog/PostEnhancements"
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Small conversion leaks compound fast when patients are comparing practices and trying to book quickly.">'
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
+    refute_includes @response.body, "Related posts"
   end
 
   test "draft post renders on the normal blog route in test" do

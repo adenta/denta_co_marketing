@@ -22,65 +22,20 @@
         <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
         <span>&middot;</span>
         <span><%= @post.author %></span>
-        <span>&middot;</span>
-        <span><%= pluralize(@post.reading_time_minutes, "minute") %> read</span>
         <% if @post.draft? %>
+          <span>&middot;</span>
           <span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold tracking-[0.14em] text-amber-900 uppercase">Draft preview</span>
         <% end %>
       </div>
 
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
       <p class="text-lg leading-8 text-[#4f5b57]"><%= @post.excerpt %></p>
-
-      <% if @post.tags.any? %>
-        <div class="flex flex-wrap gap-2 pt-2">
-          <% @post.tags.each do |tag| %>
-            <span class="blog-inline-chip rounded-full px-3 py-1 text-xs font-medium tracking-[0.12em] uppercase"><%= tag %></span>
-          <% end %>
-        </div>
-      <% end %>
     </div>
   </div>
 </section>
 
-<section class="relative mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-8">
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--bottom-right">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-
-  <div class="min-w-0">
-    <% if @post.cover_image.present? %>
-      <figure class="blog-surface-card mb-8 overflow-hidden rounded-3xl">
-        <img src="<%= @post.cover_image %>" alt="<%= @post.title %>" class="h-auto w-full object-cover">
-      </figure>
-    <% end %>
-
-    <article class="blog-prose">
-      <%= @post.html_body.html_safe %>
-    </article>
-  </div>
-
-  <aside class="space-y-6">
-    <%= turbo_mount("blog/PostEnhancements", props: { headings: @post.headings, title: @post.title }) %>
-
-    <% if @related_posts.any? %>
-      <section class="blog-surface-card rounded-3xl p-5">
-        <p class="text-sm font-semibold tracking-[0.2em] text-muted-foreground uppercase">Related posts</p>
-        <div class="mt-4 space-y-4">
-          <% @related_posts.each do |post| %>
-            <article class="space-y-1">
-              <h2 class="text-base font-medium tracking-tight text-foreground">
-                <%= link_to post.title, blog_post_path(post.slug), class: "hover:text-primary" %>
-              </h2>
-              <p class="text-sm leading-6 text-muted-foreground"><%= post.excerpt %></p>
-            </article>
-          <% end %>
-        </div>
-      </section>
-    <% end %>
-  </aside>
+<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+  <article class="blog-prose">
+    <%= @post.html_body.html_safe %>
+  </article>
 </section>

@@ -1,9 +1,8 @@
 <article class="blog-surface-card rounded-3xl p-6">
   <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
     <time datetime="<%= post.published_on.iso8601 %>"><%= post.published_on.to_fs(:long) %></time>
-    <span>&middot;</span>
-    <span><%= pluralize(post.reading_time_minutes, "minute") %> read</span>
     <% if post.draft? %>
+      <span>&middot;</span>
       <span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold tracking-[0.14em] text-amber-900 uppercase">Draft</span>
     <% end %>
   </div>
@@ -14,12 +13,4 @@
     </h2>
     <p class="max-w-3xl text-base leading-7 text-muted-foreground"><%= post.excerpt %></p>
   </div>
-
-  <% if post.tags.any? %>
-    <div class="mt-5 flex flex-wrap gap-2">
-      <% post.tags.each do |tag| %>
-        <span class="blog-inline-chip rounded-full px-3 py-1 text-xs font-medium tracking-[0.12em] uppercase"><%= tag %></span>
-      <% end %>
-    </div>
-  <% end %>
 </article>
