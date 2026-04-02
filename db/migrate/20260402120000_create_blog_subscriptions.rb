@@ -1,6 +1,6 @@
 class CreateBlogSubscriptions < ActiveRecord::Migration[8.1]
   def change
-    create_table :blog_subscriptions, id: :uuid do |t|
+    create_table :blog_subscriptions, id: :uuid, if_not_exists: true do |t|
       t.string :email_address, null: false
       t.integer :status, null: false, default: 0
       t.datetime :confirmation_sent_at
@@ -11,7 +11,7 @@ class CreateBlogSubscriptions < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :blog_subscriptions, :email_address, unique: true
-    add_index :blog_subscriptions, :status
+    add_index :blog_subscriptions, :email_address, unique: true, if_not_exists: true
+    add_index :blog_subscriptions, :status, if_not_exists: true
   end
 end
