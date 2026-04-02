@@ -89,9 +89,16 @@ en:
       email_placeholder: "you@example.com"
       submit_label: "Subscribe"
       success_message: "Thanks. Check your inbox for a confirmation link."
+      subscribed_title: "Thank you for subscribing"
+      subscribed_description: "Check %{email_address} for a confirmation link before we send new posts."
+      reset_label: "Use a different email"
+      verification_required: "Please complete the verification challenge."
+      unavailable: "Subscriptions are temporarily unavailable."
     create:
       success: "Thanks. Check your inbox for a confirmation link."
       invalid: "Please correct the highlighted fields."
+      verification_invalid: "Please retry the verification challenge."
+      unavailable: "Subscriptions are temporarily unavailable."
     confirm:
       success: "Your subscription is confirmed."
       invalid: "That confirmation link is invalid or has expired."

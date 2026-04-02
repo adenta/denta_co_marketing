@@ -8,12 +8,17 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create stores a pending subscription and sends a confirmation email" do
-    assert_emails 1 do
-      post api_v1_blog_subscriptions_path, params: {
-        email_address: " Reader@example.com "
-      }, as: :json, headers: {
-        "User-Agent" => "Blog Signup Test",
-      }
+    verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
+
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      assert_emails 1 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: " Reader@example.com ",
+          turnstile_token: "valid-token",
+        }, as: :json, headers: {
+          "User-Agent" => "Blog Signup Test",
+        }
+      end
     end
 
     assert_response :success
@@ -27,6 +32,7 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create resends confirmation for an existing pending subscription" do
+    verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
     subscription = BlogSubscription.create!(
       email_address: "reader@example.com",
       status: :pending,
@@ -35,12 +41,15 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       subscribe_user_agent: "Before",
     )
 
-    assert_emails 1 do
-      post api_v1_blog_subscriptions_path, params: {
-        email_address: "reader@example.com"
-      }, as: :json, headers: {
-        "User-Agent" => "Blog Signup Retry",
-      }
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      assert_emails 1 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "reader@example.com",
+          turnstile_token: "valid-token",
+        }, as: :json, headers: {
+          "User-Agent" => "Blog Signup Retry",
+        }
+      end
     end
 
     assert_response :success
@@ -54,16 +63,20 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create does not resend confirmation for an active subscription" do
+    verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
     BlogSubscription.create!(
       email_address: "reader@example.com",
       status: :active,
       confirmed_at: Time.current,
     )
 
-    assert_emails 0 do
-      post api_v1_blog_subscriptions_path, params: {
-        email_address: "reader@example.com"
-      }, as: :json
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      assert_emails 0 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "reader@example.com",
+          turnstile_token: "valid-token",
+        }, as: :json
+      end
     end
 
     assert_response :success
@@ -72,14 +85,70 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create returns validation errors for an invalid email address" do
-    assert_emails 0 do
-      post api_v1_blog_subscriptions_path, params: {
-        email_address: "not-an-email"
-      }, as: :json
+    verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
+
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      assert_emails 0 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "not-an-email",
+          turnstile_token: "valid-token",
+        }, as: :json
+      end
     end
 
     assert_response :unprocessable_entity
     assert_equal I18n.t("blog_subscriptions.create.invalid"), response.parsed_body["message"]
     assert_includes response.parsed_body.fetch("errors").fetch("email_address"), "Email address must be a valid email address"
   end
+
+  test "create rejects an invalid verification challenge" do
+    verifier = verifier_for(
+      BlogSubscriptions::TurnstileVerifier::Result.new(
+        success: false,
+        message: I18n.t("blog_subscriptions.create.verification_invalid"),
+        error_code: :invalid_token,
+      ),
+    )
+
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      assert_emails 0 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "reader@example.com",
+          turnstile_token: "bad-token",
+        }, as: :json
+      end
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t("blog_subscriptions.create.verification_invalid"), response.parsed_body["message"]
+    assert_equal [ I18n.t("blog_subscriptions.create.verification_invalid") ], response.parsed_body.dig("errors", "base")
+    assert_equal 0, BlogSubscription.count
+  end
+
+  test "create returns service unavailable when turnstile is not configured" do
+    verifier = verifier_for(
+      BlogSubscriptions::TurnstileVerifier::Result.new(
+        success: false,
+        message: I18n.t("blog_subscriptions.create.unavailable"),
+        error_code: :configuration,
+      ),
+    )
+
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      post api_v1_blog_subscriptions_path, params: {
+        email_address: "reader@example.com",
+        turnstile_token: "token",
+      }, as: :json
+    end
+
+    assert_response :service_unavailable
+    assert_equal I18n.t("blog_subscriptions.create.unavailable"), response.parsed_body["message"]
+  end
+
+  private
+    def verifier_for(result)
+      Object.new.tap do |verifier|
+        verifier.define_singleton_method(:verify) { |**_kwargs| result }
+      end
+    end
 end

@@ -9,17 +9,19 @@ vite_websocket_origin = "#{ViteRuby.config.protocol == "https" ? "wss" : "ws"}:/
 
 Rails.application.configure do
   config.content_security_policy do |policy|
+    turnstile_origin = "https://challenges.cloudflare.com"
+
     policy.default_src :self
     policy.base_uri :self
     policy.connect_src :self
     policy.font_src :self, :data
     policy.form_action :self
     policy.frame_ancestors :none
-    policy.frame_src :self, "https://www.youtube.com", "https://www.youtube-nocookie.com"
+    policy.frame_src :self, "https://www.youtube.com", "https://www.youtube-nocookie.com", turnstile_origin
     policy.img_src :self, :https, :data
     policy.object_src :none
     policy.report_uri "/csp-violation-reports"
-    policy.script_src :self
+    policy.script_src :self, turnstile_origin
     policy.style_src :self
 
     if Rails.env.development?

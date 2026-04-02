@@ -5,6 +5,7 @@
     "@ai-sdk/react": "^3.0.129",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.20",
+    "@marsidev/react-turnstile": "^1.5.0",
     "@rails/actioncable": "^8.1.200",
     "@streamdown/cjk": "^1.0.3",
     "@streamdown/code": "^1.1.1",

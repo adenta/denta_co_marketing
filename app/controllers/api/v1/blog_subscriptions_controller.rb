@@ -4,6 +4,15 @@ module Api
       allow_unauthenticated_access only: :create
 
       def create
+        verification = BlogSubscriptions::TurnstileVerifier.new.verify(
+          token: blog_subscription_params[:turnstile_token],
+          remote_ip: request.remote_ip,
+        )
+
+        unless verification.success?
+          return render_verification_error(verification)
+        end
+
         BlogSubscriptions::UpsertFromWebForm.new(
           email_address: blog_subscription_params[:email_address],
           ip_address: request.remote_ip,
@@ -22,7 +31,18 @@ module Api
         def blog_subscription_params
           payload = params[:blog_subscription]
           payload = params unless payload.is_a?(ActionController::Parameters) && payload.present?
-          payload.permit(:email_address)
+          payload.permit(:email_address, :turnstile_token)
+        end
+
+        def render_verification_error(verification)
+          if verification.configuration_error?
+            render json: { message: verification.message }, status: :service_unavailable
+          else
+            render json: {
+              message: verification.message,
+              errors: { base: [ verification.message ] },
+            }, status: :unprocessable_entity
+          end
         end
     end
   end

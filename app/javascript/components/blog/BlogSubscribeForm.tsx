@@ -1,4 +1,5 @@
-import { FormEvent, useId, useState } from "react";
+import { FormEvent, useId, useRef, useState } from "react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { useApiRequest } from "@/hooks/useApiRequest";
 import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,17 @@ type BlogSubscribeFormProps = {
   emailPlaceholder?: string;
   submitLabel: string;
   successMessage?: string;
+  subscribedTitle: string;
+  subscribedDescription: string;
+  resetLabel: string;
+  turnstileSiteKey?: string;
+  verificationRequiredMessage: string;
+  unavailableMessage: string;
 };
+
+function interpolateSubmittedEmail(template: string, emailAddress: string) {
+  return template.replace("%{email_address}", emailAddress);
+}
 
 export default function BlogSubscribeForm({
   createPath,
@@ -22,15 +33,32 @@ export default function BlogSubscribeForm({
   emailPlaceholder,
   submitLabel,
   successMessage,
+  subscribedTitle,
+  subscribedDescription,
+  resetLabel,
+  turnstileSiteKey,
+  verificationRequiredMessage,
+  unavailableMessage,
 }: BlogSubscribeFormProps) {
   const emailId = useId();
   const toast = useToast();
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [emailAddress, setEmailAddress] = useState("");
+  const [submittedEmailAddress, setSubmittedEmailAddress] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileReady, setTurnstileReady] = useState(Boolean(!turnstileSiteKey));
+  const [turnstileUnavailable, setTurnstileUnavailable] = useState(false);
   const { loading, getBaseErrors, getFieldError, clearErrors, makeRequest } =
     useApiRequest<{ message?: string }>({
       onSuccess: payload => {
         toast.success(payload?.message ?? successMessage ?? "");
-        setEmailAddress("");
+        setSubmittedEmailAddress(emailAddress);
+        setIsSubscribed(true);
+        setTurnstileToken("");
+        setTurnstileReady(false);
+
+        turnstileRef.current?.reset();
       },
       onError: (message, errors) => {
         if (!errors) {
@@ -47,48 +75,124 @@ export default function BlogSubscribeForm({
       return;
     }
 
+    if (!turnstileToken) {
+      toast.error(verificationRequiredMessage);
+      return;
+    }
+
     await makeRequest("POST", createPath, {
       email_address: emailAddress,
+      turnstile_token: turnstileToken,
     });
+  };
+
+  const resetForm = () => {
+    clearErrors();
+    setEmailAddress("");
+    setSubmittedEmailAddress("");
+    setIsSubscribed(false);
+    setTurnstileToken("");
+    setTurnstileReady(Boolean(!turnstileSiteKey));
+    setTurnstileUnavailable(false);
+    turnstileRef.current?.reset();
   };
 
   return (
     <section className="rounded-3xl border border-border/70 bg-card/90 p-6 shadow-sm shadow-black/5">
       <div className="space-y-2">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground">{description}</p>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+          {isSubscribed ? subscribedTitle : title}
+        </h2>
+        <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+          {isSubscribed
+            ? interpolateSubmittedEmail(subscribedDescription, submittedEmailAddress)
+            : description}
+        </p>
       </div>
 
-      <form className="mt-5 space-y-4" onSubmit={onSubmit}>
-        {getBaseErrors().length > 0 ? (
-          <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-            {getBaseErrors().join(" ")}
-          </div>
-        ) : null}
-
-        <div className="space-y-2">
-          <label htmlFor={emailId} className="text-sm font-medium text-foreground">
-            {emailLabel}
-          </label>
-          <Input
-            id={emailId}
-            type="email"
-            autoComplete="email"
-            required
-            value={emailAddress}
-            placeholder={emailPlaceholder}
-            onChange={event => setEmailAddress(event.target.value)}
-            aria-invalid={getFieldError("email_address") ? true : undefined}
-          />
-          {getFieldError("email_address") ? (
-            <p className="text-sm text-destructive">{getFieldError("email_address")}</p>
-          ) : null}
-        </div>
-
-        <Button type="submit" size="lg" disabled={loading}>
-          {submitLabel}
+      {isSubscribed ? (
+        <Button className="mt-5 px-0" type="button" variant="link" onClick={resetForm}>
+          {resetLabel}
         </Button>
-      </form>
+      ) : (
+        <form className="mt-5 space-y-4" onSubmit={onSubmit}>
+          {getBaseErrors().length > 0 ? (
+            <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {getBaseErrors().join(" ")}
+            </div>
+          ) : null}
+
+          <div className="space-y-2">
+            <label htmlFor={emailId} className="text-sm font-medium text-foreground">
+              {emailLabel}
+            </label>
+            <Input
+              id={emailId}
+              type="email"
+              autoComplete="email"
+              required
+              value={emailAddress}
+              placeholder={emailPlaceholder}
+              onChange={event => setEmailAddress(event.target.value)}
+              aria-invalid={getFieldError("email_address") ? true : undefined}
+            />
+            {getFieldError("email_address") ? (
+              <p className="text-sm text-destructive">{getFieldError("email_address")}</p>
+            ) : null}
+          </div>
+
+          <div className="space-y-2">
+            {turnstileSiteKey ? (
+              <Turnstile
+                ref={turnstileRef}
+                siteKey={turnstileSiteKey}
+                options={{
+                  appearance: "interaction-only",
+                  size: "flexible",
+                }}
+                onWidgetLoad={() => {
+                  setTurnstileReady(true);
+                  setTurnstileUnavailable(false);
+                }}
+                onSuccess={token => {
+                  setTurnstileToken(token);
+                  setTurnstileReady(true);
+                  setTurnstileUnavailable(false);
+                }}
+                onExpire={() => {
+                  setTurnstileToken("");
+                  setTurnstileReady(false);
+                }}
+                onError={() => {
+                  setTurnstileToken("");
+                  setTurnstileReady(false);
+                  setTurnstileUnavailable(true);
+                }}
+                scriptOptions={{
+                  async: true,
+                  defer: true,
+                  onError: () => {
+                    setTurnstileToken("");
+                    setTurnstileReady(false);
+                    setTurnstileUnavailable(true);
+                  },
+                }}
+              />
+            ) : null}
+            {!turnstileSiteKey || turnstileUnavailable ? (
+              <p className="text-sm text-muted-foreground">{unavailableMessage}</p>
+            ) : null}
+          </div>
+
+          <Button
+            type="submit"
+            size="lg"
+            disabled={loading || !turnstileSiteKey || turnstileUnavailable || !turnstileToken || !turnstileReady}
+          >
+            {submitLabel}
+          </Button>
+        </form>
+      )}
     </section>
   );
 }
