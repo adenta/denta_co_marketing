@@ -9,7 +9,12 @@ class BlogSubscriptionsController < ApplicationController
       return
     end
 
+    track_confirmation = subscription.pending?
     subscription.confirm!
+    if track_confirmation
+      ahoy.track("Confirmed blog subscription", source: "email_confirmation")
+    end
+
     redirect_to blog_posts_path, notice: I18n.t("blog_subscriptions.confirm.success")
   end
 end

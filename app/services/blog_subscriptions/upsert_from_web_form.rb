@@ -1,5 +1,11 @@
 module BlogSubscriptions
   class UpsertFromWebForm
+    Result = Data.define(:subscription, :action) do
+      def confirmation_sent?
+        action.in?([ :created, :resent_confirmation ])
+      end
+    end
+
     def initialize(email_address:, ip_address:, user_agent:)
       @email_address = email_address
       @ip_address = ip_address
@@ -8,7 +14,11 @@ module BlogSubscriptions
 
     def call
       subscription = BlogSubscription.find_or_initialize_by(email_address:)
-      return subscription if subscription.persisted? && subscription.active?
+      if subscription.persisted? && subscription.active?
+        return Result.new(subscription:, action: :already_active)
+      end
+
+      action = subscription.persisted? ? :resent_confirmation : :created
 
       subscription.assign_attributes(
         status: :pending,
@@ -20,7 +30,7 @@ module BlogSubscriptions
       subscription.save!
 
       BlogSubscriptionsMailer.confirmation(subscription).deliver_now
-      subscription
+      Result.new(subscription:, action:)
     end
 
     private
