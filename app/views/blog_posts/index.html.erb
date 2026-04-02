@@ -2,7 +2,7 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="blog-grid-shell border-b border-[#237671]/10 dark:border-[#89dcd7]/14">
+<section class="blog-grid-shell border-b border-border/70">
   <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
     <span></span>
     <span></span>
@@ -12,20 +12,20 @@
     <span></span>
   </div>
 
-  <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
-    <div class="max-w-3xl space-y-6">
-      <p class="text-sm font-semibold tracking-[0.28em] text-[#237671] uppercase dark:text-[#89dcd7]"><%= @page_content[:eyebrow] %></p>
+  <div class="mx-auto max-w-6xl px-4 py-18 sm:px-6 sm:py-20 lg:px-8">
+    <div class="max-w-3xl space-y-5">
+      <p class="text-sm font-semibold tracking-[0.28em] text-primary uppercase"><%= @page_content[:eyebrow] %></p>
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
         <%= @page_content[:title] %>
       </h1>
-      <p class="text-lg leading-8 text-[#4f5b57] dark:text-[#b5b5b0]">
+      <p class="text-[1.02rem] leading-8 text-[#475569] dark:text-[#9eabb8]">
         <%= @page_content[:body] %>
       </p>
     </div>
   </div>
 </section>
 
-<section class="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+<section class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
   <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--bottom-right">
     <span></span>
     <span></span>
@@ -34,13 +34,13 @@
     <span></span>
   </div>
 
-  <div class="space-y-6">
+  <div class="space-y-5">
     <% @posts.each do |post| %>
       <%= render "post_card", post:, path: blog_post_path(post.slug) %>
     <% end %>
 
     <% if @posts.empty? %>
-      <div class="blog-surface-card rounded-3xl border border-dashed p-10 text-center text-muted-foreground">
+      <div class="blog-surface-card rounded-[1.3rem] border border-dashed p-8 text-center text-muted-foreground">
         <%= @page_content[:empty_state] %> <code>content/blog</code> to publish the first post.
       </div>
     <% end %>

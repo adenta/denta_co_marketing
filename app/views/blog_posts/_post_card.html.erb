@@ -1,4 +1,4 @@
-<article class="blog-surface-card rounded-3xl p-6">
+<article class="blog-surface-card rounded-[1.3rem] p-5">
   <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
     <time datetime="<%= post.published_on.iso8601 %>"><%= post.published_on.to_fs(:long) %></time>
     <% if post.draft? %>
@@ -7,10 +7,10 @@
     <% end %>
   </div>
 
-  <div class="mt-4 space-y-3">
+  <div class="mt-3 space-y-2.5">
     <h2 class="text-2xl font-semibold tracking-tight text-foreground">
-      <%= link_to post.title, path, class: "hover:text-primary" %>
+      <%= link_to post.title, path, class: "transition-colors hover:text-primary" %>
     </h2>
-    <p class="max-w-3xl text-base leading-7 text-muted-foreground"><%= post.excerpt %></p>
+    <p class="max-w-3xl text-[0.97rem] leading-7 text-muted-foreground"><%= post.excerpt %></p>
   </div>
 </article>

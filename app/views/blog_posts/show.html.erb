@@ -4,7 +4,7 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="blog-grid-shell border-b border-[#237671]/10 dark:border-[#89dcd7]/14">
+<section class="blog-grid-shell border-b border-border/70">
   <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
     <span></span>
     <span></span>
@@ -14,9 +14,9 @@
     <span></span>
   </div>
 
-  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8">
     <div class="max-w-3xl space-y-5">
-      <%= link_to "Back to writing", blog_posts_path, class: "inline-flex rounded-full border border-[#237671]/12 bg-white px-3 py-2 text-sm font-medium text-[#355350] transition-colors hover:border-[#237671]/28 hover:text-[#0c2726] dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/88 dark:text-[#b5b5b0] dark:hover:border-[#89dcd7]/30 dark:hover:text-[#f3f3f2]" %>
+      <%= link_to "Back to writing", blog_posts_path, class: "inline-flex rounded-lg border border-border/80 bg-background/85 px-3 py-1.5 text-sm font-medium text-[#334155] transition-colors hover:border-primary/25 hover:text-foreground dark:text-[#9eabb8] dark:hover:text-[#eef2f6]" %>
 
       <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
@@ -29,17 +29,17 @@
       </div>
 
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
-      <p class="text-lg leading-8 text-[#4f5b57] dark:text-[#b5b5b0]"><%= @post.excerpt %></p>
+      <p class="text-[1.02rem] leading-8 text-[#475569] dark:text-[#9eabb8]"><%= @post.excerpt %></p>
     </div>
   </div>
 </section>
 
-<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+<section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
   <article class="blog-prose">
     <%= @post.html_body.html_safe %>
   </article>
 
-  <div class="mt-10">
+  <div class="mt-8">
     <%= render "subscribe_card" %>
   </div>
 </section>

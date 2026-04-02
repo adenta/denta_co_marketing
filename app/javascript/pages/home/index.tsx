@@ -41,7 +41,7 @@ function HeroGlyphMarks() {
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <svg
         viewBox="0 0 280 170"
-        className="absolute -left-8 top-10 h-28 w-48 text-[#b0e8e4] opacity-90 sm:left-4 sm:top-12 sm:h-36 sm:w-56 dark:text-[#2e9e97] dark:opacity-55"
+        className="absolute -left-8 top-8 h-28 w-48 text-[#c9d3dd] opacity-95 sm:left-4 sm:top-10 sm:h-36 sm:w-56 dark:text-[#27414b] dark:opacity-75"
         fill="none"
       >
         <rect x="20" y="18" width="56" height="56" rx="10" fill="currentColor" />
@@ -50,7 +50,7 @@ function HeroGlyphMarks() {
 
       <svg
         viewBox="0 0 320 170"
-        className="absolute left-[28%] top-10 hidden h-28 w-64 text-[#d8f3f2] opacity-95 md:block lg:left-[36%] dark:text-[#174f4b] dark:opacity-90"
+        className="absolute left-[28%] top-8 hidden h-28 w-64 text-[#dbe4ec] opacity-90 md:block lg:left-[36%] dark:text-[#182833] dark:opacity-95"
         fill="none"
       >
         <rect x="18" y="52" width="188" height="52" rx="12" fill="currentColor" />
@@ -59,7 +59,7 @@ function HeroGlyphMarks() {
 
       <svg
         viewBox="0 0 340 170"
-        className="absolute bottom-12 right-6 h-28 w-48 text-[#b0e8e4] opacity-80 sm:h-36 sm:w-60 dark:text-[#61d1ca] dark:opacity-45"
+        className="absolute bottom-12 right-6 h-28 w-48 text-[#9db3bd] opacity-70 sm:h-36 sm:w-60 dark:text-[#43616b] dark:opacity-55"
         fill="none"
       >
         <rect x="0" y="84" width="52" height="52" rx="10" fill="currentColor" />
@@ -77,26 +77,26 @@ export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
 
   return (
     <section className="relative isolate overflow-hidden bg-background">
-      <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(235,249,248,0.9),rgba(243,243,242,0.92)_28%,rgba(243,243,242,1)_100%),radial-gradient(circle_at_top_left,rgba(97,209,202,0.26),transparent_32%),radial-gradient(circle_at_82%_14%,rgba(137,220,215,0.22),transparent_28%),radial-gradient(circle_at_64%_55%,rgba(46,158,151,0.09),transparent_32%),radial-gradient(circle_at_50%_100%,rgba(32,110,105,0.08),transparent_32%)] dark:bg-[linear-gradient(180deg,rgba(6,20,19,0.96),rgba(13,13,12,0.95)_28%,rgba(13,13,12,1)_100%),radial-gradient(circle_at_top_left,rgba(97,209,202,0.22),transparent_34%),radial-gradient(circle_at_82%_14%,rgba(35,118,113,0.28),transparent_30%),radial-gradient(circle_at_64%_55%,rgba(46,158,151,0.1),transparent_32%),radial-gradient(circle_at_50%_100%,rgba(137,220,215,0.08),transparent_32%)]" />
-      <div className="absolute inset-0 -z-20 opacity-85 [background-image:radial-gradient(circle_at_1px_1px,rgba(35,118,113,0.28)_1.35px,transparent_0)] [background-size:16px_16px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.92),rgba(0,0,0,0.44)_58%,transparent)] dark:[background-image:radial-gradient(circle_at_1px_1px,rgba(137,220,215,0.16)_1.35px,transparent_0)] dark:opacity-90" />
+      <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(244,247,250,0.98)_30%,rgba(239,243,247,1)_100%),radial-gradient(circle_at_top_left,rgba(15,23,42,0.08),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(21,94,99,0.1),transparent_26%),radial-gradient(circle_at_64%_56%,rgba(71,85,105,0.08),transparent_30%)] dark:bg-[linear-gradient(180deg,rgba(9,13,17,0.98),rgba(11,16,22,0.98)_30%,rgba(10,14,19,1)_100%),radial-gradient(circle_at_top_left,rgba(51,65,85,0.24),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(44,155,170,0.16),transparent_28%),radial-gradient(circle_at_64%_56%,rgba(15,23,42,0.38),transparent_34%)]" />
+      <div className="absolute inset-0 -z-20 opacity-75 [background-image:radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.22)_1.15px,transparent_0)] [background-size:18px_18px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.9),rgba(0,0,0,0.4)_58%,transparent)] dark:[background-image:radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.14)_1.1px,transparent_0)] dark:opacity-85" />
       <HeroGlyphMarks />
-      <div className="mx-auto max-w-7xl px-5 pb-20 pt-16 sm:px-8 sm:pt-20 lg:px-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-start">
-          <div className="space-y-6">
-            <div className="space-y-4">
+      <div className="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16 lg:px-12">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-start">
+          <div className="space-y-5">
+            <div className="space-y-3">
               <h1 className="max-w-4xl text-[clamp(2.4rem,6vw,4.7rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground">
                 {hero.title}
               </h1>
-              <p className="max-w-3xl text-[0.98rem] leading-8 text-[#4f5b57] sm:text-[1.04rem] dark:text-[#b5b5b0]">
+              <p className="max-w-3xl text-[0.97rem] leading-7 text-[#46505a] sm:text-[1.02rem] dark:text-[#a7b1bc]">
                 {hero.body}
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5">
               <Button
                 asChild
                 size="lg"
-                className="h-10 rounded-full border border-[#174f4b] bg-[#237671] px-5 shadow-[0_14px_30px_rgba(35,118,113,0.18)] hover:bg-[#206e69] dark:border-[#89dcd7]/28 dark:bg-[#89dcd7] dark:text-[#061413] dark:shadow-[0_16px_32px_rgba(97,209,202,0.16)] dark:hover:bg-[#61d1ca]"
+                className="h-9 rounded-lg px-4"
               >
                 <a
                   href={primary_cta.href}
@@ -120,22 +120,24 @@ export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
 
         <div
           id="recent-writing"
-          className="mt-14 grid gap-4 border-t border-[#237671]/10 pt-8 md:grid-cols-3 dark:border-[#89dcd7]/14"
+          className="mt-12 grid gap-3 border-t border-[#0f3f46]/10 pt-6 md:grid-cols-3 dark:border-[#67c7d0]/12"
         >
           {recent_posts.map(post => (
             <a
               key={post.path}
               href={post.path}
-              className="group rounded-[1.7rem] border border-[#237671]/12 bg-white p-5 shadow-[0_16px_50px_rgba(17,52,49,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5 dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/92 dark:shadow-[0_20px_58px_rgba(0,0,0,0.34)]"
+              className="group rounded-2xl border border-[#0f172a]/8 bg-white/92 p-4 shadow-[0_14px_36px_rgba(15,23,42,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5 hover:border-[#155e63]/16 dark:border-white/8 dark:bg-[#131a21]/92 dark:shadow-[0_18px_48px_rgba(0,0,0,0.32)]"
             >
-              <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#237671] dark:text-[#89dcd7]">
+              <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#155e63] dark:text-[#67c7d0]">
                 <p>{post.author}</p>
                 <p>{post.published_at}</p>
               </div>
-              <h2 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-[#1a1a19] transition-colors group-hover:text-[#174f4b] dark:text-foreground dark:group-hover:text-[#89dcd7]">
+              <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-[#0f172a] transition-colors group-hover:text-[#155e63] dark:text-foreground dark:group-hover:text-[#67c7d0]">
                 {post.title}
               </h2>
-              <p className="mt-3 text-sm leading-7 text-[#4f5b57] dark:text-[#b5b5b0]">{post.excerpt}</p>
+              <p className="mt-2.5 text-sm leading-6 text-[#4d5965] dark:text-[#9eabb8]">
+                {post.excerpt}
+              </p>
             </a>
           ))}
         </div>
