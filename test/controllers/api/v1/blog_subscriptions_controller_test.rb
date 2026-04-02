@@ -12,12 +12,14 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
     with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
       assert_emails 1 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: " Reader@example.com ",
-          turnstile_token: "valid-token",
-        }, as: :json, headers: {
-          "User-Agent" => "Blog Signup Test",
-        }
+        assert_difference('Ahoy::Event.where(name: "Requested blog subscription").count', 1) do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: " Reader@example.com ",
+            turnstile_token: "valid-token",
+          }, as: :json, headers: {
+            "User-Agent" => "Blog Signup Test",
+          }
+        end
       end
     end
 
@@ -29,6 +31,10 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "127.0.0.1", subscription.subscribe_ip_address
     assert_equal "Blog Signup Test", subscription.subscribe_user_agent
     assert_not_nil subscription.confirmation_sent_at
+
+    event = Ahoy::Event.where(name: "Requested blog subscription").order(:time).last
+    assert_equal "created", event.properties["action"]
+    assert_equal "blog_form", event.properties["source"]
   end
 
   test "create resends confirmation for an existing pending subscription" do
@@ -43,12 +49,14 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
     with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
       assert_emails 1 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "reader@example.com",
-          turnstile_token: "valid-token",
-        }, as: :json, headers: {
-          "User-Agent" => "Blog Signup Retry",
-        }
+        assert_difference('Ahoy::Event.where(name: "Requested blog subscription").count', 1) do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "reader@example.com",
+            turnstile_token: "valid-token",
+          }, as: :json, headers: {
+            "User-Agent" => "Blog Signup Retry",
+          }
+        end
       end
     end
 
@@ -60,6 +68,10 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
     assert subscription.confirmation_sent_at > 1.minute.ago
     assert_equal "127.0.0.1", subscription.subscribe_ip_address
     assert_equal "Blog Signup Retry", subscription.subscribe_user_agent
+
+    event = Ahoy::Event.where(name: "Requested blog subscription").order(:time).last
+    assert_equal "resent_confirmation", event.properties["action"]
+    assert_equal "blog_form", event.properties["source"]
   end
 
   test "create does not resend confirmation for an active subscription" do
@@ -72,10 +84,12 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
     with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
       assert_emails 0 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "reader@example.com",
-          turnstile_token: "valid-token",
-        }, as: :json
+        assert_no_difference('Ahoy::Event.where(name: "Requested blog subscription").count') do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "reader@example.com",
+            turnstile_token: "valid-token",
+          }, as: :json
+        end
       end
     end
 
