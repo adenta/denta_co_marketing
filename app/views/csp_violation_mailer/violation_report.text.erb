@@ -1,0 +1,22 @@
+Content Security Policy violation report
+
+Effective directive: <%= @report["effective-directive"].presence || "(unknown)" %>
+Violated directive: <%= @report["violated-directive"].presence || "(unknown)" %>
+Disposition: <%= @report["disposition"].presence || "(unknown)" %>
+Blocked URI: <%= @report["blocked-uri"].presence || "(unknown)" %>
+Document URI: <%= @report["document-uri"].presence || "(unknown)" %>
+Referrer: <%= @report["referrer"].presence || "(unknown)" %>
+Status code: <%= @report["status-code"].presence || "(unknown)" %>
+Source file: <%= @report["source-file"].presence || "(unknown)" %>
+Line number: <%= @report["line-number"].presence || "(unknown)" %>
+Column number: <%= @report["column-number"].presence || "(unknown)" %>
+Original policy: <%= @report["original-policy"].presence || "(unknown)" %>
+
+Request metadata
+Content type: <%= @content_type.presence || "(unknown)" %>
+Origin: <%= @origin.presence || "(unknown)" %>
+IP address: <%= @ip_address.presence || "(unknown)" %>
+User agent: <%= @user_agent.presence || "(unknown)" %>
+
+Raw report
+<%= JSON.pretty_generate(@report) %>
