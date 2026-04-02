@@ -4,15 +4,13 @@ module Api
       allow_unauthenticated_access only: :create
 
       def create
-        if turnstile_enabled?
-          verification = BlogSubscriptions::TurnstileVerifier.new.verify(
-            token: blog_subscription_params[:turnstile_token],
-            remote_ip: request.remote_ip,
-          )
+        verification = BlogSubscriptions::TurnstileVerifier.new.verify(
+          token: blog_subscription_params[:turnstile_token],
+          remote_ip: request.remote_ip,
+        )
 
-          unless verification.success?
-            return render_verification_error(verification)
-          end
+        unless verification.success?
+          return render_verification_error(verification)
         end
 
         BlogSubscriptions::UpsertFromWebForm.new(
@@ -45,10 +43,6 @@ module Api
               errors: { base: [ verification.message ] },
             }, status: :unprocessable_entity
           end
-        end
-
-        def turnstile_enabled?
-          ENV["CLOUDFLARE_TURNSTILE_SITEKEY"].present? && ENV["CLOUDFLARE_TURNSTILE_SECRET_KEY"].present?
         end
     end
   end
