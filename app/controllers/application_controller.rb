@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
+  helper_method :current_user
+  skip_before_action :track_ahoy_visit, if: :json_request?
 
   rescue_from Pundit::NotAuthorizedError, with: :handle_not_authorized
 
@@ -12,8 +14,12 @@ class ApplicationController < ActionController::Base
     I18n.t(key, raise: true).deep_symbolize_keys
   end
 
-  def pundit_user
+  def current_user
     Current.user
+  end
+
+  def pundit_user
+    current_user
   end
 
   def default_render
@@ -61,5 +67,9 @@ class ApplicationController < ActionController::Base
         redirect_to root_path, alert: "You are not authorized to perform that action."
       end
     end
+  end
+
+  def json_request?
+    request.format.json?
   end
 end

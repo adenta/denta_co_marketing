@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { HeadshotCard, ExternalMangroveLink } from "@/components/home/shared";
 import { Button } from "@/components/ui/button";
 
@@ -97,7 +98,15 @@ export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
                 size="lg"
                 className="h-10 rounded-full border border-[#174f4b] bg-[#237671] px-5 shadow-[0_14px_30px_rgba(35,118,113,0.18)] hover:bg-[#206e69] dark:border-[#89dcd7]/28 dark:bg-[#89dcd7] dark:text-[#061413] dark:shadow-[0_16px_32px_rgba(97,209,202,0.16)] dark:hover:bg-[#61d1ca]"
               >
-                <a href={primary_cta.href}>
+                <a
+                  href={primary_cta.href}
+                  onClick={() =>
+                    trackAnalyticsEvent("Clicked contact CTA", {
+                      location: "home hero",
+                      href: primary_cta.href,
+                    })
+                  }
+                >
                   {primary_cta.label}
                   <ArrowRight className="size-4" />
                 </a>

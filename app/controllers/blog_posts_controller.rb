@@ -11,6 +11,7 @@ class BlogPostsController < ApplicationController
 
   def show
     @post = repository.published_post_by_slug!(params[:slug], include_drafts: preview_enabled?)
+    ahoy.track "Viewed blog post", slug: @post.slug, title: @post.title
   end
 
   private

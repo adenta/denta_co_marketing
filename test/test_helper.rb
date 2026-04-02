@@ -4,6 +4,7 @@ ENV["OPENROUTER_API_KEY"] ||= "test-openrouter-key"
 require_relative "../config/environment"
 require "rails/test_help"
 require_relative "test_helpers/session_test_helper"
+require_relative "test_helpers/analytics_test_helper"
 
 module ActiveSupport
   class TestCase

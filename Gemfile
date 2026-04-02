@@ -69,6 +69,8 @@ end
 gem "vite_rails" # vite_rails_legacy if using Rails 4
 gem "turbo-mount"
 gem "blueprinter"
+gem "ahoy_matey"
+gem "blazer"
 gem "oj"
 gem "pundit"
 gem "postmark-rails"

@@ -13,6 +13,7 @@ module Api
           user: Current.user,
           agent_type: agent_class.name
         )
+        ahoy.track "Started chat", chat_id: chat.id, agent_type: chat.agent_type
 
         render json: { id: chat.id, redirect_to: chat_path(chat) }
       end
