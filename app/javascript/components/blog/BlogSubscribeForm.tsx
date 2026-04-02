@@ -98,12 +98,12 @@ export default function BlogSubscribeForm({
   };
 
   return (
-    <section className="rounded-3xl border border-border/70 bg-card/90 p-6 shadow-sm shadow-black/5">
-      <div className="space-y-2">
+    <section className="rounded-[1.3rem] border border-border/80 bg-card/92 p-5 shadow-[0_18px_48px_rgba(15,23,42,0.07)] dark:shadow-[0_20px_52px_rgba(0,0,0,0.32)]">
+      <div className="space-y-1.5">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           {isSubscribed ? subscribedTitle : title}
         </h2>
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+        <p className="max-w-2xl text-[0.97rem] leading-7 text-muted-foreground">
           {isSubscribed
             ? interpolateSubmittedEmail(subscribedDescription, submittedEmailAddress)
             : description}
@@ -111,11 +111,11 @@ export default function BlogSubscribeForm({
       </div>
 
       {isSubscribed ? (
-        <Button className="mt-5 px-0" type="button" variant="link" onClick={resetForm}>
+        <Button className="mt-4 px-0" type="button" variant="link" onClick={resetForm}>
           {resetLabel}
         </Button>
       ) : (
-        <form className="mt-5 space-y-4" onSubmit={onSubmit}>
+        <form className="mt-4 space-y-4" onSubmit={onSubmit}>
           {getBaseErrors().length > 0 ? (
             <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {getBaseErrors().join(" ")}
@@ -135,6 +135,7 @@ export default function BlogSubscribeForm({
               placeholder={emailPlaceholder}
               onChange={event => setEmailAddress(event.target.value)}
               aria-invalid={getFieldError("email_address") ? true : undefined}
+              className="bg-background/78"
             />
             {getFieldError("email_address") ? (
               <p className="text-sm text-destructive">{getFieldError("email_address")}</p>
@@ -182,6 +183,7 @@ export default function BlogSubscribeForm({
           <Button
             type="submit"
             size="lg"
+            className="h-9 rounded-lg px-4"
             disabled={loading || !turnstileSiteKey || turnstileUnavailable || !turnstileToken || !turnstileReady}
           >
             {submitLabel}

@@ -83,16 +83,16 @@ export default function AuthControls({
 
   return (
     <div className="pointer-events-none fixed right-4 top-4 z-50">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border/70 bg-background/88 p-1 shadow-[0_12px_30px_rgba(26,41,46,0.14)] backdrop-blur dark:shadow-[0_16px_42px_rgba(0,0,0,0.42)]">
+      <div className="pointer-events-auto flex items-center gap-1 rounded-xl border border-border/80 bg-background/88 p-1 shadow-[0_12px_30px_rgba(15,23,42,0.12)] backdrop-blur dark:shadow-[0_16px_42px_rgba(0,0,0,0.42)]">
         {authenticated ? (
           <div className="flex items-center gap-1">
-            <Button asChild type="button" variant="ghost" className="rounded-full px-3">
+            <Button asChild type="button" variant="ghost" className="rounded-lg px-2.5">
               <a href={analytics_path}>Analytics</a>
             </Button>
             <Button
               type="button"
               variant="ghost"
-              className="rounded-full px-3"
+              className="rounded-lg px-2.5"
               onClick={signOut}
               disabled={loading}
             >
@@ -103,7 +103,7 @@ export default function AuthControls({
           <Button
             type="button"
             variant="ghost"
-            className="rounded-full px-3"
+            className="rounded-lg px-2.5"
             onClick={developerSignIn}
             disabled={loading}
           >
@@ -114,7 +114,7 @@ export default function AuthControls({
           type="button"
           variant="ghost"
           size="icon-sm"
-          className="rounded-full"
+          className="rounded-lg"
           aria-label={themeToggleLabel}
           title={themeToggleLabel}
           onClick={() => setThemePreference(nextTheme)}
