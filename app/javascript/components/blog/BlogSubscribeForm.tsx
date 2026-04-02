@@ -41,13 +41,14 @@ export default function BlogSubscribeForm({
   unavailableMessage,
 }: BlogSubscribeFormProps) {
   const emailId = useId();
+  const turnstileEnabled = Boolean(turnstileSiteKey);
   const toast = useToast();
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [emailAddress, setEmailAddress] = useState("");
   const [submittedEmailAddress, setSubmittedEmailAddress] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
-  const [turnstileReady, setTurnstileReady] = useState(Boolean(!turnstileSiteKey));
+  const [turnstileReady, setTurnstileReady] = useState(!turnstileEnabled);
   const [turnstileUnavailable, setTurnstileUnavailable] = useState(false);
   const { loading, getBaseErrors, getFieldError, clearErrors, makeRequest } =
     useApiRequest<{ message?: string }>({
@@ -56,7 +57,7 @@ export default function BlogSubscribeForm({
         setSubmittedEmailAddress(emailAddress);
         setIsSubscribed(true);
         setTurnstileToken("");
-        setTurnstileReady(false);
+        setTurnstileReady(!turnstileEnabled);
 
         turnstileRef.current?.reset();
       },
@@ -75,14 +76,14 @@ export default function BlogSubscribeForm({
       return;
     }
 
-    if (!turnstileToken) {
+    if (turnstileEnabled && !turnstileToken) {
       toast.error(verificationRequiredMessage);
       return;
     }
 
     await makeRequest("POST", createPath, {
       email_address: emailAddress,
-      turnstile_token: turnstileToken,
+      turnstile_token: turnstileEnabled ? turnstileToken : undefined,
     });
   };
 
@@ -92,7 +93,7 @@ export default function BlogSubscribeForm({
     setSubmittedEmailAddress("");
     setIsSubscribed(false);
     setTurnstileToken("");
-    setTurnstileReady(Boolean(!turnstileSiteKey));
+    setTurnstileReady(!turnstileEnabled);
     setTurnstileUnavailable(false);
     turnstileRef.current?.reset();
   };
@@ -142,7 +143,7 @@ export default function BlogSubscribeForm({
           </div>
 
           <div className="space-y-2">
-            {turnstileSiteKey ? (
+            {turnstileEnabled ? (
               <Turnstile
                 ref={turnstileRef}
                 siteKey={turnstileSiteKey}
@@ -179,7 +180,7 @@ export default function BlogSubscribeForm({
                 }}
               />
             ) : null}
-            {!turnstileSiteKey || turnstileUnavailable ? (
+            {turnstileEnabled && turnstileUnavailable ? (
               <p className="text-sm text-muted-foreground">{unavailableMessage}</p>
             ) : null}
           </div>
@@ -187,7 +188,7 @@ export default function BlogSubscribeForm({
           <Button
             type="submit"
             size="lg"
-            disabled={loading || !turnstileSiteKey || turnstileUnavailable || !turnstileToken || !turnstileReady}
+            disabled={loading || (turnstileEnabled && (turnstileUnavailable || !turnstileToken || !turnstileReady))}
           >
             {submitLabel}
           </Button>

@@ -10,14 +10,16 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   test "create stores a pending subscription and sends a confirmation email" do
     verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      assert_emails 1 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: " Reader@example.com ",
-          turnstile_token: "valid-token",
-        }, as: :json, headers: {
-          "User-Agent" => "Blog Signup Test",
-        }
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        assert_emails 1 do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: " Reader@example.com ",
+            turnstile_token: "valid-token",
+          }, as: :json, headers: {
+            "User-Agent" => "Blog Signup Test",
+          }
+        end
       end
     end
 
@@ -41,14 +43,16 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       subscribe_user_agent: "Before",
     )
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      assert_emails 1 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "reader@example.com",
-          turnstile_token: "valid-token",
-        }, as: :json, headers: {
-          "User-Agent" => "Blog Signup Retry",
-        }
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        assert_emails 1 do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "reader@example.com",
+            turnstile_token: "valid-token",
+          }, as: :json, headers: {
+            "User-Agent" => "Blog Signup Retry",
+          }
+        end
       end
     end
 
@@ -70,12 +74,14 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       confirmed_at: Time.current,
     )
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      assert_emails 0 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "reader@example.com",
-          turnstile_token: "valid-token",
-        }, as: :json
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        assert_emails 0 do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "reader@example.com",
+            turnstile_token: "valid-token",
+          }, as: :json
+        end
       end
     end
 
@@ -87,12 +93,14 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
   test "create returns validation errors for an invalid email address" do
     verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      assert_emails 0 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "not-an-email",
-          turnstile_token: "valid-token",
-        }, as: :json
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        assert_emails 0 do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "not-an-email",
+            turnstile_token: "valid-token",
+          }, as: :json
+        end
       end
     end
 
@@ -110,12 +118,14 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       ),
     )
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      assert_emails 0 do
-        post api_v1_blog_subscriptions_path, params: {
-          email_address: "reader@example.com",
-          turnstile_token: "bad-token",
-        }, as: :json
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        assert_emails 0 do
+          post api_v1_blog_subscriptions_path, params: {
+            email_address: "reader@example.com",
+            turnstile_token: "bad-token",
+          }, as: :json
+        end
       end
     end
 
@@ -134,15 +144,31 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       ),
     )
 
-    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
-      post api_v1_blog_subscriptions_path, params: {
-        email_address: "reader@example.com",
-        turnstile_token: "token",
-      }, as: :json
+    with_turnstile_env do
+      with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "reader@example.com",
+          turnstile_token: "token",
+        }, as: :json
+      end
     end
 
     assert_response :service_unavailable
     assert_equal I18n.t("blog_subscriptions.create.unavailable"), response.parsed_body["message"]
+  end
+
+  test "create skips verification when turnstile is not configured" do
+    with_turnstile_env(enabled: false) do
+      assert_emails 1 do
+        post api_v1_blog_subscriptions_path, params: {
+          email_address: "reader@example.com",
+        }, as: :json
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("blog_subscriptions.create.success"), response.parsed_body["message"]
+    assert_equal 1, BlogSubscription.count
   end
 
   private
@@ -150,5 +176,23 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
       Object.new.tap do |verifier|
         verifier.define_singleton_method(:verify) { |**_kwargs| result }
       end
+    end
+
+    def with_turnstile_env(enabled: true)
+      original_site_key = ENV["CLOUDFLARE_TURNSTILE_SITEKEY"]
+      original_secret_key = ENV["CLOUDFLARE_TURNSTILE_SECRET_KEY"]
+
+      if enabled
+        ENV["CLOUDFLARE_TURNSTILE_SITEKEY"] = "test-turnstile-sitekey"
+        ENV["CLOUDFLARE_TURNSTILE_SECRET_KEY"] = "test-turnstile-secret"
+      else
+        ENV.delete("CLOUDFLARE_TURNSTILE_SITEKEY")
+        ENV.delete("CLOUDFLARE_TURNSTILE_SECRET_KEY")
+      end
+
+      yield
+    ensure
+      ENV["CLOUDFLARE_TURNSTILE_SITEKEY"] = original_site_key
+      ENV["CLOUDFLARE_TURNSTILE_SECRET_KEY"] = original_secret_key
     end
 end

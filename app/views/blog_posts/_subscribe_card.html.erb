@@ -1,3 +1,7 @@
+<% turnstile_site_key = if ENV["CLOUDFLARE_TURNSTILE_SITEKEY"].present? && ENV["CLOUDFLARE_TURNSTILE_SECRET_KEY"].present?
+     ENV["CLOUDFLARE_TURNSTILE_SITEKEY"]
+   end %>
+
 <%= turbo_mount(
   "blog/BlogSubscribeForm",
   props: {
@@ -11,7 +15,7 @@
     subscribedTitle: t("blog_subscriptions.card.subscribed_title"),
     subscribedDescription: t("blog_subscriptions.card.subscribed_description"),
     resetLabel: t("blog_subscriptions.card.reset_label"),
-    turnstileSiteKey: ENV["CLOUDFLARE_TURNSTILE_SITEKEY"],
+    turnstileSiteKey: turnstile_site_key,
     verificationRequiredMessage: t("blog_subscriptions.card.verification_required"),
     unavailableMessage: t("blog_subscriptions.card.unavailable")
   }
