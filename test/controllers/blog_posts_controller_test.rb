@@ -14,6 +14,8 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta name="description" content="Essays, notes, and practical writing on AI, software, systems, and the operational edges where products either hold up or fail.">'
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, I18n.t("blog_subscriptions.card.title")
+    assert_includes @response.body, "blog/BlogSubscribeForm"
   end
 
   test "blog show is publicly accessible and includes server rendered article html" do
@@ -28,6 +30,8 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta name="description" content="Small conversion leaks compound fast when patients are comparing practices and trying to book quickly.">'
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, I18n.t("blog_subscriptions.card.title")
+    assert_includes @response.body, "blog/BlogSubscribeForm"
   end
 
   test "draft post renders on the normal blog route in test" do

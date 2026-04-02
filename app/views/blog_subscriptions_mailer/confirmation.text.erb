@@ -1,0 +1,5 @@
+<%= t("mailers.blog_subscriptions.confirmation.line_one") %>
+
+<%= confirm_blog_subscription_url(token: @blog_subscription.confirmation_token) %>
+
+<%= t("mailers.blog_subscriptions.confirmation.line_two") %>

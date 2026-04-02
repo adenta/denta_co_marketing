@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resource :blog_subscription, only: [] do
+    get :confirm
+  end
   resource :session, only: [ :new ]
   resources :passwords, only: [ :new, :edit ], param: :token
   get "blog" => "blog_posts#index", as: :blog_posts
@@ -7,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :blog_subscriptions, only: [ :create ]
       resource :developer_session, only: [ :create ]
       resource :session, only: [ :create, :destroy ]
       resources :passwords, only: [ :create, :update ], param: :token
