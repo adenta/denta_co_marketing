@@ -171,11 +171,6 @@ export default function BlogSubscribeForm({
                 scriptOptions={{
                   async: true,
                   defer: true,
-                  onError: () => {
-                    setTurnstileToken("");
-                    setTurnstileReady(false);
-                    setTurnstileUnavailable(true);
-                  },
                 }}
               />
             ) : null}

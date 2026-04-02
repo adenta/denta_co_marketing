@@ -30,9 +30,13 @@ module Api
 
       private
         def blog_subscription_params
-          payload = params[:blog_subscription]
-          payload = params unless payload.is_a?(ActionController::Parameters) && payload.present?
-          payload.permit(:email_address, :turnstile_token)
+          top_level_payload = params.permit(:email_address, :turnstile_token).to_h
+          wrapped_payload = params.fetch(:blog_subscription, ActionController::Parameters.new)
+            .permit(:email_address, :turnstile_token)
+            .to_h
+
+          ActionController::Parameters.new(top_level_payload.reverse_merge(wrapped_payload))
+            .permit(:email_address, :turnstile_token)
         end
 
         def track_subscription_request(result)

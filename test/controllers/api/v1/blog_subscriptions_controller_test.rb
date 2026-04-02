@@ -7,6 +7,27 @@ class Api::V1::BlogSubscriptionsControllerTest < ActionDispatch::IntegrationTest
     ActionMailer::Base.deliveries.clear
   end
 
+  test "create verifies using the top-level turnstile token from a json request" do
+    test_case = self
+    verifier = Object.new.tap do |instance|
+      instance.define_singleton_method(:verify) do |token:, remote_ip:|
+        test_case.assert_equal "valid-token", token
+        test_case.assert_equal "127.0.0.1", remote_ip
+
+        BlogSubscriptions::TurnstileVerifier::Result.new(success: true)
+      end
+    end
+
+    with_stubbed_singleton_method(BlogSubscriptions::TurnstileVerifier, :new, -> { verifier }) do
+      post api_v1_blog_subscriptions_path, params: {
+        email_address: "reader@example.com",
+        turnstile_token: "valid-token",
+      }, as: :json
+    end
+
+    assert_response :success
+  end
+
   test "create stores a pending subscription and sends a confirmation email" do
     verifier = verifier_for(BlogSubscriptions::TurnstileVerifier::Result.new(success: true))
 
