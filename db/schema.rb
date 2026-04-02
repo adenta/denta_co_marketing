@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_31_153000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_02_120000) do
   create_table "action_mailbox_inbound_emails", id: { type: :string, limit: 36 }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "message_checksum", null: false
@@ -46,6 +46,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_153000) do
     t.string "blob_id", limit: 36, null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "blog_subscriptions", id: { type: :string, limit: 36 }, force: :cascade do |t|
+    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at"
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.integer "status", default: 0, null: false
+    t.string "subscribe_ip_address"
+    t.string "subscribe_user_agent"
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_blog_subscriptions_on_email_address", unique: true
+    t.index ["status"], name: "index_blog_subscriptions_on_status"
   end
 
   create_table "chats", id: { type: :string, limit: 36 }, force: :cascade do |t|

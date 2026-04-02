@@ -1,0 +1,12 @@
+<%= turbo_mount(
+  "blog/BlogSubscribeForm",
+  props: {
+    createPath: api_v1_blog_subscriptions_path,
+    title: t("blog_subscriptions.card.title"),
+    description: t("blog_subscriptions.card.description"),
+    emailLabel: t("blog_subscriptions.card.email_label"),
+    emailPlaceholder: t("blog_subscriptions.card.email_placeholder"),
+    submitLabel: t("blog_subscriptions.card.submit_label"),
+    successMessage: t("blog_subscriptions.card.success_message")
+  }
+) %>
