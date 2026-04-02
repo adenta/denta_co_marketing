@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { HeadshotCard, ExternalMangroveLink } from "@/components/home/shared";
 import { Button } from "@/components/ui/button";
 
@@ -36,7 +37,15 @@ export default function HomeIndex({ recent_posts }: HomeIndexProps) {
 
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="h-10 rounded-full px-5">
-                <a href="mailto:andrew@denta.co">
+                <a
+                  href="mailto:andrew@denta.co"
+                  onClick={() =>
+                    trackAnalyticsEvent("Clicked contact CTA", {
+                      location: "home hero",
+                      href: "mailto:andrew@denta.co",
+                    })
+                  }
+                >
                   Say hello
                   <ArrowRight className="size-4" />
                 </a>

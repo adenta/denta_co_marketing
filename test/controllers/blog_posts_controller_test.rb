@@ -17,7 +17,9 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "blog show is publicly accessible and includes server rendered article html" do
-    get blog_post_path("why-dental-practices-lose-leads")
+    assert_difference('Ahoy::Event.where(name: "Viewed blog post").count', 1) do
+      get blog_post_path("why-dental-practices-lose-leads")
+    end
 
     assert_response :success
     assert_includes @response.body, "<article class=\"blog-prose\">"
@@ -28,6 +30,10 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta name="description" content="Small conversion leaks compound fast when patients are comparing practices and trying to book quickly.">'
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
+
+    event = Ahoy::Event.where(name: "Viewed blog post").order(:time).last
+    assert_equal "why-dental-practices-lose-leads", event.properties["slug"]
+    assert_equal "Why Dental Practices Lose High-Intent Leads", event.properties["title"]
   end
 
   test "draft post renders on the normal blog route in test" do

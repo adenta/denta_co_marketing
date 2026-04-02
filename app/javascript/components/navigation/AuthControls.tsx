@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/useToast";
 
 type AuthControlsProps = {
   authenticated: boolean;
+  analytics_path: string;
   developer_sign_in_enabled: boolean;
   developer_sign_in_path: string;
   home_path: string;
@@ -13,6 +14,7 @@ type AuthControlsProps = {
 
 export default function AuthControls({
   authenticated,
+  analytics_path,
   developer_sign_in_enabled,
   developer_sign_in_path,
   home_path,
@@ -48,15 +50,20 @@ export default function AuthControls({
     <div className="pointer-events-none fixed right-4 top-4 z-50">
       <div className="pointer-events-auto rounded-full border border-border/70 bg-background/88 p-1 shadow-[0_12px_30px_rgba(26,41,46,0.14)] backdrop-blur">
         {authenticated ? (
-          <Button
-            type="button"
-            variant="ghost"
-            className="rounded-full px-3"
-            onClick={signOut}
-            disabled={loading}
-          >
-            {loading ? "Logging out..." : "Logout"}
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button asChild type="button" variant="ghost" className="rounded-full px-3">
+              <a href={analytics_path}>Analytics</a>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-full px-3"
+              onClick={signOut}
+              disabled={loading}
+            >
+              {loading ? "Logging out..." : "Logout"}
+            </Button>
+          </div>
         ) : developer_sign_in_enabled ? (
           <Button
             type="button"

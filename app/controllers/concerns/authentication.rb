@@ -31,6 +31,10 @@ module Authentication
       resume_session || request_authentication
     end
 
+    def require_blazer_access
+      resume_session || request_blazer_authentication
+    end
+
     def resume_session
       Current.session ||= find_session_by_cookie
     end
@@ -49,6 +53,11 @@ module Authentication
         session[:return_to_after_authenticating] = request.url
         redirect_to new_session_path
       end
+    end
+
+    def request_blazer_authentication
+      session[:return_to_after_authenticating] = request.url
+      redirect_to main_app.new_session_path
     end
 
     def redirect_if_authenticated
@@ -76,6 +85,8 @@ module Authentication
       user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
         Current.session = session
         cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
+        ahoy.authenticate(user)
+        ahoy.track "Signed in"
       end
     end
 

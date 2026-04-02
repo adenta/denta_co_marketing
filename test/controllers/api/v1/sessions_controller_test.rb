@@ -16,14 +16,23 @@ class Api::V1::SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create with valid credentials" do
-    post api_v1_session_path, params: {
-      email_address: @user.email_address,
-      password: "password"
-    }, as: :json
+    get new_session_path
+
+    assert_difference('Ahoy::Event.where(name: "Signed in").count', 1) do
+      post api_v1_session_path, params: {
+        email_address: @user.email_address,
+        password: "password"
+      }, as: :json
+    end
 
     assert_response :success
     assert cookies[:session_id]
     assert_equal root_url, response.parsed_body["redirect_to"]
+
+    event = Ahoy::Event.where(name: "Signed in").order(:time).last
+    visit = Ahoy::Visit.order(:started_at).last
+    assert_equal @user.id, event.user_id
+    assert_equal @user.id, visit.user_id
   end
 
   test "create with invalid credentials returns validation errors" do

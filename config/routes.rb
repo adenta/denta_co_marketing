@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "blog" => "blog_posts#index", as: :blog_posts
   get "blog/:slug" => "blog_posts#show", as: :blog_post
   resources :chats, only: [ :index, :show ]
+  mount Blazer::Engine, at: "blazer"
 
   namespace :api do
     namespace :v1 do

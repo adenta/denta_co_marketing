@@ -11,18 +11,24 @@ class Api::V1::ChatsControllerTest < ActionDispatch::IntegrationTest
   test "create makes an owned chat and returns its redirect target" do
     user = users(:one)
     sign_in_as(user)
+    get root_path
 
     assert_difference("Chat.count", 1) do
-      post api_v1_chats_path, as: :json
+      assert_difference('Ahoy::Event.where(name: "Started chat").count', 1) do
+        post api_v1_chats_path, as: :json
+      end
     end
 
     assert_response :success
 
     chat = Chat.order(:created_at).last
+    event = Ahoy::Event.where(name: "Started chat").order(:time).last
     assert_equal user.id, chat.user_id
     assert_equal "AssistantAgent", chat.agent_type
     assert_equal chat.id, response.parsed_body["id"]
     assert_equal chat_path(chat), response.parsed_body["redirect_to"]
+    assert_equal chat.id, event.properties["chat_id"]
+    assert_equal "AssistantAgent", event.properties["agent_type"]
   end
 
   test "create rejects an invalid agent type" do
