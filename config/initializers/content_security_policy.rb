@@ -20,7 +20,7 @@ Rails.application.configure do
     policy.frame_src :self, "https://www.youtube.com", "https://www.youtube-nocookie.com", turnstile_origin
     policy.img_src :self, :https, :data
     policy.object_src :none
-    policy.report_uri "/csp-violation-reports"
+    policy.report_uri "/csp-violation-reports" unless Rails.env.development?
     policy.script_src :self, turnstile_origin
     policy.style_src :self
 
