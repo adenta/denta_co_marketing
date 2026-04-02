@@ -1,6 +1,16 @@
 import { visit } from "@hotwired/turbo";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useApiRequest } from "@/hooks/useApiRequest";
+import {
+  applyTheme,
+  getStoredThemePreference,
+  persistThemePreference,
+  resolveTheme,
+  subscribeToSystemThemeChange,
+  type ThemePreference,
+} from "@/lib/theme";
 import { useToast } from "@/hooks/useToast";
 
 type AuthControlsProps = {
@@ -18,6 +28,12 @@ export default function AuthControls({
   home_path,
   logout_path,
 }: AuthControlsProps) {
+  const [themePreference, setThemePreference] = useState<ThemePreference | null>(() =>
+    getStoredThemePreference(),
+  );
+  const [resolvedTheme, setResolvedTheme] = useState<ThemePreference>(() =>
+    resolveTheme(getStoredThemePreference()),
+  );
   const toast = useToast();
   const { loading, makeRequest } = useApiRequest<{ redirect_to: string; message?: string }>({
     onSuccess: payload => {
@@ -32,6 +48,21 @@ export default function AuthControls({
     },
   });
 
+  useEffect(() => {
+    persistThemePreference(themePreference);
+    setResolvedTheme(applyTheme(themePreference));
+  }, [themePreference]);
+
+  useEffect(() => {
+    if (themePreference !== null) {
+      return;
+    }
+
+    return subscribeToSystemThemeChange(() => {
+      setResolvedTheme(applyTheme(null));
+    });
+  }, [themePreference]);
+
   if (!authenticated && !developer_sign_in_enabled) {
     return null;
   }
@@ -44,9 +75,13 @@ export default function AuthControls({
     await makeRequest("POST", developer_sign_in_path, {});
   };
 
+  const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
+  const themeToggleLabel =
+    resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+
   return (
     <div className="pointer-events-none fixed right-4 top-4 z-50">
-      <div className="pointer-events-auto rounded-full border border-border/70 bg-background/88 p-1 shadow-[0_12px_30px_rgba(26,41,46,0.14)] backdrop-blur">
+      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border/70 bg-background/88 p-1 shadow-[0_12px_30px_rgba(26,41,46,0.14)] backdrop-blur dark:shadow-[0_16px_42px_rgba(0,0,0,0.42)]">
         {authenticated ? (
           <Button
             type="button"
@@ -68,6 +103,17 @@ export default function AuthControls({
             {loading ? "Signing in..." : "Developer Sign In"}
           </Button>
         ) : null}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          className="rounded-full"
+          aria-label={themeToggleLabel}
+          title={themeToggleLabel}
+          onClick={() => setThemePreference(nextTheme)}
+        >
+          {resolvedTheme === "dark" ? <Sun /> : <Moon />}
+        </Button>
       </div>
     </div>
   );

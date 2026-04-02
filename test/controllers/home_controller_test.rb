@@ -10,6 +10,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "<title>Andrew Denta</title>"
     assert_includes @response.body, '<meta name="description" content="A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work.">'
     assert_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "denta-theme"
     refute_includes @response.body, "navigation/Navbar"
     assert_includes @response.body, "&quot;developer_sign_in_enabled&quot;:true"
     refute_includes @response.body, "available_agents"

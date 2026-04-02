@@ -30,7 +30,7 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <main className="relative min-h-screen overflow-hidden bg-background px-4 py-10 sm:py-16">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.08),_transparent_42%),linear-gradient(180deg,_rgba(15,23,42,0.04),_transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.08),_transparent_42%),linear-gradient(180deg,_rgba(15,23,42,0.04),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(125,211,252,0.12),_transparent_40%),linear-gradient(180deg,_rgba(15,23,42,0.18),_transparent_60%)]" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-5xl items-center justify-center">
