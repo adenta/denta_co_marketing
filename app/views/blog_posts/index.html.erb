@@ -2,7 +2,7 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="blog-grid-shell border-b border-[#237671]/10">
+<section class="blog-grid-shell border-b border-[#237671]/10 dark:border-[#89dcd7]/14">
   <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
     <span></span>
     <span></span>
@@ -14,11 +14,11 @@
 
   <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="max-w-3xl space-y-6">
-      <p class="text-sm font-semibold tracking-[0.28em] text-[#237671] uppercase"><%= @page_content[:eyebrow] %></p>
+      <p class="text-sm font-semibold tracking-[0.28em] text-[#237671] uppercase dark:text-[#89dcd7]"><%= @page_content[:eyebrow] %></p>
       <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
         <%= @page_content[:title] %>
       </h1>
-      <p class="text-lg leading-8 text-[#4f5b57]">
+      <p class="text-lg leading-8 text-[#4f5b57] dark:text-[#b5b5b0]">
         <%= @page_content[:body] %>
       </p>
     </div>

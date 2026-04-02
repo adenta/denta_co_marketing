@@ -8,6 +8,7 @@
     <% meta_description = @page_meta&.dig(:description) || content_for(:meta_description) %>
     <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <% if meta_description.present? %>
       <meta name="description" content="<%= meta_description %>">
     <% end %>
@@ -31,6 +32,30 @@
     <%= vite_client_tag %>
     <%= vite_react_refresh_tag %>
     <%= vite_typescript_tag "application" %>
+    <%= javascript_tag nonce: true do %>
+      (() => {
+        const storageKey = "denta-theme";
+        let storedPreference = null;
+
+        try {
+          storedPreference = window.localStorage.getItem(storageKey);
+        } catch (_error) {
+          storedPreference = null;
+        }
+
+        const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const resolvedTheme = storedPreference === "light" || storedPreference === "dark"
+          ? storedPreference
+          : prefersDarkMode
+            ? "dark"
+            : "light";
+        const root = document.documentElement;
+
+        root.classList.toggle("dark", resolvedTheme === "dark");
+        root.dataset.theme = resolvedTheme;
+        root.style.colorScheme = resolvedTheme;
+      })();
+    <% end %>
 
   </head>
 

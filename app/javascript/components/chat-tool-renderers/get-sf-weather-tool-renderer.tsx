@@ -36,21 +36,21 @@ function weatherTheme(conditions: string | undefined) {
 
   if (value.includes("wind")) {
     return {
-      card: "border-sky-300/50 from-sky-100 via-cyan-50 to-blue-100",
-      iconBubble: "bg-sky-200/80 text-sky-800",
+      card: "border-sky-300/50 from-sky-100 via-cyan-50 to-blue-100 dark:border-sky-500/30 dark:from-sky-950/70 dark:via-cyan-950/50 dark:to-blue-950/70",
+      iconBubble: "bg-sky-200/80 text-sky-800 dark:bg-sky-400/18 dark:text-sky-100",
     };
   }
 
   if (value.includes("cloud") || value.includes("fog")) {
     return {
-      card: "border-slate-300/60 from-slate-100 via-sky-50 to-blue-100",
-      iconBubble: "bg-slate-200/80 text-slate-700",
+      card: "border-slate-300/60 from-slate-100 via-sky-50 to-blue-100 dark:border-slate-500/30 dark:from-slate-900/90 dark:via-sky-950/45 dark:to-blue-950/65",
+      iconBubble: "bg-slate-200/80 text-slate-700 dark:bg-slate-200/12 dark:text-slate-100",
     };
   }
 
   return {
-    card: "border-amber-300/60 from-amber-100 via-yellow-50 to-orange-100",
-    iconBubble: "bg-amber-200/80 text-amber-800",
+    card: "border-amber-300/60 from-amber-100 via-yellow-50 to-orange-100 dark:border-amber-500/30 dark:from-amber-950/70 dark:via-yellow-950/35 dark:to-orange-950/70",
+    iconBubble: "bg-amber-200/80 text-amber-800 dark:bg-amber-300/18 dark:text-amber-100",
   };
 }
 
@@ -88,8 +88,8 @@ export function GetSfWeatherToolRenderer({
       <section
         className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-4 shadow-sm ${theme.card}`}
       >
-        <div className="pointer-events-none absolute -right-10 -top-10 size-28 rounded-full bg-white/40 blur-xl" />
-        <div className="pointer-events-none absolute -left-12 bottom-0 size-24 rounded-full bg-white/30 blur-xl" />
+        <div className="pointer-events-none absolute -right-10 -top-10 size-28 rounded-full bg-background/40 blur-xl dark:bg-foreground/8" />
+        <div className="pointer-events-none absolute -left-12 bottom-0 size-24 rounded-full bg-background/30 blur-xl dark:bg-foreground/6" />
 
         <div className="relative flex items-start justify-between gap-3">
           <div>
@@ -113,11 +113,11 @@ export function GetSfWeatherToolRenderer({
         </div>
 
         <div className="relative mt-4 grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
-          <div className="rounded-xl border bg-white/70 p-2.5 backdrop-blur-sm">
+          <div className="rounded-xl border bg-background/70 p-2.5 backdrop-blur-sm dark:bg-background/20">
             <p className="font-medium text-muted-foreground">Forecast</p>
             <p className="text-sm font-semibold">Current conditions</p>
           </div>
-          <div className="rounded-xl border bg-white/70 p-2.5 backdrop-blur-sm">
+          <div className="rounded-xl border bg-background/70 p-2.5 backdrop-blur-sm dark:bg-background/20">
             <p className="font-medium text-muted-foreground">Source</p>
             <p className="text-sm">{source}</p>
           </div>
