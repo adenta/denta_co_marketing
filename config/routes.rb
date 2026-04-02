@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post "csp-violation-reports" => "csp_violation_reports#create", as: :csp_violation_reports
   resource :session, only: [ :new ]
   resources :passwords, only: [ :new, :edit ], param: :token
   get "blog" => "blog_posts#index", as: :blog_posts

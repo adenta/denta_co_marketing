@@ -51,4 +51,26 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   ensure
     Rails.define_singleton_method(:env, original_env_method)
   end
+
+  test "index includes the content security policy header" do
+    get root_path
+
+    assert_response :success
+
+    policy = response.headers["Content-Security-Policy"]
+
+    assert_includes policy, "default-src 'self'"
+    assert_includes policy, "base-uri 'self'"
+    assert_includes policy, "connect-src 'self'"
+    assert_includes policy, "frame-ancestors 'none'"
+    assert_includes policy, "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com"
+    assert_includes policy, "img-src 'self' https: data:"
+    assert_includes policy, "object-src 'none'"
+    assert_includes policy, "report-uri /csp-violation-reports"
+    assert_includes policy, "script-src 'self' blob:"
+    assert_includes policy, "style-src 'self'"
+    refute_includes policy, "nonce-''"
+    refute_includes policy, "'unsafe-inline'"
+    refute_includes policy, "'unsafe-eval'"
+  end
 end

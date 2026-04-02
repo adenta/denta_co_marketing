@@ -4,35 +4,37 @@
 # See the Securing Rails Applications Guide for more information:
 # https://guides.rubyonrails.org/security.html#content-security-policy-header
 
-# Rails.application.configure do
-#   config.content_security_policy do |policy|
-#     policy.default_src :self, :https
-#     policy.font_src    :self, :https, :data
-#     policy.img_src     :self, :https, :data
-#     policy.object_src  :none
-#     policy.script_src  :self, :https
-# Allow @vite/client to hot reload javascript changes in development
-#    policy.script_src *policy.script_src, :unsafe_eval, "http://#{ ViteRuby.config.host_with_port }" if Rails.env.development?
+vite_origin = ViteRuby.config.origin
+vite_websocket_origin = "#{ViteRuby.config.protocol == "https" ? "wss" : "ws"}://#{ViteRuby.config.host_with_port}"
 
-# You may need to enable this in production as well depending on your setup.
-#    policy.script_src *policy.script_src, :blob if Rails.env.test?
+Rails.application.configure do
+  config.content_security_policy do |policy|
+    policy.default_src :self
+    policy.base_uri :self
+    policy.connect_src :self
+    policy.font_src :self, :data
+    policy.form_action :self
+    policy.frame_ancestors :none
+    policy.frame_src :self, "https://www.youtube.com", "https://www.youtube-nocookie.com"
+    policy.img_src :self, :https, :data
+    policy.object_src :none
+    policy.report_uri "/csp-violation-reports"
+    policy.script_src :self
+    policy.style_src :self
 
-#     policy.style_src   :self, :https
-# Allow @vite/client to hot reload style changes in development
-#    policy.style_src *policy.style_src, :unsafe_inline if Rails.env.development?
+    if Rails.env.development?
+      policy.connect_src *policy.connect_src, vite_origin, vite_websocket_origin
+      policy.script_src *policy.script_src, :unsafe_eval, vite_origin
+      policy.style_src *policy.style_src, :unsafe_inline
+    end
 
-#     # Specify URI for violation reports
-#     # policy.report_uri "/csp-violation-report-endpoint"
-#   end
-#
-#   # Generate session nonces for permitted importmap, inline scripts, and inline styles.
-#   config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
-#   config.content_security_policy_nonce_directives = %w(script-src style-src)
-#
-#   # Automatically add `nonce` to `javascript_tag`, `javascript_include_tag`, and `stylesheet_link_tag`
-#   # if the corresponding directives are specified in `content_security_policy_nonce_directives`.
-#   # config.content_security_policy_nonce_auto = true
-#
-#   # Report violations without enforcing the policy.
-#   # config.content_security_policy_report_only = true
-# end
+    policy.script_src *policy.script_src, :blob if Rails.env.test?
+  end
+
+  # Cookie-store sessions may not have an id for anonymous requests, so fall back
+  # to a generated per-request nonce to keep Vite's inline React refresh preamble working.
+  config.content_security_policy_nonce_generator = lambda do |request|
+    request.session.id.to_s.presence || SecureRandom.base64(16)
+  end
+  config.content_security_policy_nonce_directives = %w[script-src style-src]
+end
