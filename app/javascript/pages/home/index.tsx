@@ -29,10 +29,15 @@ type HomePageContent = {
     image_alt: string;
     body: string;
   };
+  recent_writing: {
+    title: string;
+    all_posts_label: string;
+  };
 };
 
 type HomeIndexProps = {
   content: HomePageContent;
+  blog_index_path: string;
   recent_posts: RecentPost[];
 };
 
@@ -72,8 +77,8 @@ function HeroGlyphMarks() {
   );
 }
 
-export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
-  const { hero, primary_cta, secondary_link, profile } = content;
+export default function HomeIndex({ content, blog_index_path, recent_posts }: HomeIndexProps) {
+  const { hero, primary_cta, secondary_link, profile, recent_writing } = content;
 
   return (
     <section className="relative isolate overflow-hidden bg-background">
@@ -118,26 +123,38 @@ export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
           <HeadshotCard name={profile.name} imageAlt={profile.image_alt} body={profile.body} />
         </div>
 
-        <div
-          id="recent-writing"
-          className="mt-14 grid gap-4 border-t border-[#237671]/10 pt-8 md:grid-cols-3 dark:border-[#89dcd7]/14"
-        >
-          {recent_posts.map(post => (
+        <div id="recent-writing" className="mt-14 border-t border-[#237671]/10 pt-8 dark:border-[#89dcd7]/14">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
+              {recent_writing.title}
+            </h2>
             <a
-              key={post.path}
-              href={post.path}
-              className="group rounded-[1.7rem] border border-[#237671]/12 bg-white p-5 shadow-[0_16px_50px_rgba(17,52,49,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5 dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/92 dark:shadow-[0_20px_58px_rgba(0,0,0,0.34)]"
+              href={blog_index_path}
+              className="inline-flex items-center gap-2 rounded-full border border-[#237671]/12 bg-white px-4 py-2 text-sm font-medium text-[#355350] transition-colors hover:border-[#237671]/28 hover:text-[#0c2726] dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/88 dark:text-[#b5b5b0] dark:hover:border-[#89dcd7]/30 dark:hover:text-[#f3f3f2]"
             >
-              <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#237671] dark:text-[#89dcd7]">
-                <p>{post.author}</p>
-                <p>{post.published_at}</p>
-              </div>
-              <h2 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-[#1a1a19] transition-colors group-hover:text-[#174f4b] dark:text-foreground dark:group-hover:text-[#89dcd7]">
-                {post.title}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-[#4f5b57] dark:text-[#b5b5b0]">{post.excerpt}</p>
+              {recent_writing.all_posts_label}
+              <ArrowRight className="size-4" />
             </a>
-          ))}
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {recent_posts.map(post => (
+              <a
+                key={post.path}
+                href={post.path}
+                className="group rounded-[1.7rem] border border-[#237671]/12 bg-white p-5 shadow-[0_16px_50px_rgba(17,52,49,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5 dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/92 dark:shadow-[0_20px_58px_rgba(0,0,0,0.34)]"
+              >
+                <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#237671] dark:text-[#89dcd7]">
+                  <p>{post.author}</p>
+                  <p>{post.published_at}</p>
+                </div>
+                <h2 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-[#1a1a19] transition-colors group-hover:text-[#174f4b] dark:text-foreground dark:group-hover:text-[#89dcd7]">
+                  {post.title}
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-[#4f5b57] dark:text-[#b5b5b0]">{post.excerpt}</p>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -55,6 +55,9 @@ en:
         name: "Andrew Denta"
         image_alt: "Andrew Denta"
         body: "Writing about AI, software, and the operational problems that reveal where better systems actually matter."
+      recent_writing:
+        title: "Recent writing"
+        all_posts_label: "Browse the blog"
     blog:
       index:
         meta:
@@ -63,6 +66,7 @@ en:
         eyebrow: "Andrew Denta"
         title: "Writing on AI, software, and the systems that make ambitious work feel calmer."
         body: "Essays, experiments, and practical notes on product judgment, operational friction, growth, and the workflows that reveal where software holds up."
+        home_link_label: "Back to home"
         empty_state: "Add markdown files to"
     sessions:
       new:
