@@ -2,13 +2,17 @@
 <html lang="en">
   <head>
     <% favicon = favicon_paths %>
-    <title><%= content_for(:title) || "Andrew Denta" %></title>
+    <% default_title = I18n.t("site.meta.default_title", default: "Andrew Denta") %>
+    <% application_name = I18n.t("site.meta.application_name", default: default_title) %>
+    <% page_title = @page_meta&.dig(:title) || content_for(:title) || default_title %>
+    <% meta_description = @page_meta&.dig(:description) || content_for(:meta_description) %>
+    <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <% if content_for?(:meta_description) %>
-      <meta name="description" content="<%= content_for(:meta_description) %>">
+    <% if meta_description.present? %>
+      <meta name="description" content="<%= meta_description %>">
     <% end %>
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Andrew Denta">
+    <meta name="application-name" content="<%= application_name %>">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

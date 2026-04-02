@@ -10,11 +10,34 @@ type RecentPost = {
   excerpt: string;
 };
 
+type HomePageContent = {
+  hero: {
+    title: string;
+    body: string;
+  };
+  primary_cta: {
+    label: string;
+    href: string;
+  };
+  secondary_link: {
+    label: string;
+    href: string;
+  };
+  profile: {
+    name: string;
+    image_alt: string;
+    body: string;
+  };
+};
+
 type HomeIndexProps = {
+  content: HomePageContent;
   recent_posts: RecentPost[];
 };
 
-export default function HomeIndex({ recent_posts }: HomeIndexProps) {
+export default function HomeIndex({ content, recent_posts }: HomeIndexProps) {
+  const { hero, primary_cta, secondary_link, profile } = content;
+
   return (
     <section className="relative isolate overflow-hidden bg-background">
       <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(234,240,238,0.22),rgba(243,246,244,0.92)_35%,rgba(244,247,245,1)),radial-gradient(circle_at_top_left,rgba(114,142,146,0.22),transparent_33%),radial-gradient(circle_at_82%_12%,rgba(121,153,136,0.18),transparent_30%),radial-gradient(circle_at_50%_90%,rgba(92,116,123,0.11),transparent_28%)]" />
@@ -24,28 +47,25 @@ export default function HomeIndex({ recent_posts }: HomeIndexProps) {
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="max-w-4xl text-[clamp(2.4rem,6vw,4.7rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-[#1f3136]">
-                A friendly place to think through useful AI and the software around it.
+                {hero.title}
               </h1>
               <p className="max-w-3xl text-[0.98rem] leading-8 text-[#4b646a] sm:text-[1.04rem]">
-                This is primarily a personal blog. It also happens to be the easiest way
-                to understand how I approach product, systems, and consulting work.
-                A lot of the examples come from workflow-heavy environments because they
-                make operational friction easy to see.
+                {hero.body}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="h-10 rounded-full px-5">
-                <a href="mailto:andrew@denta.co">
-                  Say hello
+                <a href={primary_cta.href}>
+                  {primary_cta.label}
                   <ArrowRight className="size-4" />
                 </a>
               </Button>
-              <ExternalMangroveLink />
+              <ExternalMangroveLink href={secondary_link.href} label={secondary_link.label} />
             </div>
           </div>
 
-          <HeadshotCard />
+          <HeadshotCard name={profile.name} imageAlt={profile.image_alt} body={profile.body} />
         </div>
 
         <div

@@ -11,6 +11,11 @@ type AuthShellProps = {
   eyebrow: string;
   title: string;
   description: string;
+  marketing: {
+    eyebrow: string;
+    title: string;
+    description: string;
+  };
   children: ReactNode;
   footer?: ReactNode;
 };
@@ -19,6 +24,7 @@ export function AuthShell({
   eyebrow,
   title,
   description,
+  marketing,
   children,
   footer,
 }: AuthShellProps) {
@@ -31,15 +37,14 @@ export function AuthShell({
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <section className="hidden space-y-6 lg:block">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              Andrew Denta
+              {marketing.eyebrow}
             </p>
             <div className="space-y-4">
               <h1 className="max-w-xl text-4xl font-semibold tracking-tight text-foreground">
-                A clean Rails and React starting point for authenticated product flows.
+                {marketing.title}
               </h1>
               <p className="max-w-lg text-base leading-7 text-muted-foreground">
-                Pages stay client-rendered, submissions stay native, and redirect-based
-                flash lands in a single global toaster that is easy to carry forward.
+                {marketing.description}
               </p>
             </div>
           </section>

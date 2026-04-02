@@ -1,6 +1,6 @@
 <% favicon = favicon_paths %>
 {
-  "name": "DentaCoMarketing",
+  "name": "<%= I18n.t("site.manifest.name", default: "DentaCoMarketing") %>",
   "icons": [
     {
       "src": "<%= favicon.fetch(:png) %>",
@@ -17,7 +17,7 @@
   "start_url": "/",
   "display": "standalone",
   "scope": "/",
-  "description": "DentaCoMarketing.",
-  "theme_color": "red",
-  "background_color": "red"
+  "description": "<%= I18n.t("site.manifest.description", default: "DentaCoMarketing.") %>",
+  "theme_color": "<%= I18n.t("site.manifest.theme_color", default: "red") %>",
+  "background_color": "<%= I18n.t("site.manifest.background_color", default: "red") %>"
 }

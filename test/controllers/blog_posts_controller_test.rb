@@ -5,6 +5,7 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     get blog_posts_path
 
     assert_response :success
+    assert_includes @response.body, "<title>Writing | Andrew Denta</title>"
     assert_includes @response.body, "Writing on AI, software, and the systems that make ambitious work feel calmer."
     assert_includes @response.body, "Why Dental Practices Lose High-Intent Leads"
     assert_includes @response.body, "Your Website Is Your Best Front Desk"

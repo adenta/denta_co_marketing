@@ -8,9 +8,25 @@ import { Input } from "@/components/ui/input";
 
 type SessionsNewProps = {
   create_path: string;
+  content: {
+    marketing: {
+      eyebrow: string;
+      title: string;
+      description: string;
+    };
+    form: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      email_label: string;
+      password_label: string;
+      submit_label: string;
+      submitting_label: string;
+    };
+  };
 };
 
-export default function SessionsNew({ create_path }: SessionsNewProps) {
+export default function SessionsNew({ create_path, content }: SessionsNewProps) {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
@@ -42,9 +58,10 @@ export default function SessionsNew({ create_path }: SessionsNewProps) {
 
   return (
     <AuthShell
-      eyebrow="Account Access"
-      title="Sign in"
-      description="Use your email address and password to pick up where you left off."
+      eyebrow={content.form.eyebrow}
+      title={content.form.title}
+      description={content.form.description}
+      marketing={content.marketing}
     >
       <form className="space-y-4" onSubmit={onSubmit}>
         {getBaseErrors().length > 0 ? (
@@ -58,7 +75,7 @@ export default function SessionsNew({ create_path }: SessionsNewProps) {
             htmlFor="session-email-address"
             className="text-sm font-medium text-foreground"
           >
-            Email address
+            {content.form.email_label}
           </label>
           <Input
             id="session-email-address"
@@ -76,7 +93,7 @@ export default function SessionsNew({ create_path }: SessionsNewProps) {
             htmlFor="session-password"
             className="text-sm font-medium text-foreground"
           >
-            Password
+            {content.form.password_label}
           </label>
           <Input
             id="session-password"
@@ -89,7 +106,7 @@ export default function SessionsNew({ create_path }: SessionsNewProps) {
         </div>
 
         <Button type="submit" className="w-full" size="lg" disabled={loading}>
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? content.form.submitting_label : content.form.submit_label}
         </Button>
       </form>
     </AuthShell>

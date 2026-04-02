@@ -28,4 +28,56 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  site:
+    meta:
+      default_title: "Andrew Denta"
+      application_name: "Andrew Denta"
+    manifest:
+      name: "DentaCoMarketing"
+      description: "DentaCoMarketing."
+      theme_color: "red"
+      background_color: "red"
+  pages:
+    home:
+      meta:
+        title: "Andrew Denta"
+        description: "A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work."
+      hero:
+        title: "A friendly place to think through useful AI and the software around it."
+        body: "This is primarily a personal blog. It also happens to be the easiest way to understand how I approach product, systems, and consulting work. A lot of the examples come from workflow-heavy environments because they make operational friction easy to see."
+      primary_cta:
+        label: "Say hello"
+        href: "mailto:andrew@denta.co"
+      secondary_link:
+        label: "Mangrove Technology"
+        href: "https://mangrovetechnology.com"
+      profile:
+        name: "Andrew Denta"
+        image_alt: "Andrew Denta"
+        body: "Writing about AI, software, and the operational problems that reveal where better systems actually matter."
+    blog:
+      index:
+        meta:
+          title: "Writing | Andrew Denta"
+          description: "Essays, notes, and practical writing on AI, software, systems, and the operational edges where products either hold up or fail."
+        eyebrow: "Andrew Denta"
+        title: "Writing on AI, software, and the systems that make ambitious work feel calmer."
+        body: "Essays, experiments, and practical notes on product judgment, operational friction, growth, and the workflows that reveal where software holds up."
+        empty_state: "Add markdown files to"
+    sessions:
+      new:
+        meta:
+          title: "Sign in | Andrew Denta"
+          description: "Use your email address and password to pick up where you left off."
+        marketing:
+          eyebrow: "Andrew Denta"
+          title: "A clean Rails and React starting point for authenticated product flows."
+          description: "Pages stay client-rendered, submissions stay native, and redirect-based flash lands in a single global toaster that is easy to carry forward."
+        form:
+          eyebrow: "Account Access"
+          title: "Sign in"
+          description: "Use your email address and password to pick up where you left off."
+          email_label: "Email address"
+          password_label: "Password"
+          submit_label: "Sign in"
+          submitting_label: "Signing in..."
