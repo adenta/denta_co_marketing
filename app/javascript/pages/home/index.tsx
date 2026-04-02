@@ -82,8 +82,8 @@ export default function HomeIndex({ content, blog_index_path, recent_posts }: Ho
 
   return (
     <section className="relative isolate overflow-hidden bg-background">
-      <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(244,247,250,0.98)_30%,rgba(239,243,247,1)_100%),radial-gradient(circle_at_top_left,rgba(15,23,42,0.08),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(21,94,99,0.1),transparent_26%),radial-gradient(circle_at_64%_56%,rgba(71,85,105,0.08),transparent_30%)] dark:bg-[linear-gradient(180deg,rgba(9,13,17,0.98),rgba(11,16,22,0.98)_30%,rgba(10,14,19,1)_100%),radial-gradient(circle_at_top_left,rgba(51,65,85,0.24),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(44,155,170,0.16),transparent_28%),radial-gradient(circle_at_64%_56%,rgba(15,23,42,0.38),transparent_34%)]" />
-      <div className="absolute inset-0 -z-20 opacity-75 [background-image:radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.22)_1.15px,transparent_0)] [background-size:18px_18px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.9),rgba(0,0,0,0.4)_58%,transparent)] dark:[background-image:radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.14)_1.1px,transparent_0)] dark:opacity-85" />
+      <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(241,246,250,0.98),rgba(231,238,244,0.98)_34%,rgba(217,228,238,1)_100%),radial-gradient(circle_at_top_left,rgba(15,23,42,0.14),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(13,110,117,0.16),transparent_24%),radial-gradient(circle_at_64%_56%,rgba(51,65,85,0.12),transparent_30%)] dark:bg-[linear-gradient(180deg,rgba(9,13,17,0.98),rgba(11,16,22,0.98)_30%,rgba(10,14,19,1)_100%),radial-gradient(circle_at_top_left,rgba(51,65,85,0.24),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(44,155,170,0.16),transparent_28%),radial-gradient(circle_at_64%_56%,rgba(15,23,42,0.38),transparent_34%)]" />
+      <div className="absolute inset-0 -z-20 opacity-90 [background-image:radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.3)_1.25px,transparent_0)] [background-size:18px_18px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.92),rgba(0,0,0,0.48)_58%,transparent)] dark:[background-image:radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.14)_1.1px,transparent_0)] dark:opacity-85" />
       <HeroGlyphMarks />
       <div className="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16 lg:px-12">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-start">
@@ -92,7 +92,7 @@ export default function HomeIndex({ content, blog_index_path, recent_posts }: Ho
               <h1 className="max-w-4xl text-[clamp(2.4rem,6vw,4.7rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground">
                 {hero.title}
               </h1>
-              <p className="max-w-3xl text-[0.97rem] leading-7 text-[#46505a] sm:text-[1.02rem] dark:text-[#a7b1bc]">
+              <p className="max-w-3xl text-[0.97rem] leading-7 text-[#334155] sm:text-[1.02rem] dark:text-[#a7b1bc]">
                 {hero.body}
               </p>
             </div>
@@ -123,14 +123,14 @@ export default function HomeIndex({ content, blog_index_path, recent_posts }: Ho
           <HeadshotCard name={profile.name} imageAlt={profile.image_alt} body={profile.body} />
         </div>
 
-        <div id="recent-writing" className="mt-12 border-t border-[#0f3f46]/10 pt-6 dark:border-[#67c7d0]/12">
+        <div id="recent-writing" className="mt-12 border-t border-[#0f3f46]/16 pt-6 dark:border-[#67c7d0]/12">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
               {recent_writing.title}
             </h2>
             <a
               href={blog_index_path}
-              className="inline-flex items-center gap-2 rounded-full border border-[#155e63]/14 bg-white/92 px-4 py-2 text-sm font-medium text-[#355350] transition-colors hover:border-[#155e63]/28 hover:text-[#0c2726] dark:border-[#67c7d0]/16 dark:bg-[#131a21]/92 dark:text-[#a7b1bc] dark:hover:border-[#67c7d0]/30 dark:hover:text-[#f3f3f2]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#155e63]/18 bg-white/98 px-4 py-2 text-sm font-medium text-[#264653] shadow-[0_12px_28px_rgba(15,23,42,0.08)] transition-colors hover:border-[#155e63]/30 hover:text-[#0c2726] dark:border-[#67c7d0]/16 dark:bg-[#131a21]/92 dark:text-[#a7b1bc] dark:hover:border-[#67c7d0]/30 dark:hover:text-[#f3f3f2]"
             >
               {recent_writing.all_posts_label}
               <ArrowRight className="size-4" />
@@ -142,7 +142,7 @@ export default function HomeIndex({ content, blog_index_path, recent_posts }: Ho
               <a
                 key={post.path}
                 href={post.path}
-                className="group rounded-2xl border border-[#0f172a]/8 bg-white/92 p-4 shadow-[0_14px_36px_rgba(15,23,42,0.05)] backdrop-blur transition-transform hover:-translate-y-0.5 hover:border-[#155e63]/16 dark:border-white/8 dark:bg-[#131a21]/92 dark:shadow-[0_18px_48px_rgba(0,0,0,0.32)]"
+                className="group rounded-2xl border border-[#0f172a]/12 bg-white/97 p-4 shadow-[0_20px_44px_rgba(15,23,42,0.09)] backdrop-blur transition-transform hover:-translate-y-0.5 hover:border-[#155e63]/24 dark:border-white/8 dark:bg-[#131a21]/92 dark:shadow-[0_18px_48px_rgba(0,0,0,0.32)]"
               >
                 <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#155e63] dark:text-[#67c7d0]">
                   <p>{post.author}</p>
@@ -151,7 +151,7 @@ export default function HomeIndex({ content, blog_index_path, recent_posts }: Ho
                 <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-[#0f172a] transition-colors group-hover:text-[#155e63] dark:text-foreground dark:group-hover:text-[#67c7d0]">
                   {post.title}
                 </h2>
-                <p className="mt-2.5 text-sm leading-6 text-[#4d5965] dark:text-[#9eabb8]">
+                <p className="mt-2.5 text-sm leading-6 text-[#425466] dark:text-[#9eabb8]">
                   {post.excerpt}
                 </p>
               </a>

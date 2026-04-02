@@ -16,7 +16,7 @@ class Analytics::AhoyReportTest < ActiveSupport::TestCase
       visitor_token: "visitor-2",
       user: user,
       referring_domain: nil,
-      landing_page: "https://example.com/blog/why-dental-practices-lose-leads",
+      landing_page: "https://example.com/blog/the-first-five-seconds-of-product-trust",
     )
     create_ahoy_visit(
       started_at: 10.days.ago,
@@ -43,14 +43,14 @@ class Analytics::AhoyReportTest < ActiveSupport::TestCase
       visit: second_visit,
       name: "$view",
       time: 2.days.ago,
-      properties: { "page" => "/blog/why-dental-practices-lose-leads" },
+      properties: { "page" => "/blog/the-first-five-seconds-of-product-trust" },
       user: user,
     )
     create_ahoy_event(
       visit: second_visit,
       name: "Viewed blog post",
       time: 2.days.ago,
-      properties: { "slug" => "why-dental-practices-lose-leads" },
+      properties: { "slug" => "the-first-five-seconds-of-product-trust" },
       user: user,
     )
     create_ahoy_event(

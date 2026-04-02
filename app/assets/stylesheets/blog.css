@@ -10,10 +10,10 @@
   inset: 0;
   z-index: -3;
   background:
-    linear-gradient(180deg, rgb(248 250 252 / 0.98), rgb(244 247 250 / 0.98) 30%, rgb(239 243 247) 100%),
-    radial-gradient(circle at top left, rgb(15 23 42 / 0.08), transparent 34%),
-    radial-gradient(circle at 82% 18%, rgb(21 94 99 / 0.1), transparent 26%),
-    radial-gradient(circle at 64% 56%, rgb(71 85 105 / 0.08), transparent 30%);
+    linear-gradient(180deg, rgb(241 246 250 / 0.98), rgb(231 238 244 / 0.98) 34%, rgb(217 228 238) 100%),
+    radial-gradient(circle at top left, rgb(15 23 42 / 0.14), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgb(13 110 117 / 0.16), transparent 24%),
+    radial-gradient(circle at 64% 56%, rgb(51 65 85 / 0.12), transparent 30%);
 }
 
 .blog-grid-shell::after {
@@ -21,8 +21,8 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  opacity: 0.75;
-  background-image: radial-gradient(circle at 1px 1px, rgb(15 23 42 / 0.22) 1.15px, transparent 0);
+  opacity: 0.9;
+  background-image: radial-gradient(circle at 1px 1px, rgb(15 23 42 / 0.3) 1.25px, transparent 0);
   background-size: 18px 18px;
   mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.9), rgb(0 0 0 / 0.4) 58%, transparent);
 }
@@ -152,9 +152,9 @@
 }
 
 .blog-surface-card {
-  border: 1px solid rgb(15 23 42 / 0.08);
-  background: rgb(255 255 255 / 0.92);
-  box-shadow: 0 14px 36px rgb(15 23 42 / 0.05);
+  border: 1px solid rgb(15 23 42 / 0.12);
+  background: rgb(255 255 255 / 0.97);
+  box-shadow: 0 20px 44px rgb(15 23 42 / 0.09);
 }
 
 .dark .blog-surface-card {
@@ -164,9 +164,9 @@
 }
 
 .blog-inline-chip {
-  border: 1px solid rgb(15 23 42 / 0.08);
-  background: rgb(255 255 255 / 0.88);
-  color: #5b6673;
+  border: 1px solid rgb(15 23 42 / 0.12);
+  background: rgb(255 255 255 / 0.96);
+  color: #415266;
 }
 
 .dark .blog-inline-chip {

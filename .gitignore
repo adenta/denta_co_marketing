@@ -49,3 +49,4 @@ node_modules
 # Playwright artifacts
 /.playwright/
 /.playwright-cli/
+/output/playwright/
