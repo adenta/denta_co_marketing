@@ -43,18 +43,18 @@ en:
         title: "Andrew Denta"
         description: "A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work."
       hero:
-        title: "A friendly place to think through useful AI and the software around it."
-        body: "This is primarily a personal blog. It also happens to be the easiest way to understand how I approach product, systems, and consulting work. A lot of the examples come from workflow-heavy environments because they make operational friction easy to see."
+        title: "Founder and engineer working on AI systems that reduce operational drag."
+        body: "I run Mangrove Technology, previously founded Terusama, and spent time at Uber Freight and Handshake. This site is where I write about AI, software, and the systems problems that show up when real work meets messy operations."
       primary_cta:
         label: "Say hello"
-        href: "mailto:andrew@denta.co"
+        href: "https://linkedin.com/in/adenta"
       secondary_link:
         label: "Mangrove Technology"
         href: "https://mangrovetechnology.com"
       profile:
         name: "Andrew Denta"
         image_alt: "Andrew Denta"
-        body: "Writing about AI, software, and the operational problems that reveal where better systems actually matter."
+        body: "Founder of an acquired YC logistics company. Built at Uber Freight and Handshake. Now shipping AI systems across logistics, finance, and media."
     blog:
       index:
         meta:
