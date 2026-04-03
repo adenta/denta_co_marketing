@@ -4,37 +4,23 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="blog-grid-shell border-b border-border/70">
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
-    <span></span>
-    <span></span>
-  </div>
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-right">
-    <span></span>
-    <span></span>
-  </div>
+<section class="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+  <div class="blog-post-hero-simple mb-8 sm:mb-10">
+    <%= link_to "← All posts", blog_posts_path, class: "blog-post-hero-simple__back" %>
 
-  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8">
-    <div class="max-w-3xl space-y-5">
-      <%= link_to "Back to writing", blog_posts_path, class: "inline-flex rounded-lg border border-border/80 bg-background/85 px-3 py-1.5 text-sm font-medium text-[#334155] transition-colors hover:border-primary/25 hover:text-foreground dark:text-[#9eabb8] dark:hover:text-[#eef2f6]" %>
-
-      <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+    <div class="blog-post-hero-simple__title-block">
+      <h1 class="text-[2.7rem] font-semibold tracking-tight text-foreground sm:text-[3.1rem] sm:leading-[1.04]"><%= @post.title %></h1>
+      <div class="blog-post-hero-simple__subline">
         <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
-        <span>&middot;</span>
-        <span><%= @post.author %></span>
         <% if @post.draft? %>
-          <span>&middot;</span>
-          <span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold tracking-[0.14em] text-amber-900 uppercase dark:bg-amber-500/20 dark:text-amber-200">Draft preview</span>
+          <span class="blog-post-hero-simple__subline-separator">•</span>
+          <span class="text-amber-900 dark:text-amber-200">Draft preview</span>
         <% end %>
       </div>
-
-      <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
-      <p class="text-[1.02rem] leading-8 text-[#475569] dark:text-[#9eabb8]"><%= @post.excerpt %></p>
+      <p class="text-[1rem] leading-7 text-[#475569] dark:text-[#9eabb8]"><%= @post.excerpt %></p>
     </div>
   </div>
-</section>
 
-<section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
   <article class="blog-prose">
     <%= @post.html_body.html_safe %>
   </article>

@@ -2,50 +2,32 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="blog-grid-shell border-b border-border/70">
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
-    <span></span>
-    <span></span>
-  </div>
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-right">
-    <span></span>
-    <span></span>
-  </div>
-
-  <div class="mx-auto max-w-6xl px-4 py-18 sm:px-6 sm:py-20 lg:px-8">
-    <div class="max-w-3xl space-y-5">
-      <%= link_to @page_content[:home_link_label], root_path, class: "inline-flex rounded-full border border-[#237671]/12 bg-white px-3 py-2 text-sm font-medium text-[#355350] transition-colors hover:border-[#237671]/28 hover:text-[#0c2726] dark:border-[#89dcd7]/14 dark:bg-[#1a1a19]/88 dark:text-[#b5b5b0] dark:hover:border-[#89dcd7]/30 dark:hover:text-[#f3f3f2]" %>
-      <p class="text-sm font-semibold tracking-[0.28em] text-primary uppercase"><%= @page_content[:eyebrow] %></p>
-      <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+<section class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+  <div class="blog-post-hero-simple max-w-4xl mb-8 sm:mb-10">
+    <%= link_to "← Home", root_path, class: "blog-post-hero-simple__back" %>
+    <div class="blog-post-hero-simple__title-block">
+      <h1 class="max-w-4xl text-[2.7rem] font-semibold tracking-tight text-foreground sm:text-[3rem] sm:leading-[1.05]">
         <%= @page_content[:title] %>
       </h1>
-      <p class="text-[1.02rem] leading-8 text-[#475569] dark:text-[#9eabb8]">
+      <p class="max-w-3xl text-[1rem] leading-7 text-[#475569] dark:text-[#9eabb8]">
         <%= @page_content[:body] %>
       </p>
     </div>
   </div>
-</section>
 
-<section class="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-  <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--bottom-right">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-
-  <div class="space-y-5">
+  <div class="blog-index-list">
     <% @posts.each do |post| %>
       <%= render "post_card", post:, path: blog_post_path(post.slug) %>
     <% end %>
 
     <% if @posts.empty? %>
-      <div class="blog-surface-card rounded-[1.3rem] border border-dashed p-8 text-center text-muted-foreground">
+      <div class="border-t border-dashed border-border/80 py-8 text-muted-foreground">
         <%= @page_content[:empty_state] %> <code>content/blog</code> to publish the first post.
       </div>
     <% end %>
 
-    <%= render "subscribe_card" %>
+    <div class="border-t border-border/70 pt-8">
+      <%= render "subscribe_card" %>
+    </div>
   </div>
 </section>
