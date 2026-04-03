@@ -77,7 +77,13 @@ module ApplicationHelper
   end
 
   def default_public_url_options
-    Rails.application.routes.default_url_options.symbolize_keys.slice(:protocol, :host, :port)
+    raw_options = Rails.application.routes.default_url_options.symbolize_keys.slice(:protocol, :host, :port)
+    host, inferred_port = normalized_public_host_and_port(raw_options[:host])
+
+    raw_options.merge(
+      host: host,
+      port: raw_options[:port].presence || inferred_port,
+    )
   end
 
   def public_base_url
@@ -99,10 +105,19 @@ module ApplicationHelper
     return if port.blank?
 
     numeric_port = port.to_i
-    default_port = URI::Generic.default_port(protocol.to_s)
+    default_port = URI.parse("#{protocol}://example.test").default_port
     return if numeric_port == default_port
 
     numeric_port
+  end
+
+  def normalized_public_host_and_port(host)
+    return [ host, nil ] if host.blank?
+
+    parsed_host = URI.parse("//#{host}")
+    [ parsed_host.host.presence || host, parsed_host.port ]
+  rescue URI::InvalidURIError
+    [ host, nil ]
   end
 
   private

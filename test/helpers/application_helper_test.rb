@@ -3,6 +3,33 @@
 require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
+  test "public_base_url extracts the port from a configured host string" do
+    original_options = Rails.application.routes.default_url_options.dup
+
+    Rails.application.routes.default_url_options = {
+      protocol: "http",
+      host: "localhost:3000"
+    }
+
+    assert_equal "http://localhost:3000", public_base_url
+    assert_equal "http://localhost:3000/about", absolute_page_url("/about")
+  ensure
+    Rails.application.routes.default_url_options = original_options
+  end
+
+  test "public_base_url preserves a plain configured host" do
+    original_options = Rails.application.routes.default_url_options.dup
+
+    Rails.application.routes.default_url_options = {
+      protocol: "https",
+      host: "denta.co"
+    }
+
+    assert_equal "https://denta.co", public_base_url
+  ensure
+    Rails.application.routes.default_url_options = original_options
+  end
+
   test "favicon_paths prefers local icons in development when generated assets exist" do
     rails_singleton = Rails.singleton_class
     helper_singleton = singleton_class
