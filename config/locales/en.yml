@@ -37,6 +37,31 @@ en:
       description: "DentaCoMarketing."
       theme_color: "#237671"
       background_color: "#237671"
+    footer:
+      copyright: "Denta © %{year}"
+      links:
+        linkedin:
+          label: "LinkedIn"
+          url: "https://www.linkedin.com/in/adenta/"
+        calendar:
+          label: "Calendar"
+          url: "https://calendly.com/adenta"
+        feed:
+          label: "RSS"
+  home:
+    index:
+      title: "I put agents in production."
+      subtitle: "Building the AI future since 2021. Software is changing fast. It's exciting and terrifying. The rules you learned might already be outdated."
+      recent_posts:
+        heading: "Recent writing"
+        empty: "New posts are on the way."
+      links:
+        linkedin:
+          label: "LinkedIn"
+          url: "https://www.linkedin.com/in/adenta/"
+        calendar:
+          label: "Calendar"
+          url: "https://calendly.com/adenta"
   blog_subscriptions:
     card:
       title: "Subscribe for new posts"

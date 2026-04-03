@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   resource :blog_subscription, only: [] do
     get :confirm
   end
-  resource :session, only: [ :new ]
+  resource :developer_session, only: [ :create ]
+  resource :session, only: [ :new, :destroy ]
   resources :passwords, only: [ :new, :edit ], param: :token
   get "writing" => "blog_posts#index", as: :blog_posts
   get "projects" => "projects#index", as: :projects

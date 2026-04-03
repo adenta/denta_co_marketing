@@ -19,8 +19,7 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta property="og:url" content="http://example.com/writing">'
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     assert_includes response.headers["Cache-Control"], "public"
-    assert_includes @response.body, "navigation/SiteNav"
-    refute_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, 'aria-label="Primary"'
     assert_includes @response.body, I18n.t("blog_subscriptions.card.title")
     assert_includes @response.body, "blog/BlogSubscribeForm"
   end

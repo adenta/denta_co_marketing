@@ -89,28 +89,71 @@
 
   </head>
 
-  <body>
+  <body class="flex min-h-screen flex-col bg-background">
     <% developer_sign_in_enabled = Rails.env.development? || Rails.env.test? %>
-    <%= turbo_mount(
-      "navigation/SiteNav",
-      props: {
-        currentKey: current_nav_key,
-        authenticated: authenticated?,
-        analyticsPath: "/blazer",
-        developerSignInEnabled: developer_sign_in_enabled,
-        developerSignInPath: api_v1_developer_session_path,
-        homePath: root_path,
-        logoutPath: api_v1_session_path,
-        items: [
-          { key: "home", label: "Home", href: root_path },
-          { key: "projects", label: "Projects", href: projects_path },
-          { key: "writing", label: "Writing", href: blog_posts_path }
-        ]
-      },
-    ) %>
-    <main class="min-h-screen bg-background">
+    <% nav_items = [
+      { key: "home", label: "Home", href: root_path },
+      { key: "projects", label: "Projects", href: projects_path },
+      { key: "writing", label: "Writing", href: blog_posts_path }
+    ] %>
+    <header class="sticky top-0 z-40 border-b bg-background">
+      <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+          <a href="<%= root_path %>" class="w-fit text-sm font-semibold text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline">
+            Denta
+          </a>
+          <nav aria-label="Primary" class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <% nav_items.each do |item| %>
+              <% active = current_nav_key == item[:key] %>
+              <a
+                href="<%= item[:href] %>"
+                <%= %(aria-current="page").html_safe if active %>
+                class="<%= active ? "text-foreground underline underline-offset-4" : "text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline" %>"
+              >
+                <%= item[:label] %>
+              </a>
+            <% end %>
+          </nav>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+          <% if authenticated? %>
+            <a href="/blazer" class="text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline">
+              Analytics
+            </a>
+            <%= button_to "Logout", session_path, method: :delete, form_class: "inline", class: "text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline" %>
+          <% elsif developer_sign_in_enabled %>
+            <%= button_to "Developer Sign In", developer_session_path, method: :post, form_class: "inline", class: "text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline" %>
+          <% end %>
+          <div class="relative inline-flex size-5 items-center justify-center">
+            <span aria-hidden="true" class="inline-flex size-5"></span>
+            <div class="absolute inset-0 flex items-center">
+              <%= turbo_mount("navigation/ThemeToggle") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1">
       <%= yield %>
     </main>
+    <footer class="border-t border-border">
+      <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-sm sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <p class="text-muted-foreground">
+          <%= I18n.t("site.footer.copyright", year: Time.current.year) %>
+        </p>
+        <nav aria-label="Footer" class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a href="<%= I18n.t("site.footer.links.linkedin.url") %>" target="_blank" rel="noreferrer" class="text-primary underline underline-offset-4 transition-colors hover:text-primary/80">
+            <%= I18n.t("site.footer.links.linkedin.label") %>
+          </a>
+          <a href="<%= I18n.t("site.footer.links.calendar.url") %>" target="_blank" rel="noreferrer" class="text-primary underline underline-offset-4 transition-colors hover:text-primary/80">
+            <%= I18n.t("site.footer.links.calendar.label") %>
+          </a>
+          <a href="<%= feed_path(format: :xml) %>" class="text-primary underline underline-offset-4 transition-colors hover:text-primary/80">
+            <%= I18n.t("site.footer.links.feed.label") %>
+          </a>
+        </nav>
+      </div>
+    </footer>
     <%= turbo_mount("utils/ToastContainer", props: FlashBlueprint.render_as_hash(flash).compact) %>
   </body>
 </html>

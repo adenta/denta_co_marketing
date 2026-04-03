@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   disallow_authenticated_access only: :new
+  require_authenticated_access only: :destroy
 
   def new
     @page_meta = {
@@ -9,5 +10,10 @@ class SessionsController < ApplicationController
     @props = {
       create_path: api_v1_session_path
     }
+  end
+
+  def destroy
+    terminate_session
+    redirect_to root_path, notice: "Signed out."
   end
 end

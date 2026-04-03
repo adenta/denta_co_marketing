@@ -20,7 +20,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '"url":"http://example.com/p/the-first-five-seconds-of-product-trust"'
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     assert_includes response.headers["Cache-Control"], "public"
-    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, 'aria-label="Primary"'
     assert_includes @response.body, "Back to writing"
     assert_includes @response.body, "blog/BlogSubscribeForm"
 

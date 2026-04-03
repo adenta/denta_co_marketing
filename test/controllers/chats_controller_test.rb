@@ -20,7 +20,7 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "chats/index"
-    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, 'aria-label="Primary"'
     assert_includes @response.body, newest_chat.id
     assert_includes @response.body, older_chat.id
     assert_includes @response.body, "available_agents"
@@ -46,7 +46,7 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "chats/show"
-    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, 'aria-label="Primary"'
   end
 
   test "show mounts serialized chat props" do

@@ -7,7 +7,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes @response.body, "home/index"
     assert_includes @response.body, "<title>Andrew Denta</title>"
-    assert_includes @response.body, '<meta name="description" content="Application shell.">'
+    assert_includes @response.body, '<meta name="description" content="Building the AI future since 2021. Software is changing fast. It&#39;s exciting and terrifying. The rules you learned might already be outdated.">'
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/">'
     assert_includes @response.body, '<link rel="alternate" type="application/atom+xml" title="Andrew Denta feed" href="http://example.com/feed.xml">'
     assert_includes @response.body, '<meta property="og:type" content="website">'
@@ -15,17 +15,18 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta name="twitter:card" content="summary_large_image">'
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     assert_includes response.headers["Cache-Control"], "public"
-    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, 'aria-label="Primary"'
+    assert_includes @response.body, "Developer Sign In"
     assert_includes @response.body, "denta-theme"
-    refute_includes @response.body, "navigation/Navbar"
-    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:true"
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
     refute_includes @response.body, "&quot;sign_up_path&quot;"
     refute_includes @response.body, "&quot;aboutPath&quot;:"
     refute_includes @response.body, "&quot;servicesPath&quot;:"
-    refute_includes @response.body, "Mangrove Technology Engagements"
-    refute_includes @response.body, "Blank slate"
+    assert_includes @response.body, "&quot;title&quot;:&quot;I put agents in production.&quot;"
+    assert_includes @response.body, "&quot;recentPosts&quot;:"
+    assert_includes @response.body, "&quot;href&quot;:&quot;https://www.linkedin.com/in/adenta/&quot;"
+    assert_includes @response.body, "&quot;href&quot;:&quot;https://calendly.com/adenta&quot;"
   end
 
   test "index renders the home page for signed in users" do
@@ -35,8 +36,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "navigation/SiteNav"
-    refute_includes @response.body, "navigation/Navbar"
+    assert_includes @response.body, 'aria-label="Primary"'
+    assert_includes @response.body, "Logout"
     refute_includes @response.body, users(:one).email_address
     refute_includes @response.body, "available_agents"
   end
@@ -50,6 +51,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     refute_includes @response.body, "&quot;aboutPath&quot;:"
     refute_includes @response.body, "&quot;content&quot;:"
     refute_includes @response.body, "&quot;recent_posts&quot;:"
+    assert_includes @response.body, "&quot;recentPosts&quot;:"
+    refute_includes @response.body, "&quot;cta&quot;:"
   end
 
   test "index omits auth controls for signed out visitors when developer sign in is disabled" do
@@ -59,8 +62,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_includes @response.body, "navigation/SiteNav"
-    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:false"
+    assert_includes @response.body, 'aria-label="Primary"'
+    refute_includes @response.body, "Developer Sign In"
   ensure
     Rails.define_singleton_method(:env, original_env_method)
   end
