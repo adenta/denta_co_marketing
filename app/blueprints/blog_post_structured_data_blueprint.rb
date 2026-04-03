@@ -11,11 +11,11 @@ class BlogPostStructuredDataBlueprint < Blueprinter::Base
   field :excerpt, name: :description
 
   field :url do |post, options|
-    URI.join(options.fetch(:base_url), Rails.application.routes.url_helpers.blog_post_path(post.slug)).to_s
+    URI.join(options.fetch(:base_url), Rails.application.routes.url_helpers.content_post_path(post.slug)).to_s
   end
 
   field :main_entity_of_page, name: :mainEntityOfPage do |post, options|
-    post_url = URI.join(options.fetch(:base_url), Rails.application.routes.url_helpers.blog_post_path(post.slug)).to_s
+    post_url = URI.join(options.fetch(:base_url), Rails.application.routes.url_helpers.content_post_path(post.slug)).to_s
 
     {
       "@type" => "WebPage",

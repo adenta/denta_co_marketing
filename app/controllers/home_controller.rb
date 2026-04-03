@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
     home_page_content = localized_copy("pages.home")
-    recent_posts = repository.published_posts.first(3)
+    recent_posts = repository.blog_posts.first(3)
 
     return unless cache_public_page!(
       etag: [ "home", I18n.locale, recent_posts.map { |post| [ post.slug, post.source_updated_at&.to_i ] } ],
@@ -17,6 +17,10 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def current_nav_key
+    "home"
+  end
 
   def repository
     @repository ||= Blog::PostRepository.new

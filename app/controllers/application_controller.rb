@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-  helper_method :current_user
+  helper_method :current_user, :current_nav_key
   skip_before_action :track_ahoy_visit, if: :json_request?
 
   rescue_from Pundit::NotAuthorizedError, with: :handle_not_authorized
@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
 
     expires_in PUBLIC_CACHE_TTL, public: true, stale_while_revalidate: 5.minutes
     stale?(etag:, last_modified:, public: true)
+  end
+
+  def current_nav_key
+    nil
   end
 
   def pundit_user

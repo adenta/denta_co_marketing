@@ -83,6 +83,8 @@ module ApplicationHelper
   def public_base_url
     @public_base_url ||= begin
       options = default_public_url_options
+      return request.base_url if options[:host].blank?
+
       port = normalized_public_port(options[:protocol], options[:port])
 
       URI::Generic.build(

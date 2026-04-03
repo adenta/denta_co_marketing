@@ -9,7 +9,7 @@ xml.feed xmlns: "http://www.w3.org/2005/Atom" do
   xml.link href: absolute_page_url(blog_posts_path)
 
   @posts.each do |post|
-    post_url = absolute_page_url(blog_post_path(post.slug))
+    post_url = absolute_page_url(content_post_path(post.slug))
     published_at = post.published_on.in_time_zone
 
     xml.entry do

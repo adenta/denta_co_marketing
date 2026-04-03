@@ -91,20 +91,26 @@
 
   <body>
     <% developer_sign_in_enabled = Rails.env.development? || Rails.env.test? %>
-    <% if authenticated? || developer_sign_in_enabled %>
-      <%= turbo_mount(
-        "navigation/AuthControls",
-        props: {
-          authenticated: authenticated?,
-          analytics_path: "/blazer",
-          developer_sign_in_path: api_v1_developer_session_path,
-          developer_sign_in_enabled: developer_sign_in_enabled,
-          home_path: root_path,
-          logout_path: api_v1_session_path,
-        },
-      ) %>
-    <% end %>
-    <main>
+    <%= turbo_mount(
+      "navigation/SiteNav",
+      props: {
+        currentKey: current_nav_key,
+        authenticated: authenticated?,
+        analyticsPath: "/blazer",
+        developerSignInEnabled: developer_sign_in_enabled,
+        developerSignInPath: api_v1_developer_session_path,
+        homePath: root_path,
+        logoutPath: api_v1_session_path,
+        items: [
+          { key: "home", label: "Home", href: root_path },
+          { key: "about", label: "About", href: about_path },
+          { key: "services", label: "Services", href: services_path },
+          { key: "projects", label: "Projects", href: projects_path },
+          { key: "blog", label: "Blog", href: blog_posts_path }
+        ]
+      },
+    ) %>
+    <main class="min-h-screen">
       <%= yield %>
     </main>
     <%= turbo_mount("utils/ToastContainer", props: FlashBlueprint.render_as_hash(flash).compact) %>

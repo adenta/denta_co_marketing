@@ -8,7 +8,7 @@ class BlogPostPageMetaBlueprint < Blueprinter::Base
   field :excerpt, name: :description
 
   field :canonical do |post|
-    Rails.application.routes.url_helpers.blog_post_path(post.slug)
+    Rails.application.routes.url_helpers.content_post_path(post.slug)
   end
 
   field :image do |_post|

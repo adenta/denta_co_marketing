@@ -16,13 +16,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta name="twitter:card" content="summary_large_image">'
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     assert_includes response.headers["Cache-Control"], "public"
-    assert_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
     assert_includes @response.body, "denta-theme"
     refute_includes @response.body, "navigation/Navbar"
-    assert_includes @response.body, "&quot;developer_sign_in_enabled&quot;:true"
+    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:true"
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
     refute_includes @response.body, "&quot;sign_up_path&quot;"
+    refute_includes @response.body, "Mangrove Technology Engagements"
   end
 
   test "index renders the splash page for signed in users" do
@@ -32,7 +33,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
     refute_includes @response.body, "navigation/Navbar"
     refute_includes @response.body, users(:one).email_address
     refute_includes @response.body, "available_agents"
@@ -55,7 +56,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    refute_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:false"
   ensure
     Rails.define_singleton_method(:env, original_env_method)
   end

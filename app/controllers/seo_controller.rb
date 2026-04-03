@@ -3,7 +3,7 @@ class SeoController < ApplicationController
   CACHE_TTL = 24.hours
 
   def feed
-    posts = repository.published_posts.first(20)
+    posts = repository.blog_posts.first(20)
 
     expires_in CACHE_TTL, public: true, stale_while_revalidate: 5.minutes
     render body: Rails.cache.fetch(feed_cache_key(posts), expires_in: CACHE_TTL) {

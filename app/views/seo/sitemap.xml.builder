@@ -17,7 +17,7 @@ xml.urlset xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
 
   @posts.each do |post|
     xml.url do
-      xml.loc absolute_page_url(blog_post_path(post.slug))
+      xml.loc absolute_page_url(content_post_path(post.slug))
       xml.lastmod post.published_on.iso8601
       xml.changefreq "monthly"
       xml.priority "0.7"

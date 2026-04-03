@@ -29,6 +29,63 @@ module Blog
       end
     end
 
+    test "accepts tags arrays and marks project posts" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("project.md"),
+          title: "Project",
+          excerpt: "Project excerpt",
+          published_on: "2026-04-01",
+          tags: [ "project", "case-study" ]
+        )
+
+        post = repository.post_by_slug!("project")
+
+        assert_equal [ "project", "case-study" ], post.tags
+        assert_predicate post, :project?
+      end
+    end
+
+    test "blog_posts excludes project-tagged entries" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("writing.md"),
+          title: "Writing",
+          excerpt: "Writing excerpt",
+          published_on: "2026-04-01"
+        )
+        write_post(
+          root.join("project.md"),
+          title: "Project",
+          excerpt: "Project excerpt",
+          published_on: "2026-04-02",
+          tags: [ "project" ]
+        )
+
+        assert_equal %w[writing], repository.blog_posts.map(&:slug)
+      end
+    end
+
+    test "project_posts includes only project-tagged entries" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("writing.md"),
+          title: "Writing",
+          excerpt: "Writing excerpt",
+          published_on: "2026-04-01"
+        )
+        write_post(
+          root.join("project.md"),
+          title: "Project",
+          excerpt: "Project excerpt",
+          published_on: "2026-04-02",
+          tags: [ "project" ]
+        )
+
+        assert_equal %w[project], repository.project_posts.map(&:slug)
+      end
+    end
+
     test "includes drafts when requested" do
       with_repository do |repository, root:, **|
         write_post(
@@ -61,7 +118,7 @@ module Blog
           published_on: "2026-04-01"
         )
 
-        post = repository.published_post_by_slug!("slug-test")
+        post = repository.post_by_slug!("slug-test")
 
         assert_equal "Slug Test", post.title
         assert_equal Date.new(2026, 4, 1), post.published_on
@@ -78,8 +135,8 @@ module Blog
           draft: true
         )
 
-        assert_raises(ActiveRecord::RecordNotFound) { repository.published_post_by_slug!("draft-only") }
-        assert_predicate repository.published_post_by_slug!("draft-only", include_drafts: true), :draft?
+        assert_raises(ActiveRecord::RecordNotFound) { repository.post_by_slug!("draft-only") }
+        assert_predicate repository.post_by_slug!("draft-only", include_drafts: true), :draft?
       end
     end
 
@@ -162,8 +219,8 @@ module Blog
           body: "# Cached\n\nFirst body."
         )
 
-        repository.published_post_by_slug!("cached")
-        repository.published_post_by_slug!("cached")
+        repository.post_by_slug!("cached")
+        repository.post_by_slug!("cached")
 
         assert_equal 1, renderer.calls
 
@@ -176,7 +233,7 @@ module Blog
           body: "# Cached\n\nUpdated body."
         )
 
-        repository.published_post_by_slug!("cached")
+        repository.post_by_slug!("cached")
 
         assert_equal 2, renderer.calls
       end
@@ -210,7 +267,9 @@ module Blog
       end
     end
 
-    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Andrew Denta", draft: false)
+    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Andrew Denta", draft: false, tags: nil)
+      tags_front_matter = Array(tags).map { |tag| "  - #{tag}" }.join("\n")
+
       File.write(
         path,
         <<~MARKDOWN
@@ -220,6 +279,7 @@ module Blog
           published_on: #{published_on}
           author: #{author}
           draft: #{draft}
+          #{tags ? "tags:\n#{tags_front_matter}" : nil}
           ---
 
           #{body}

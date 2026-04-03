@@ -14,7 +14,8 @@ module Blog
       },
       optional: {
         "author" => :string,
-        "draft" => :boolean
+        "draft" => :boolean,
+        "tags" => :string_array
       }
     )
 
@@ -36,7 +37,15 @@ module Blog
       load_posts(include_drafts:)
     end
 
-    def published_post_by_slug!(slug, include_drafts: false)
+    def blog_posts(include_drafts: false)
+      published_posts(include_drafts:).reject(&:project?)
+    end
+
+    def project_posts(include_drafts: false)
+      published_posts(include_drafts:).select(&:project?)
+    end
+
+    def post_by_slug!(slug, include_drafts: false)
       post = load_post!(path_for(slug))
       raise ActiveRecord::RecordNotFound, "Blog post not found" if post.draft? && !include_drafts
 
@@ -79,7 +88,8 @@ module Blog
         author: metadata["author"],
         html_body: rendered.html,
         source_updated_at: path.mtime.in_time_zone,
-        draft: metadata["draft"]
+        draft: metadata["draft"],
+        tags: metadata["tags"]
       )
     rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError, Content::MarkdownRenderer::ShortcodeError => error
       raise InvalidPostError, error.message

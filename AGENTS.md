@@ -7,6 +7,7 @@
 - Treat `GET` HTML routes as page-entry routes. They should render page state and hand off to a matching React page component.
 - When controller props or JSON responses serialize Active Record models, prefer Blueprinter classes in `app/blueprints` over inline `map`/hash shaping in the controller.
 - Treat writes and other non-page interactions as API work. `POST`, `PATCH`, `PUT`, and `DELETE` requests should usually go through the `/api/v1/...` endpoints and the shared `app/javascript/hooks/useApiRequest.ts` helper.
+- For React UI, prefer existing shadcn primitives from `app/javascript/components/ui` and make liberal use of them before introducing bespoke wrappers or hand-rolled controls.
 - The page component must live at `app/javascript/pages/<controller_path>/<action_name>.tsx`.
 - Page modules must have a default export because `app/javascript/turbo-mount.js` registers pages by file path and mounts the default export.
 - Do not add `app/views/<controller>/<action>.html.erb` unless you intentionally want to opt out of the React-page convention. If both an ERB template and a matching page component exist, the ERB template wins.
