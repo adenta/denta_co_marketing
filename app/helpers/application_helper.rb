@@ -2,13 +2,13 @@ module ApplicationHelper
   def favicon_paths
     if local_favicon_available?
       {
-        png: "/codex-local-favicons/favicon.png",
-        svg: "/codex-local-favicons/favicon.svg"
+        png: versioned_favicon_path("/codex-local-favicons/favicon.png", local_favicon_png_path),
+        svg: versioned_favicon_path("/codex-local-favicons/favicon.svg", local_favicon_svg_path)
       }
     else
       {
-        png: "/icon.png",
-        svg: "/icon.svg"
+        png: versioned_favicon_path("/icon.png", Rails.root.join("public/icon.png")),
+        svg: versioned_favicon_path("/icon.svg", Rails.root.join("public/icon.svg"))
       }
     end
   end
@@ -44,6 +44,12 @@ module ApplicationHelper
 
   def local_favicon_svg_path
     Rails.root.join("public/codex-local-favicons/favicon.svg")
+  end
+
+  def versioned_favicon_path(public_path, file_path)
+    return public_path unless file_path.exist?
+
+    "#{public_path}?v=#{file_path.mtime.to_i}"
   end
 
   def absolute_page_url(value)

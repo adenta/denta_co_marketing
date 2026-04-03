@@ -1,17 +1,14 @@
 require "test_helper"
 
 class BlogPostsControllerTest < ActionDispatch::IntegrationTest
-  test "blog index is publicly accessible and server renders published post content" do
+  test "blog index is publicly accessible and renders the empty state when there are no posts" do
     get blog_posts_path
 
     assert_response :success
     assert_includes @response.body, "<title>Writing | Andrew Denta</title>"
     assert_includes @response.body, ">Writing</h1>"
-    assert_includes @response.body, "The First Five Seconds Of Product Trust"
-    assert_includes @response.body, "Notes On Shipping Before The Story Hardens"
-    assert_includes @response.body, "What Survives After the AI Demo Ends"
-    refute_includes @response.body, "Mangrove Technology Engagements"
-    assert_includes @response.body, "Draft"
+    assert_includes @response.body, "Add markdown files to publish the first post."
+    refute_includes @response.body, "/p/"
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Writing.">'
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/writing">'
