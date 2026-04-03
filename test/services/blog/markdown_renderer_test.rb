@@ -22,7 +22,15 @@ module Content
         | 1 | 2 |
       MARKDOWN
 
-      assert_includes result.html, %(<h1 id="title">)
+      fragment = Nokogiri::HTML::DocumentFragment.parse(result.html)
+      heading = fragment.at_css("h1")
+      heading_link = heading.at_css("a.heading-anchor")
+
+      assert_equal "title", heading["id"]
+      assert_equal "#title", heading_link["href"]
+      assert_equal "Copy link to this section", heading_link["title"]
+      assert_equal "Copy link to this section", heading_link["aria-label"]
+      refute heading.at_css("a.anchor")
       assert_includes result.html, %(<a href="https://example.com">a link</a>)
       assert_includes result.html, "<blockquote>"
       assert_includes result.html, "<pre lang=\"rb\"><code>"
