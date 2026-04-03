@@ -13,6 +13,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '<meta property="og:type" content="website">'
     assert_includes @response.body, '<meta property="og:url" content="http://example.com/">'
     assert_includes @response.body, '<meta name="twitter:card" content="summary_large_image">'
+    assert_includes @response.body, '<link rel="icon" href="/icon.png" type="image/png">'
+    assert_includes @response.body, '<link rel="icon" href="/icon.svg" type="image/svg+xml">'
+    assert_includes @response.body, '<link rel="apple-touch-icon" href="/icon.png">'
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     assert_includes response.headers["Cache-Control"], "public"
     assert_includes @response.body, 'aria-label="Primary"'
@@ -26,7 +29,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "&quot;title&quot;:&quot;I put agents in production.&quot;"
     assert_includes @response.body, "&quot;recentPosts&quot;:"
     assert_includes @response.body, "&quot;href&quot;:&quot;https://www.linkedin.com/in/adenta/&quot;"
-    assert_includes @response.body, "&quot;href&quot;:&quot;https://calendly.com/adenta&quot;"
+    assert_includes @response.body, "&quot;href&quot;:&quot;https://calendly.com/andrew-denta&quot;"
   end
 
   test "index renders the home page for signed in users" do
