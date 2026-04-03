@@ -43,8 +43,8 @@ en:
         title: "Andrew Denta"
         description: "A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work."
       hero:
-        title: "Founder and engineer working on AI systems that reduce operational drag."
-        body: "I run Mangrove Technology, previously founded Terusama, and spent time at Uber Freight and Handshake. This site is where I write about AI, software, and the systems problems that show up when real work meets messy operations."
+        title: "I put agents in production."
+        body: "Building the AI future since 2021. Software is changing fast. It's exciting and terrifying. Most teams aren't ready."
       primary_cta:
         label: "Say hello"
         href: "https://linkedin.com/in/adenta"
