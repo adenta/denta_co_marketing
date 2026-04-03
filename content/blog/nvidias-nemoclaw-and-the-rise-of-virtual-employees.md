@@ -8,8 +8,6 @@ tags:
   - nvidia
 ---
 
-*April 3, 2026, 3:35 PM ET*
-
 Everybody wants autonomous virtual employees right now: software agents that can take a long-running, messy task, make progress independently, and only stop when they need judgment or approval.
 
 That sounds great in a demo. Inside a real company, it immediately raises harder questions. What can the agent touch? Where can it send data? Which model is it allowed to use? How do you keep credentials from leaking? Who approved a risky action? How do you stop an agent from running loose on the host machine?

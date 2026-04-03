@@ -9,8 +9,6 @@ tags:
   - realtime
 ---
 
-*April 3, 2026, 3:45 PM ET*
-
 On February 18, 2026, I gave a talk at Artificial Ruby in New York City called *Realtime AI Agents in Ruby*.
 
 I used the session to walk through an open source Pokemon-playing agent I have been building and to talk about a problem I think is getting more important: AI systems become much more interesting the moment they stop being turn-based.
