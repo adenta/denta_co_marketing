@@ -43,6 +43,10 @@ module Blog
       post
     end
 
+    def latest_updated_at(include_drafts: false)
+      published_posts(include_drafts:).filter_map(&:source_updated_at).max
+    end
+
     private
 
     def load_posts(include_drafts:)
@@ -74,6 +78,7 @@ module Blog
         published_on: metadata.fetch("published_on"),
         author: metadata["author"],
         html_body: rendered.html,
+        source_updated_at: path.mtime.in_time_zone,
         draft: metadata["draft"]
       )
     rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError, Content::MarkdownRenderer::ShortcodeError => error

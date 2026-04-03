@@ -6,9 +6,16 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "A friendly place to think through useful AI and the software around it."
+    assert_includes @response.body, "Founder and engineer working on AI systems that reduce operational drag."
     assert_includes @response.body, "<title>Andrew Denta</title>"
     assert_includes @response.body, '<meta name="description" content="A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work.">'
+    assert_includes @response.body, '<link rel="canonical" href="http://example.com/">'
+    assert_includes @response.body, '<link rel="alternate" type="application/atom+xml" title="Andrew Denta feed" href="http://example.com/feed.xml">'
+    assert_includes @response.body, '<meta property="og:type" content="website">'
+    assert_includes @response.body, '<meta property="og:url" content="http://example.com/">'
+    assert_includes @response.body, '<meta name="twitter:card" content="summary_large_image">'
+    assert_includes response.headers["Cache-Control"], "max-age=86400"
+    assert_includes response.headers["Cache-Control"], "public"
     assert_includes @response.body, "navigation/AuthControls"
     assert_includes @response.body, "denta-theme"
     refute_includes @response.body, "navigation/Navbar"
