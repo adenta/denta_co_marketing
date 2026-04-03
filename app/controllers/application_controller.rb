@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  PUBLIC_CACHE_TTL = 24.hours
+
   include Authentication
   include Pundit::Authorization
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
@@ -16,6 +18,13 @@ class ApplicationController < ActionController::Base
 
   def current_user
     Current.user
+  end
+
+  def cache_public_page!(etag:, last_modified:)
+    return true unless cacheable_public_page_request?
+
+    expires_in PUBLIC_CACHE_TTL, public: true, stale_while_revalidate: 5.minutes
+    stale?(etag:, last_modified:, public: true)
   end
 
   def pundit_user
@@ -71,5 +80,15 @@ class ApplicationController < ActionController::Base
 
   def json_request?
     request.format.json?
+  end
+
+  def cacheable_public_page_request?
+    request.get? && request.format.html? && !authenticated?
+  end
+
+  def translations_last_updated_at
+    @translations_last_updated_at ||= I18n.load_path
+      .filter_map { |path| File.exist?(path) ? File.mtime(path).in_time_zone : nil }
+      .max
   end
 end

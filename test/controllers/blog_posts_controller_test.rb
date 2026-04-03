@@ -13,6 +13,11 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "Draft"
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Essays, notes, and practical writing on AI, software, systems, and the operational edges where products either hold up or fail.">'
+    assert_includes @response.body, '<link rel="canonical" href="http://example.com/blog">'
+    assert_includes @response.body, '<meta property="og:type" content="website">'
+    assert_includes @response.body, '<meta property="og:url" content="http://example.com/blog">'
+    assert_includes response.headers["Cache-Control"], "max-age=86400"
+    assert_includes response.headers["Cache-Control"], "public"
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
     assert_includes @response.body, I18n.t("blog_subscriptions.card.title")
@@ -30,6 +35,14 @@ class BlogPostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "Most products do not earn trust by explaining everything."
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="People decide quickly whether a product feels legible. The job is to make that first judgment accurate.">'
+    assert_includes @response.body, '<link rel="canonical" href="http://example.com/blog/the-first-five-seconds-of-product-trust">'
+    assert_includes @response.body, '<meta property="og:type" content="article">'
+    assert_includes @response.body, '<meta property="article:author" content="Andrew Denta">'
+    assert_includes @response.body, '<meta property="article:published_time" content="2026-04-01T00:00:00Z">'
+    assert_includes @response.body, '"@type":"BlogPosting"'
+    assert_includes @response.body, '"url":"http://example.com/blog/the-first-five-seconds-of-product-trust"'
+    assert_includes response.headers["Cache-Control"], "max-age=86400"
+    assert_includes response.headers["Cache-Control"], "public"
     assert_includes @response.body, "navigation/AuthControls"
     refute_includes @response.body, "navigation/Navbar"
     refute_includes @response.body, "Related posts"

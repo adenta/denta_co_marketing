@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   post "csp-violation-reports" => "csp_violation_reports#create", as: :csp_violation_reports
+  get "robots.txt" => "seo#robots", as: :robots
+  get "feed.xml" => "seo#feed", as: :feed, defaults: { format: :xml }
+  get "sitemap.xml" => "seo#sitemap", as: :sitemap, defaults: { format: :xml }
   resource :blog_subscription, only: [] do
     get :confirm
   end
