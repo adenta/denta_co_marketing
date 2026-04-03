@@ -45,7 +45,7 @@ en:
           url: "https://www.linkedin.com/in/adenta/"
         calendar:
           label: "Calendar"
-          url: "https://calendly.com/adenta"
+          url: "https://calendly.com/andrew-denta"
         feed:
           label: "RSS"
   home:
@@ -61,7 +61,7 @@ en:
           url: "https://www.linkedin.com/in/adenta/"
         calendar:
           label: "Calendar"
-          url: "https://calendly.com/adenta"
+          url: "https://calendly.com/andrew-denta"
   blog_subscriptions:
     card:
       title: "Subscribe for new posts"
