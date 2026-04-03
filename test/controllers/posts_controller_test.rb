@@ -22,7 +22,6 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.headers["Cache-Control"], "public"
     assert_includes @response.body, "navigation/SiteNav"
     assert_includes @response.body, "Back to writing"
-    assert_includes @response.body, "Writing"
     assert_includes @response.body, "blog/BlogSubscribeForm"
 
     event = Ahoy::Event.where(name: "Viewed blog post").order(:time).last
@@ -39,7 +38,6 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "<title>Mangrove Technology Engagements | Andrew Denta</title>"
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/p/mangrove-technology-engagements">'
     assert_includes @response.body, "Back to projects"
-    assert_includes @response.body, "Project"
     assert_includes @response.body, "Building systems that teams can keep using"
     refute_includes @response.body, "blog/BlogSubscribeForm"
   end

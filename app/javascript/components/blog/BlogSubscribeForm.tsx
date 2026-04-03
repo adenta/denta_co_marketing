@@ -98,7 +98,7 @@ export default function BlogSubscribeForm({
   };
 
   return (
-    <section className="rounded-[1.3rem] border border-border/80 bg-card/92 p-5 shadow-[0_18px_48px_rgba(15,23,42,0.07)] dark:shadow-[0_20px_52px_rgba(0,0,0,0.32)]">
+    <section className="space-y-4">
       <div className="space-y-1.5">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           {isSubscribed ? subscribedTitle : title}
@@ -135,7 +135,6 @@ export default function BlogSubscribeForm({
               placeholder={emailPlaceholder}
               onChange={event => setEmailAddress(event.target.value)}
               aria-invalid={getFieldError("email_address") ? true : undefined}
-              className="bg-background/78"
             />
             {getFieldError("email_address") ? (
               <p className="text-sm text-destructive">{getFieldError("email_address")}</p>

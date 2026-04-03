@@ -17,7 +17,7 @@ class CspViolationReportsControllerTest < ActionDispatch::IntegrationTest
       post csp_violation_reports_path,
         params: {
           "csp-report" => {
-            "document-uri" => "https://www.denta.co/blog",
+            "document-uri" => "https://www.denta.co/writing",
             "effective-directive" => "script-src-elem",
             "violated-directive" => "script-src-elem",
             "blocked-uri" => "https://cdn.example.com/tracker.js",
@@ -36,7 +36,7 @@ class CspViolationReportsControllerTest < ActionDispatch::IntegrationTest
 
     email = ActionMailer::Base.deliveries.last
     assert_equal [ ENV.fetch("CSP_VIOLATION_RECIPIENT", CspViolationMailer::DEFAULT_RECIPIENT) ], email.to
-    assert_equal "[Denta CSP] script-src-elem on https://www.denta.co/blog", email.subject
+    assert_equal "[Denta CSP] script-src-elem on https://www.denta.co/writing", email.subject
     assert_match "Blocked URI: https://cdn.example.com/tracker.js", email.body.encoded
     assert_match "Content type: application/csp-report", email.body.encoded
     assert_match "User agent: Mozilla/5.0 Test Browser", email.body.encoded

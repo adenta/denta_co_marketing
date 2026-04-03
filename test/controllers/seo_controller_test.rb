@@ -33,7 +33,7 @@ class SeoControllerTest < ActionDispatch::IntegrationTest
     assert_equal "application/xml", response.media_type
     assert_includes @response.body, %(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">)
     assert_includes @response.body, "<loc>http://example.com/</loc>"
-    assert_includes @response.body, "<loc>http://example.com/blog</loc>"
+    assert_includes @response.body, "<loc>http://example.com/writing</loc>"
     assert_includes @response.body, "<loc>http://example.com/p/the-first-five-seconds-of-product-trust</loc>"
     assert_includes response.headers["Cache-Control"], "max-age=86400"
     refute_includes @response.body, "notes-on-shipping-before-the-story-hardens"

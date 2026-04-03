@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   def index
     @page_meta = {
       title: "Projects | #{I18n.t("site.meta.default_title", default: "Andrew Denta")}",
-      description: "Project index scaffold with linked project entries."
+      description: "Project posts."
     }
     @props = {
       projects: PostBlueprint.render_as_hash(

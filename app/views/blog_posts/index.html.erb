@@ -2,28 +2,19 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<section class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-  <div class="blog-post-hero-simple max-w-4xl mb-8 sm:mb-10">
-    <%= link_to "Home", root_path, class: "blog-post-hero-simple__back" %>
-    <div class="blog-post-hero-simple__title-block">
-      <p class="text-sm font-semibold tracking-[0.28em] text-primary uppercase">Archive</p>
-      <h1 class="max-w-4xl text-[2.7rem] font-semibold tracking-tight text-foreground sm:text-[3rem] sm:leading-[1.05]">
-        Writing
-      </h1>
-      <p class="max-w-3xl text-[1rem] leading-7 text-[#475569] dark:text-[#9eabb8]">
-        Long-form notes, essays, and project writeups live here when they exist.
-      </p>
-    </div>
+<section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+  <div class="mb-6">
+    <h1 class="text-3xl font-semibold tracking-tight text-foreground">Writing</h1>
   </div>
 
-  <div class="blog-index-list">
+  <div>
     <% @posts.each do |post| %>
       <%= render "post_card", post:, path: post.path %>
     <% end %>
 
     <% if @posts.empty? %>
       <div class="border-t border-dashed border-border/80 py-8 text-muted-foreground">
-        Add markdown files to <code>content/blog</code> to publish the first post.
+        Add markdown files to publish the first post.
       </div>
     <% end %>
 

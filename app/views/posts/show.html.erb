@@ -4,36 +4,35 @@
 
 <% back_path = @post.project? ? projects_path : blog_posts_path %>
 <% back_label = @post.project? ? "Back to projects" : "Back to writing" %>
-<% content_label = @post.project? ? "Project" : "Writing" %>
 
-<section class="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-  <div class="blog-post-hero-simple mb-8 sm:mb-10">
-    <%= link_to back_label, back_path, class: "blog-post-hero-simple__back" %>
+<section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+  <div class="max-w-3xl">
+    <div class="mb-8 space-y-4 sm:mb-10">
+      <%= link_to back_label, back_path, class: "inline-flex text-sm text-muted-foreground transition-colors hover:text-foreground" %>
 
-    <div class="blog-post-hero-simple__title-block">
-      <h1 class="text-[2.7rem] font-semibold tracking-tight text-foreground sm:text-[3.1rem] sm:leading-[1.04]"><%= @post.title %></h1>
-      <div class="blog-post-hero-simple__subline">
-        <span class="blog-inline-chip rounded-full px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.14em] uppercase"><%= content_label %></span>
-        <span class="blog-post-hero-simple__subline-separator">•</span>
-        <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
-        <span class="blog-post-hero-simple__subline-separator">•</span>
-        <span><%= @post.author %></span>
-        <% if @post.draft? %>
-          <span class="blog-post-hero-simple__subline-separator">•</span>
-          <span class="text-amber-900 dark:text-amber-200">Draft preview</span>
-        <% end %>
+      <div class="space-y-4">
+        <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
+        <div class="flex flex-wrap items-center gap-2 border-t pt-4 text-sm text-muted-foreground">
+          <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
+          <span>&bull;</span>
+          <span><%= @post.author %></span>
+          <% if @post.draft? %>
+            <span>&bull;</span>
+            <span class="text-amber-900 dark:text-amber-200">Draft preview</span>
+          <% end %>
+        </div>
+        <p class="text-base leading-7 text-muted-foreground"><%= @post.excerpt %></p>
       </div>
-      <p class="text-[1rem] leading-7 text-[#475569] dark:text-[#9eabb8]"><%= @post.excerpt %></p>
     </div>
+
+    <article class="blog-prose">
+      <%= @post.html_body.html_safe %>
+    </article>
+
+    <% unless @post.project? %>
+      <div class="mt-8">
+        <%= render "blog_posts/subscribe_card" %>
+      </div>
+    <% end %>
   </div>
-
-  <article class="blog-prose">
-    <%= @post.html_body.html_safe %>
-  </article>
-
-  <% unless @post.project? %>
-    <div class="mt-8">
-      <%= render "blog_posts/subscribe_card" %>
-    </div>
-  <% end %>
 </section>

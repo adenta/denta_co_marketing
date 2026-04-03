@@ -11,6 +11,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "Mangrove Technology Engagements"
     assert_includes @response.body, "Terusama"
     refute_includes @response.body, "The First Five Seconds Of Product Trust"
+    refute_includes @response.body, "sales wrapper"
     assert_includes @response.body, "navigation/SiteNav"
   end
 end

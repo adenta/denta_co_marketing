@@ -90,34 +90,32 @@ export default function SiteNav({
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#0f172a]/8 bg-[rgba(244,247,250,0.82)] backdrop-blur dark:border-white/8 dark:bg-[rgba(11,17,22,0.82)]">
+    <header className="sticky top-0 z-40 border-b bg-background">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <Button asChild variant="ghost" className="w-fit rounded-full px-0 text-sm font-semibold tracking-[0.22em] text-[#155e63] uppercase hover:bg-transparent hover:text-[#0f172a] dark:text-[#67c7d0] dark:hover:bg-transparent dark:hover:text-[#eef2f6]">
+          <Button
+            asChild
+            variant="ghost"
+            className="w-fit px-0 text-sm font-semibold text-muted-foreground hover:bg-transparent hover:text-foreground"
+          >
             <a href="/">Andrew Denta</a>
           </Button>
           <nav aria-label="Site" className="flex flex-wrap items-center gap-1.5">
-          {items.map(item => {
-            const active = currentKey === item.key;
+            {items.map(item => {
+              const active = currentKey === item.key;
 
-            return (
-              <Button
-                key={item.key}
-                asChild
-                variant={active ? "default" : "ghost"}
-                size="sm"
-                className={active ? "rounded-full" : "rounded-full text-[#425466] hover:bg-white dark:text-[#9eabb8] dark:hover:bg-[#131a21]"}
-              >
-                <a href={item.href} aria-current={active ? "page" : undefined}>
-                  {item.label}
-                </a>
-              </Button>
-            );
-          })}
-        </nav>
+              return (
+                <Button key={item.key} asChild variant={active ? "default" : "ghost"} size="sm">
+                  <a href={item.href} aria-current={active ? "page" : undefined}>
+                    {item.label}
+                  </a>
+                </Button>
+              );
+            })}
+          </nav>
         </div>
 
-        <ButtonGroup className="w-fit self-end rounded-xl border border-border/80 bg-background/88 p-1 shadow-[0_12px_30px_rgba(15,23,42,0.12)] backdrop-blur dark:shadow-[0_16px_42px_rgba(0,0,0,0.42)]">
+        <ButtonGroup className="w-fit self-end">
           {authenticated ? (
             <>
               <Button asChild type="button" variant="ghost" size="sm">

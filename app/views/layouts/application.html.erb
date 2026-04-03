@@ -103,14 +103,12 @@
         logoutPath: api_v1_session_path,
         items: [
           { key: "home", label: "Home", href: root_path },
-          { key: "about", label: "About", href: about_path },
-          { key: "services", label: "Services", href: services_path },
           { key: "projects", label: "Projects", href: projects_path },
-          { key: "blog", label: "Blog", href: blog_posts_path }
+          { key: "writing", label: "Writing", href: blog_posts_path }
         ]
       },
     ) %>
-    <main class="min-h-screen">
+    <main class="min-h-screen bg-background">
       <%= yield %>
     </main>
     <%= turbo_mount("utils/ToastContainer", props: FlashBlueprint.render_as_hash(flash).compact) %>

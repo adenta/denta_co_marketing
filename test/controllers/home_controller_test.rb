@@ -1,13 +1,13 @@
 require "test_helper"
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
-  test "index renders the splash page for signed out visitors" do
+  test "index renders the home page for signed out visitors" do
     get root_path
 
     assert_response :success
     assert_includes @response.body, "home/index"
     assert_includes @response.body, "<title>Andrew Denta</title>"
-    assert_includes @response.body, '<meta name="description" content="Base application shell with shared navigation and page mounts ready for a fresh content pass.">'
+    assert_includes @response.body, '<meta name="description" content="Application shell.">'
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/">'
     assert_includes @response.body, '<link rel="alternate" type="application/atom+xml" title="Andrew Denta feed" href="http://example.com/feed.xml">'
     assert_includes @response.body, '<meta property="og:type" content="website">'
@@ -22,11 +22,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
     refute_includes @response.body, "&quot;sign_up_path&quot;"
-    assert_includes @response.body, "&quot;aboutPath&quot;:&quot;/about&quot;"
+    refute_includes @response.body, "&quot;aboutPath&quot;:"
+    refute_includes @response.body, "&quot;servicesPath&quot;:"
     refute_includes @response.body, "Mangrove Technology Engagements"
+    refute_includes @response.body, "Blank slate"
   end
 
-  test "index renders the splash page for signed in users" do
+  test "index renders the home page for signed in users" do
     sign_in_as(users(:one))
 
     get root_path
@@ -39,13 +41,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     refute_includes @response.body, "available_agents"
   end
 
-  test "index renders the production splash page" do
+  test "index renders the production home page" do
     get root_path
 
     assert_response :success
     assert_includes @response.body, "home/index"
     refute_includes @response.body, "home/splash1"
-    assert_includes @response.body, "&quot;aboutPath&quot;:"
+    refute_includes @response.body, "&quot;aboutPath&quot;:"
     refute_includes @response.body, "&quot;content&quot;:"
     refute_includes @response.body, "&quot;recent_posts&quot;:"
   end

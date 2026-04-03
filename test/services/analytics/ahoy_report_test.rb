@@ -5,21 +5,21 @@ class Analytics::AhoyReportTest < ActiveSupport::TestCase
     now = Time.zone.parse("2026-04-02 12:00:00")
     user = users(:one)
     recent_visit = create_ahoy_visit(
-      started_at: 1.day.ago,
+      started_at: now - 1.day,
       visitor_token: "visitor-1",
       user: user,
       referring_domain: "google.com",
       landing_page: "https://example.com/",
     )
     second_visit = create_ahoy_visit(
-      started_at: 2.days.ago,
+      started_at: now - 2.days,
       visitor_token: "visitor-2",
       user: user,
       referring_domain: nil,
-      landing_page: "https://example.com/blog/the-first-five-seconds-of-product-trust",
+      landing_page: "https://example.com/writing/the-first-five-seconds-of-product-trust",
     )
     create_ahoy_visit(
-      started_at: 10.days.ago,
+      started_at: now - 10.days,
       visitor_token: "visitor-old",
       user: user,
       referring_domain: "news.ycombinator.com",
@@ -28,35 +28,35 @@ class Analytics::AhoyReportTest < ActiveSupport::TestCase
     create_ahoy_event(
       visit: recent_visit,
       name: "$view",
-      time: 1.day.ago,
+      time: now - 1.day,
       properties: { "page" => "/" },
       user: user,
     )
     create_ahoy_event(
       visit: recent_visit,
       name: "Clicked contact CTA",
-      time: 1.day.ago,
+      time: now - 1.day,
       properties: { "location" => "home hero" },
       user: user,
     )
     create_ahoy_event(
       visit: second_visit,
       name: "$view",
-      time: 2.days.ago,
-      properties: { "page" => "/blog/the-first-five-seconds-of-product-trust" },
+      time: now - 2.days,
+      properties: { "page" => "/writing/the-first-five-seconds-of-product-trust" },
       user: user,
     )
     create_ahoy_event(
       visit: second_visit,
       name: "Viewed blog post",
-      time: 2.days.ago,
+      time: now - 2.days,
       properties: { "slug" => "the-first-five-seconds-of-product-trust" },
       user: user,
     )
     create_ahoy_event(
       visit: second_visit,
       name: "Started chat",
-      time: 10.days.ago,
+      time: now - 10.days,
       properties: { "chat_id" => "old-chat" },
       user: user,
     )

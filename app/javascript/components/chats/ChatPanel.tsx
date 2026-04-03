@@ -113,16 +113,16 @@ export function ChatPanel({
   return (
     <Card
       className={cn(
-        "flex min-h-0 flex-1 border border-foreground/10 bg-card/92 py-0 shadow-[0_22px_60px_rgba(15,23,42,0.08)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.34)]",
+        "flex min-h-0 flex-1 border bg-background shadow-sm",
         className,
       )}
     >
-      <CardHeader className="shrink-0 space-y-2 border-b bg-muted/35 py-5">
+      <CardHeader className="shrink-0 space-y-2">
         <CardTitle>{resolvedTitle}</CardTitle>
         {description ? <CardDescription>{description}</CardDescription> : null}
         {showLinkedResource ? (
           <div>
-            <Button type="button" size="sm" variant="outline" asChild className="bg-background/80">
+            <Button type="button" size="sm" variant="outline" asChild>
               <a href={linkedResource.path}>Open {linkedResource.label}</a>
             </Button>
           </div>
@@ -130,7 +130,7 @@ export function ChatPanel({
       </CardHeader>
 
       <CardContent
-        className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-hidden py-4", contentClassName)}
+        className={cn("flex min-h-0 flex-1 flex-col overflow-hidden gap-4", contentClassName)}
       >
         <Conversation className={cn("min-h-0 flex-1", messagesClassName)}>
           <ConversationContent className="gap-4 p-0 pr-1">
@@ -169,7 +169,7 @@ export function ChatPanel({
               <ConversationEmptyState
                 title="Start the conversation"
                 description="Continue the conversation from this thread."
-                className="rounded-xl border border-dashed border-border/80 bg-background/55"
+                className="rounded-2xl border border-dashed"
               />
             )}
           </ConversationContent>
@@ -177,13 +177,12 @@ export function ChatPanel({
         </Conversation>
       </CardContent>
 
-      <CardFooter className="shrink-0 flex-col items-stretch gap-3 border-t bg-muted/28 p-4">
+      <CardFooter className="shrink-0 flex-col items-stretch gap-3">
         <form onSubmit={onSubmit} className="flex gap-2">
           <Input
             value={input}
             onChange={event => setInput(event.target.value)}
             placeholder="Type a message"
-            className="bg-background/82"
           />
           <Button
             type="submit"
@@ -202,7 +201,6 @@ export function ChatPanel({
             size="sm"
             onClick={() => stop()}
             disabled={status !== "submitted" && status !== "streaming"}
-            className="bg-background/75"
           >
             Stop
           </Button>

@@ -8,9 +8,7 @@ Rails.application.routes.draw do
   end
   resource :session, only: [ :new ]
   resources :passwords, only: [ :new, :edit ], param: :token
-  get "about" => "pages#about", as: :about
-  get "services" => "pages#services", as: :services
-  get "blog" => "blog_posts#index", as: :blog_posts
+  get "writing" => "blog_posts#index", as: :blog_posts
   get "projects" => "projects#index", as: :projects
   get "p/:slug" => "posts#show", as: :content_post
   resources :chats, only: [ :index, :show ]

@@ -23,14 +23,11 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background px-4 py-8 sm:py-12">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.09),_transparent_42%),linear-gradient(180deg,_rgba(15,23,42,0.05),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(71,85,105,0.22),_transparent_38%),linear-gradient(180deg,_rgba(15,23,42,0.22),_transparent_60%)]" />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
-
-      <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-xl items-center justify-center">
+    <main className="min-h-screen bg-background px-4 py-8 sm:py-12">
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-xl items-center justify-center">
         <div className="w-full">
-          <Card className="border border-foreground/10 bg-card/95 py-0 shadow-[0_22px_60px_rgba(15,23,42,0.08)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.34)]">
-            <CardHeader className="border-b bg-muted/35 py-5">
+          <Card>
+            <CardHeader>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                 {eyebrow}
               </p>
@@ -40,7 +37,7 @@ export function AuthShell({
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-5 py-5">
+            <CardContent className="space-y-5">
               {children}
               {footer ? (
                 <div className="border-t pt-3 text-sm text-muted-foreground">{footer}</div>

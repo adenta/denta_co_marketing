@@ -7,13 +7,7 @@ class HomeController < ApplicationController
 
     @page_meta = {
       title: I18n.t("site.meta.default_title", default: "Andrew Denta"),
-      description: "Base application shell with shared navigation and page mounts ready for a fresh content pass."
-    }
-    @props = {
-      aboutPath: about_path,
-      blogPath: blog_posts_path,
-      projectsPath: projects_path,
-      servicesPath: services_path
+      description: "Application shell."
     }
   end
 

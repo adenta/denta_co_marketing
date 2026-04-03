@@ -3,7 +3,7 @@ xml.instruct! :xml, version: "1.0", encoding: "UTF-8"
 xml.feed xmlns: "http://www.w3.org/2005/Atom" do
   xml.id absolute_page_url(blog_posts_path)
   xml.title I18n.t("site.meta.default_title", default: "Andrew Denta")
-  xml.subtitle "Writing archive and notes."
+  xml.subtitle "Writing."
   xml.updated @feed_updated_at.iso8601
   xml.link href: absolute_page_url(feed_path(format: :xml)), rel: "self", type: "application/atom+xml"
   xml.link href: absolute_page_url(blog_posts_path)

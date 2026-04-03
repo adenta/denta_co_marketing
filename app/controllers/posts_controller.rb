@@ -19,7 +19,7 @@ class PostsController < ApplicationController
   private
 
   def current_nav_key
-    @post&.project? ? "projects" : "blog"
+    @post&.project? ? "projects" : "writing"
   end
 
   def repository

@@ -11,14 +11,14 @@ class BlogPostsController < ApplicationController
 
     @page_meta = {
       title: "Writing | #{I18n.t("site.meta.default_title", default: "Andrew Denta")}",
-      description: "Writing archive and notes."
+      description: "Writing."
     }
   end
 
   private
 
   def current_nav_key
-    "blog"
+    "writing"
   end
 
   def repository

@@ -71,7 +71,7 @@ module Analytics
     end
 
     def window_start
-      days.days.ago.beginning_of_day
+      (now - days.days).beginning_of_day
     end
 
     def timeline_days
