@@ -111,11 +111,16 @@ export default function BlogSubscribeForm({
       </div>
 
       {isSubscribed ? (
-        <Button className="mt-4 px-0" type="button" variant="link" onClick={resetForm}>
+        <Button
+          className="mt-4 border-t pt-4 px-0"
+          type="button"
+          variant="link"
+          onClick={resetForm}
+        >
           {resetLabel}
         </Button>
       ) : (
-        <form className="mt-4 space-y-4" onSubmit={onSubmit}>
+        <form className="mt-4 space-y-4 border-t pt-4" onSubmit={onSubmit}>
           {getBaseErrors().length > 0 ? (
             <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {getBaseErrors().join(" ")}

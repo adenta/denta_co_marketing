@@ -12,7 +12,7 @@ class SeoControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.headers["Cache-Control"], "max-age=86400"
   end
 
-  test "feed renders an atom feed when there are no published posts" do
+  test "feed renders an atom feed with published posts" do
     get feed_path(format: :xml)
 
     assert_response :success
@@ -20,10 +20,11 @@ class SeoControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, %(<feed xmlns="http://www.w3.org/2005/Atom">)
     assert_includes @response.body, %(<link href="http://example.com/feed.xml" rel="self" type="application/atom+xml"/>)
     assert_includes response.headers["Cache-Control"], "max-age=86400"
-    refute_includes @response.body, "http://example.com/p/"
+    assert_includes @response.body, "<title>Context Engineering Is Only Half the Battle</title>"
+    assert_includes @response.body, "http://example.com/p/context-engineering-is-only-half"
   end
 
-  test "sitemap renders public marketing URLs when there are no content posts" do
+  test "sitemap renders public marketing URLs and published content posts" do
     get sitemap_path(format: :xml)
 
     assert_response :success
@@ -32,6 +33,6 @@ class SeoControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "<loc>http://example.com/</loc>"
     assert_includes @response.body, "<loc>http://example.com/writing</loc>"
     assert_includes response.headers["Cache-Control"], "max-age=86400"
-    refute_includes @response.body, "<loc>http://example.com/p/"
+    assert_includes @response.body, "<loc>http://example.com/p/context-engineering-is-only-half</loc>"
   end
 end

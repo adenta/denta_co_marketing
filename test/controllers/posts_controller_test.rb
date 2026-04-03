@@ -1,6 +1,19 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
+  test "published writing posts render and track a page view" do
+    assert_difference('Ahoy::Event.where(name: "Viewed blog post").count', 1) do
+      get content_post_path("context-engineering-is-only-half")
+    end
+
+    assert_response :success
+    assert_includes @response.body, "<title>Context Engineering Is Only Half the Battle | Andrew Denta</title>"
+    assert_includes @response.body, "Why scaffolds matter just as much as context engineering when you want reliable AI-assisted software delivery."
+    assert_includes @response.body, "turbo-mount-blog--you-tube-embed"
+    assert_includes @response.body, "8IkufN4_Tr0"
+    assert_includes @response.body, "Back to writing"
+  end
+
   test "removed writing posts return not found and do not track an event" do
     assert_no_difference('Ahoy::Event.where(name: "Viewed blog post").count') do
       get content_post_path("the-first-five-seconds-of-product-trust")
