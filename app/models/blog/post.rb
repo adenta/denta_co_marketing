@@ -1,6 +1,6 @@
 module Blog
   class Post
-    attr_reader :slug, :title, :excerpt, :published_on, :author, :html_body
+    attr_reader :slug, :title, :excerpt, :published_on, :author, :html_body, :tags
 
     def initialize(
       slug:,
@@ -9,7 +9,8 @@ module Blog
       published_on:,
       author: "Andrew Denta",
       html_body:,
-      draft: false
+      draft: false,
+      tags: []
     )
       @slug = slug
       @title = title
@@ -18,14 +19,19 @@ module Blog
       @author = author.presence || "Andrew Denta"
       @html_body = html_body
       @draft = draft
+      @tags = Array(tags).map(&:to_s).uniq.freeze
     end
 
     def draft?
       @draft == true
     end
 
+    def project?
+      tags.include?("project")
+    end
+
     def path
-      Rails.application.routes.url_helpers.blog_post_path(slug)
+      Rails.application.routes.url_helpers.content_post_path(slug)
     end
 
     def published_at

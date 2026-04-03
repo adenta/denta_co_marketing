@@ -35,10 +35,10 @@
     <span></span>
   </div>
 
-  <div class="space-y-5">
-    <% @posts.each do |post| %>
-      <%= render "post_card", post:, path: blog_post_path(post.slug) %>
-    <% end %>
+    <div class="space-y-5">
+      <% @posts.each do |post| %>
+        <%= render "post_card", post:, path: post.path %>
+      <% end %>
 
     <% if @posts.empty? %>
       <div class="blog-surface-card rounded-[1.3rem] border border-dashed p-8 text-center text-muted-foreground">

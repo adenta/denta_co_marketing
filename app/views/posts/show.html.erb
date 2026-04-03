@@ -4,6 +4,10 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
+<% back_path = @post.project? ? projects_path : blog_posts_path %>
+<% back_label = @post.project? ? "Back to projects" : "Back to writing" %>
+<% content_label = @post.project? ? "Project" : "Writing" %>
+
 <section class="blog-grid-shell border-b border-border/70">
   <div aria-hidden="true" class="blog-square-cluster blog-square-cluster--top-left">
     <span></span>
@@ -16,9 +20,10 @@
 
   <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8">
     <div class="max-w-3xl space-y-5">
-      <%= link_to "Back to writing", blog_posts_path, class: "inline-flex rounded-lg border border-border/80 bg-background/85 px-3 py-1.5 text-sm font-medium text-[#334155] transition-colors hover:border-primary/25 hover:text-foreground dark:text-[#9eabb8] dark:hover:text-[#eef2f6]" %>
+      <%= link_to back_label, back_path, class: "inline-flex rounded-lg border border-border/80 bg-background/85 px-3 py-1.5 text-sm font-medium text-[#334155] transition-colors hover:border-primary/25 hover:text-foreground dark:text-[#9eabb8] dark:hover:text-[#eef2f6]" %>
 
       <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+        <span class="rounded-full border border-[#155e63]/18 bg-white/90 px-2.5 py-1 text-xs font-semibold tracking-[0.14em] text-[#155e63] uppercase dark:border-[#67c7d0]/18 dark:bg-[#131a21]/90 dark:text-[#67c7d0]"><%= content_label %></span>
         <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
         <span>&middot;</span>
         <span><%= @post.author %></span>
@@ -39,7 +44,9 @@
     <%= @post.html_body.html_safe %>
   </article>
 
-  <div class="mt-8">
-    <%= render "subscribe_card" %>
-  </div>
+  <% unless @post.project? %>
+    <div class="mt-8">
+      <%= render "blog_posts/subscribe_card" %>
+    </div>
+  <% end %>
 </section>

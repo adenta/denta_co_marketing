@@ -6,15 +6,14 @@ class BlogPostsController < ApplicationController
 
     @page_meta = page_content.fetch(:meta)
     @page_content = page_content.except(:meta)
-    @posts = repository.published_posts(include_drafts: preview_enabled?)
-  end
-
-  def show
-    @post = repository.published_post_by_slug!(params[:slug], include_drafts: preview_enabled?)
-    ahoy.track "Viewed blog post", slug: @post.slug, title: @post.title
+    @posts = repository.blog_posts(include_drafts: preview_enabled?)
   end
 
   private
+
+  def current_nav_key
+    "blog"
+  end
 
   def repository
     @repository ||= Blog::PostRepository.new

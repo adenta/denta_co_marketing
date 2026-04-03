@@ -77,7 +77,11 @@ function HeroGlyphMarks() {
   );
 }
 
-export default function HomeIndex({ content, blog_index_path, recent_posts }: HomeIndexProps) {
+export default function HomeIndex({
+  content,
+  blog_index_path,
+  recent_posts,
+}: HomeIndexProps) {
   const { hero, primary_cta, secondary_link, profile, recent_writing } = content;
 
   return (

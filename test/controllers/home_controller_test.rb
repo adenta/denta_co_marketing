@@ -6,16 +6,17 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "A friendly place to think through useful AI and the software around it."
+    assert_includes @response.body, "Founder and engineer working on AI systems that reduce operational drag."
     assert_includes @response.body, "<title>Andrew Denta</title>"
     assert_includes @response.body, '<meta name="description" content="A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work.">'
-    assert_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
     assert_includes @response.body, "denta-theme"
     refute_includes @response.body, "navigation/Navbar"
-    assert_includes @response.body, "&quot;developer_sign_in_enabled&quot;:true"
+    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:true"
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
     refute_includes @response.body, "&quot;sign_up_path&quot;"
+    refute_includes @response.body, "Mangrove Technology Engagements"
   end
 
   test "index renders the splash page for signed in users" do
@@ -25,7 +26,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
     refute_includes @response.body, "navigation/Navbar"
     refute_includes @response.body, users(:one).email_address
     refute_includes @response.body, "available_agents"
@@ -48,7 +49,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    refute_includes @response.body, "navigation/AuthControls"
+    assert_includes @response.body, "navigation/SiteNav"
+    assert_includes @response.body, "&quot;developerSignInEnabled&quot;:false"
   ensure
     Rails.define_singleton_method(:env, original_env_method)
   end
