@@ -48,7 +48,7 @@ module Content
       sanitized_html = sanitize(fragment.to_html, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES)
       sanitized_fragment = Nokogiri::HTML::DocumentFragment.parse(sanitized_html)
       replace_youtube_embeds!(sanitized_fragment)
-      normalize_heading_ids!(sanitized_fragment)
+      decorate_headings!(sanitized_fragment)
 
       RenderedContent.new(
         html: sanitized_fragment.to_html
@@ -108,12 +108,28 @@ module Content
       HTML
     end
 
-    def normalize_heading_ids!(fragment)
-      fragment.css("h1 > a.anchor[id]:first-child, h2 > a.anchor[id]:first-child, h3 > a.anchor[id]:first-child, h4 > a.anchor[id]:first-child, h5 > a.anchor[id]:first-child, h6 > a.anchor[id]:first-child").each do |anchor|
+    HEADING_ANCHOR_SELECTOR = "h1 > a.anchor[id]:first-child, h2 > a.anchor[id]:first-child, h3 > a.anchor[id]:first-child, h4 > a.anchor[id]:first-child, h5 > a.anchor[id]:first-child, h6 > a.anchor[id]:first-child".freeze
+    HEADING_LINK_LABEL = "Copy link to this section".freeze
+
+    def decorate_headings!(fragment)
+      fragment.css(HEADING_ANCHOR_SELECTOR).each do |anchor|
         heading = anchor.parent
-        heading["id"] ||= anchor["id"]
+        heading_id = anchor["id"].presence
+        next unless heading && heading_id
+
+        heading["id"] ||= heading_id
         anchor.remove
+        heading.add_child(build_heading_link(fragment.document, heading_id))
       end
+    end
+
+    def build_heading_link(document, heading_id)
+      link = Nokogiri::XML::Node.new("a", document)
+      link["class"] = "heading-anchor"
+      link["href"] = "##{heading_id}"
+      link["title"] = HEADING_LINK_LABEL
+      link["aria-label"] = HEADING_LINK_LABEL
+      link
     end
   end
 end
