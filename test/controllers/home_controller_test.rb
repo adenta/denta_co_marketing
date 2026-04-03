@@ -6,9 +6,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "home/index"
-    assert_includes @response.body, "Founder and engineer working on AI systems that reduce operational drag."
     assert_includes @response.body, "<title>Andrew Denta</title>"
-    assert_includes @response.body, '<meta name="description" content="A personal site and blog about useful AI, software, systems, and the operational friction that shapes real work.">'
+    assert_includes @response.body, '<meta name="description" content="Base application shell with shared navigation and page mounts ready for a fresh content pass.">'
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/">'
     assert_includes @response.body, '<link rel="alternate" type="application/atom+xml" title="Andrew Denta feed" href="http://example.com/feed.xml">'
     assert_includes @response.body, '<meta property="og:type" content="website">'
@@ -23,6 +22,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     refute_includes @response.body, "available_agents"
     refute_includes @response.body, "&quot;sign_in_path&quot;"
     refute_includes @response.body, "&quot;sign_up_path&quot;"
+    assert_includes @response.body, "&quot;aboutPath&quot;:&quot;/about&quot;"
     refute_includes @response.body, "Mangrove Technology Engagements"
   end
 
@@ -45,8 +45,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes @response.body, "home/index"
     refute_includes @response.body, "home/splash1"
-    assert_includes @response.body, "&quot;content&quot;:"
-    assert_includes @response.body, "&quot;recent_posts&quot;:"
+    assert_includes @response.body, "&quot;aboutPath&quot;:"
+    refute_includes @response.body, "&quot;content&quot;:"
+    refute_includes @response.body, "&quot;recent_posts&quot;:"
   end
 
   test "index omits auth controls for signed out visitors when developer sign in is disabled" do

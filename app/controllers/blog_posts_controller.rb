@@ -2,7 +2,6 @@ class BlogPostsController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    page_content = localized_copy("pages.blog.index")
     @posts = repository.blog_posts(include_drafts: preview_enabled?)
 
     return unless cache_public_page!(
@@ -10,8 +9,10 @@ class BlogPostsController < ApplicationController
       last_modified: [ translations_last_updated_at, repository.latest_updated_at(include_drafts: preview_enabled?) ].compact.max,
     )
 
-    @page_meta = page_content.fetch(:meta)
-    @page_content = page_content.except(:meta)
+    @page_meta = {
+      title: "Writing | #{I18n.t("site.meta.default_title", default: "Andrew Denta")}",
+      description: "Writing archive and notes."
+    }
   end
 
   private

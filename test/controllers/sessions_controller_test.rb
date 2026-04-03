@@ -6,10 +6,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_page_mount "sessions/new"
     assert_includes @response.body, "<title>Sign in | Andrew Denta</title>"
-    assert_includes @response.body, '<meta name="description" content="Use your email address and password to pick up where you left off.">'
-    assert_includes @response.body, "&quot;content&quot;:"
-    assert_includes @response.body, "Account Access"
-    assert_includes @response.body, "A clean Rails and React starting point for authenticated product flows."
+    assert_includes @response.body, '<meta name="description" content="Use your email address and password to continue.">'
+    assert_includes @response.body, "&quot;create_path&quot;:&quot;/api/v1/session&quot;"
+    refute_includes @response.body, "&quot;content&quot;:"
     refute_includes @response.body, "Reset it here"
     refute_includes @response.body, "Create one"
   end

@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def localized_copy(key)
-    I18n.t(key, raise: true).deep_symbolize_keys
-  end
-
   def current_user
     Current.user
   end

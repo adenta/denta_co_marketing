@@ -2,11 +2,11 @@ class ProjectsController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    page_content = localized_copy("pages.projects")
-
-    @page_meta = page_content.fetch(:meta)
+    @page_meta = {
+      title: "Projects | #{I18n.t("site.meta.default_title", default: "Andrew Denta")}",
+      description: "Project index scaffold with linked project entries."
+    }
     @props = {
-      content: page_content.except(:meta),
       projects: PostBlueprint.render_as_hash(
         repository.project_posts(include_drafts: preview_enabled?)
       )

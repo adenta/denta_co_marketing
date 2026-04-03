@@ -1,166 +1,70 @@
 import { ArrowRight } from "lucide-react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
-import { HeadshotCard, ExternalMangroveLink } from "@/components/home/shared";
-import { Button } from "@/components/ui/button";
-
-type RecentPost = {
-  path: string;
-  author: string;
-  published_at: string;
-  title: string;
-  excerpt: string;
-};
-
-type HomePageContent = {
-  hero: {
-    title: string;
-    body: string;
-  };
-  primary_cta: {
-    label: string;
-    href: string;
-  };
-  secondary_link: {
-    label: string;
-    href: string;
-  };
-  profile: {
-    name: string;
-    image_alt: string;
-    body: string;
-  };
-  recent_writing: {
-    title: string;
-    all_posts_label: string;
-  };
-};
 
 type HomeIndexProps = {
-  content: HomePageContent;
-  blog_index_path: string;
-  recent_posts: RecentPost[];
+  aboutPath: string;
+  blogPath: string;
+  projectsPath: string;
+  servicesPath: string;
 };
 
-function HeroGlyphMarks() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <svg
-        viewBox="0 0 280 170"
-        className="absolute -left-8 top-8 h-28 w-48 text-[#c9d3dd] opacity-95 sm:left-4 sm:top-10 sm:h-36 sm:w-56 dark:text-[#27414b] dark:opacity-75"
-        fill="none"
-      >
-        <rect x="20" y="18" width="56" height="56" rx="10" fill="currentColor" />
-        <rect x="86" y="18" width="38" height="94" rx="10" fill="currentColor" />
-      </svg>
+const sections = [
+  {
+    title: "About",
+    description: "Reserve this page for positioning, background, or operator notes.",
+    key: "aboutPath" as const,
+  },
+  {
+    title: "Services",
+    description: "Use this slot once there is a real offer structure to explain.",
+    key: "servicesPath" as const,
+  },
+  {
+    title: "Projects",
+    description: "Keep project case studies or work samples behind a dedicated index.",
+    key: "projectsPath" as const,
+  },
+  {
+    title: "Writing",
+    description: "The blog remains available if you want to publish long-form content.",
+    key: "blogPath" as const,
+  },
+];
 
-      <svg
-        viewBox="0 0 320 170"
-        className="absolute left-[28%] top-8 hidden h-28 w-64 text-[#dbe4ec] opacity-90 md:block lg:left-[36%] dark:text-[#182833] dark:opacity-95"
-        fill="none"
-      >
-        <rect x="18" y="52" width="188" height="52" rx="12" fill="currentColor" />
-        <rect x="190" y="18" width="48" height="48" rx="10" fill="currentColor" />
-      </svg>
-
-      <svg
-        viewBox="0 0 340 170"
-        className="absolute bottom-12 right-6 h-28 w-48 text-[#9db3bd] opacity-70 sm:h-36 sm:w-60 dark:text-[#43616b] dark:opacity-55"
-        fill="none"
-      >
-        <rect x="0" y="84" width="52" height="52" rx="10" fill="currentColor" />
-        <rect x="64" y="84" width="100" height="52" rx="10" fill="currentColor" />
-        <rect x="238" y="20" width="52" height="52" rx="10" fill="currentColor" />
-        <rect x="238" y="84" width="52" height="52" rx="10" fill="currentColor" />
-        <rect x="304" y="20" width="36" height="116" rx="10" fill="currentColor" />
-      </svg>
-    </div>
-  );
-}
-
-export default function HomeIndex({
-  content,
-  blog_index_path,
-  recent_posts,
-}: HomeIndexProps) {
-  const { hero, primary_cta, secondary_link, profile, recent_writing } = content;
-
+export default function HomeIndex(props: HomeIndexProps) {
   return (
     <section className="relative isolate overflow-hidden bg-background">
-      <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,rgba(241,246,250,0.98),rgba(231,238,244,0.98)_34%,rgba(217,228,238,1)_100%),radial-gradient(circle_at_top_left,rgba(15,23,42,0.14),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(13,110,117,0.16),transparent_24%),radial-gradient(circle_at_64%_56%,rgba(51,65,85,0.12),transparent_30%)] dark:bg-[linear-gradient(180deg,rgba(9,13,17,0.98),rgba(11,16,22,0.98)_30%,rgba(10,14,19,1)_100%),radial-gradient(circle_at_top_left,rgba(51,65,85,0.24),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(44,155,170,0.16),transparent_28%),radial-gradient(circle_at_64%_56%,rgba(15,23,42,0.38),transparent_34%)]" />
-      <div className="absolute inset-0 -z-20 opacity-90 [background-image:radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.3)_1.25px,transparent_0)] [background-size:18px_18px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.92),rgba(0,0,0,0.48)_58%,transparent)] dark:[background-image:radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.14)_1.1px,transparent_0)] dark:opacity-85" />
-      <HeroGlyphMarks />
-      <div className="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16 lg:px-12">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-start">
-          <div className="space-y-5">
-            <div className="space-y-3">
-              <h1 className="max-w-4xl text-[clamp(2.4rem,6vw,4.7rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground">
-                {hero.title}
-              </h1>
-              <p className="max-w-3xl text-[0.97rem] leading-7 text-[#334155] sm:text-[1.02rem] dark:text-[#a7b1bc]">
-                {hero.body}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Button
-                asChild
-                size="lg"
-                className="h-9 rounded-lg px-4"
-              >
-                <a
-                  href={primary_cta.href}
-                  onClick={() =>
-                    trackAnalyticsEvent("Clicked contact CTA", {
-                      location: "home hero",
-                      href: primary_cta.href,
-                    })
-                  }
-                >
-                  {primary_cta.label}
-                  <ArrowRight className="size-4" />
-                </a>
-              </Button>
-              <ExternalMangroveLink href={secondary_link.href} label={secondary_link.label} />
-            </div>
-          </div>
-
-          <HeadshotCard name={profile.name} imageAlt={profile.image_alt} body={profile.body} />
+      <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(246,248,250,0.98),rgba(233,238,243,0.98)_40%,rgba(223,230,236,1)_100%),radial-gradient(circle_at_top_left,rgba(15,23,42,0.1),transparent_34%),radial-gradient(circle_at_85%_15%,rgba(21,94,99,0.12),transparent_24%)] dark:bg-[linear-gradient(180deg,rgba(9,13,17,0.98),rgba(11,16,22,0.98)_34%,rgba(10,14,19,1)_100%),radial-gradient(circle_at_top_left,rgba(51,65,85,0.24),transparent_34%),radial-gradient(circle_at_85%_15%,rgba(44,155,170,0.14),transparent_28%)]" />
+      <div className="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-8 lg:px-12">
+        <div className="max-w-3xl rounded-[2rem] border border-[#0f172a]/10 bg-white/88 p-8 shadow-[0_28px_64px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/8 dark:bg-[#131a21]/88 dark:shadow-[0_24px_64px_rgba(0,0,0,0.32)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#155e63] dark:text-[#67c7d0]">
+            Blank slate
+          </p>
+          <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.6rem)] font-semibold leading-[0.98] tracking-[-0.05em] text-[#0f172a] dark:text-[#eef2f6]">
+            The application shell is intact. The marketing layer is gone.
+          </h1>
+          <p className="mt-4 max-w-2xl text-[1rem] leading-8 text-[#425466] dark:text-[#9eabb8]">
+            Navigation, page mounting, auth flows, and content routes still work. The home page now acts as a reset point instead of carrying a full personal-site narrative.
+          </p>
         </div>
 
-        <div id="recent-writing" className="mt-12 border-t border-[#0f3f46]/16 pt-6 dark:border-[#67c7d0]/12">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
-              {recent_writing.title}
-            </h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {sections.map(section => (
             <a
-              href={blog_index_path}
-              className="inline-flex items-center gap-2 rounded-full border border-[#155e63]/18 bg-white/98 px-4 py-2 text-sm font-medium text-[#264653] shadow-[0_12px_28px_rgba(15,23,42,0.08)] transition-colors hover:border-[#155e63]/30 hover:text-[#0c2726] dark:border-[#67c7d0]/16 dark:bg-[#131a21]/92 dark:text-[#a7b1bc] dark:hover:border-[#67c7d0]/30 dark:hover:text-[#f3f3f2]"
+              key={section.title}
+              href={props[section.key]}
+              className="group rounded-[1.75rem] border border-[#0f172a]/10 bg-white/94 p-6 shadow-[0_22px_48px_rgba(15,23,42,0.07)] transition-transform hover:-translate-y-0.5 hover:border-[#155e63]/24 dark:border-white/8 dark:bg-[#131a21]/92 dark:shadow-[0_20px_48px_rgba(0,0,0,0.3)]"
             >
-              {recent_writing.all_posts_label}
-              <ArrowRight className="size-4" />
-            </a>
-          </div>
-
-          <div className="mt-6 grid gap-3 md:grid-cols-3">
-            {recent_posts.map(post => (
-              <a
-                key={post.path}
-                href={post.path}
-                className="group rounded-2xl border border-[#0f172a]/12 bg-white/97 p-4 shadow-[0_20px_44px_rgba(15,23,42,0.09)] backdrop-blur transition-transform hover:-translate-y-0.5 hover:border-[#155e63]/24 dark:border-white/8 dark:bg-[#131a21]/92 dark:shadow-[0_18px_48px_rgba(0,0,0,0.32)]"
-              >
-                <div className="flex items-center justify-between gap-3 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-[#155e63] dark:text-[#67c7d0]">
-                  <p>{post.author}</p>
-                  <p>{post.published_at}</p>
-                </div>
-                <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-[#0f172a] transition-colors group-hover:text-[#155e63] dark:text-foreground dark:group-hover:text-[#67c7d0]">
-                  {post.title}
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[#0f172a] dark:text-[#eef2f6]">
+                  {section.title}
                 </h2>
-                <p className="mt-2.5 text-sm leading-6 text-[#425466] dark:text-[#9eabb8]">
-                  {post.excerpt}
-                </p>
-              </a>
-            ))}
-          </div>
+                <ArrowRight className="size-4 text-[#155e63] transition-transform group-hover:translate-x-0.5 dark:text-[#67c7d0]" />
+              </div>
+              <p className="mt-3 text-sm leading-7 text-[#425466] dark:text-[#9eabb8]">
+                {section.description}
+              </p>
+            </a>
+          ))}
         </div>
       </div>
     </section>

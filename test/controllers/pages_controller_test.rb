@@ -7,7 +7,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes @response.body, "pages/about"
     assert_includes @response.body, "<title>About | Andrew Denta</title>"
-    assert_includes @response.body, "I like software that makes messy work feel legible."
+    assert_includes @response.body, '<meta name="description" content="About page scaffold ready for a new narrative.">'
+    refute_includes @response.body, "data-turbo-mount-pages--about-props-value"
     assert_includes @response.body, "navigation/SiteNav"
   end
 
@@ -17,8 +18,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes @response.body, "pages/services"
     assert_includes @response.body, "<title>Services | Andrew Denta</title>"
-    assert_includes @response.body, "Build AI systems that stay useful after the demo."
-    assert_includes @response.body, "Embedded build sprint"
+    assert_includes @response.body, '<meta name="description" content="Services page scaffold ready for a new offer structure.">'
+    refute_includes @response.body, "data-turbo-mount-pages--services-props-value"
     assert_includes @response.body, "navigation/SiteNav"
   end
 end
