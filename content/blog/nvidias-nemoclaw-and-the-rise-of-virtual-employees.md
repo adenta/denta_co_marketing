@@ -1,56 +1,32 @@
 ---
-title: NVIDIA's NemoClaw and the Rise of Virtual Employees
-excerpt: NemoClaw does not replace OpenClaw. It adds the governance, sandboxing, and control layer enterprises need if AI agents are going to become autonomous virtual employees.
-published_on: 2026-04-03
+title: Putting AI Agents in Production
+excerpt: Ok, so. You want to build autonomous virtual employees that can take a long-running, complex task and run with it, checking in when they need approval.
+published_on: 2026-03-13
 tags:
   - ai
   - agents
   - nvidia
 ---
 
-Everybody wants autonomous virtual employees right now: software agents that can take a long-running, messy task, make progress independently, and only stop when they need judgment or approval.
+A lot of teams are currently experimenting with putting agents in production. When you actually try to deploy this stuff inside a company you quickly run into questions about security, permissions, monitoring, and governance. Nemoclaw looks to be NVIDIA’s answer to those questions.
 
-That sounds great in a demo. Inside a real company, it immediately raises harder questions. What can the agent touch? Where can it send data? How do you keep credentials from leaking? Who approved a risky action?
+NVIDIA originally built its fortune on CUDA, the interface layer that made it possible for developers to program NVIDIA GPUs. CUDA turned GPUs from specialized hardware into a platform developers could build on.
 
-That is why [NemoClaw](https://github.com/NVIDIA/NemoClaw) caught my attention.
+If the next wave of software is programming AI agents, it makes sense that NVIDIA would want to be that foundational layer again, this time higher up the stack.
+
 ![OpenShell and virtual employees.](/images/blog/nemoclaw/openshell-and-virtual-employees.png)
-
 ![OpenClaw is the racecar. NemoClaw is the pit crew.](/images/blog/nemoclaw/openclaw-racecar.png)
-
 ![What NemoClaw adds.](/images/blog/nemoclaw/nemoclaw-pit-crew.png)
 
-## OpenClaw Is the Racecar
+Plot twist: NVIDIA NemoClaw does not replace OpenClaw.
 
-[OpenClaw](https://openclaw.ai) is what everyone was excited about back in January. It runs the agent loop: prompts, tools, responses. It gives you chat and CLI interfaces. It supports plugins. It runs directly on the host.
+It extends it.
 
-That is the fast part. That is the part that feels like progress.
+OpenClaw is the racecar.
+NemoClaw is the pit crew. The thing that makes Nemoclaw powerful looks to be another new piece of tech, [Openshell](https://github.com/NVIDIA/OpenShell).
 
-Enterprises don't just need a racecar, they need the whole pit crew: safety, governance, permissions, auditability, and operational control.
+OpenShell is a sandboxed execution environment for AI agents. It keeps agents isolated in their own containers, limiting access to files, directories, and network/internet endpoints.
 
-## OpenShell Is the Important Piece
+It also handles model routing, which helps prevent credentials from being exposed to local models, while setting the stage for safely using remote models (think GPT-5, Gemini, etc.) in the future.
 
-The key component, in my view, is OpenShell.
-
-OpenShell gives agents a sandbox instead of raw host access. Each agent runs in its own container with tighter controls over files, directories, network access, and model routing.
-
-In other words, OpenShell is not just a sandbox. It is a policy boundary.
-
-_The important addition is not "more agent." It is control over the environment the agent runs inside._
-
-## Why NemoClaw Matters
-
-That is the gap NemoClaw appears to address.
-
-If OpenClaw is the runtime, NemoClaw is the operational layer around it: guardrails, lifecycle workflows, and the controls a company needs before letting agents touch real work.
-
-## The Bigger NVIDIA Bet
-
-NVIDIA originally built its fortune in one era by becoming the layer developers programmed against. CUDA turned GPUs from specialized hardware into a platform.
-
-NemoClaw looks like the same play higher up the stack: not just selling compute, but helping define how agents are hosted, governed, and connected to models.
-
-## My Take
-
-The next wave will not reward the flashiest agent demo. It will reward the teams that can make agents safe, inspectable, and manageable inside real organizations.
-
-That is why NemoClaw is interesting to me. If autonomous virtual employees happen, it will be because the control layer got good enough to trust.
+Exciting times. Is everyone now a manager? Or is nobody a manager? One way to find out.
