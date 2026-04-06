@@ -274,7 +274,7 @@ function TrustedBySection({
                   alt=""
                   aria-hidden="true"
                   className={cn(
-                    "max-h-full w-full object-contain object-center transition-opacity dark:invert",
+                    "max-h-full w-full object-contain object-center transition-opacity",
                     slot.phase === "fading-out" ? "opacity-0" : "opacity-100",
                   )}
                   style={{ transitionDuration: `${transitionDurationMs}ms` }}
