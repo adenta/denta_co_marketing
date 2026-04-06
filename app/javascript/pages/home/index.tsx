@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -44,25 +40,45 @@ type HomeIndexProps = {
 };
 
 type LogoSlot = {
-  current: TrustedByLogo;
+  logos: TrustedByLogo[];
+  currentIndex: number;
   phase: "visible" | "fading-out" | "fading-in";
 };
 
-const SLOT_VISIBILITY_CLASSNAMES = [
-  "block",
-  "hidden sm:block",
-  "hidden lg:block",
-];
-
-function buildInitialTrustedByLogos(fixedLogoNames: string[]) {
+function buildTrustedByLogoBins(fixedLogoNames: string[]) {
+  const seenPreferredLogoNames = new Set<string>();
   const preferred = fixedLogoNames
-    .map(name => trustedByLogos.find(logo => logo.name === name))
-    .filter((logo): logo is TrustedByLogo => Boolean(logo));
+    .map((name) => trustedByLogos.find((logo) => logo.name === name))
+    .filter((logo): logo is TrustedByLogo => {
+      if (!logo || seenPreferredLogoNames.has(logo.name)) {
+        return false;
+      }
+
+      seenPreferredLogoNames.add(logo.name);
+
+      return true;
+    });
   const remaining = trustedByLogos.filter(
-    logo => !preferred.some(preferredLogo => preferredLogo.name === logo.name),
+    (logo) =>
+      !preferred.some((preferredLogo) => preferredLogo.name === logo.name),
+  );
+  const bins: TrustedByLogo[][] = [[], [], []];
+  const initialLogos = [...preferred, ...remaining].slice(0, bins.length);
+
+  initialLogos.forEach((logo, index) => {
+    bins[index].push(logo);
+  });
+
+  const usedInitialLogoNames = new Set(initialLogos.map((logo) => logo.name));
+  const overflowLogos = trustedByLogos.filter(
+    (logo) => !usedInitialLogoNames.has(logo.name),
   );
 
-  return [...preferred, ...remaining].slice(0, 3);
+  overflowLogos.forEach((logo, index) => {
+    bins[index % bins.length].push(logo);
+  });
+
+  return bins.filter((bin) => bin.length > 0);
 }
 
 function shuffleSlotIndexes(slotCount: number) {
@@ -70,37 +86,13 @@ function shuffleSlotIndexes(slotCount: number) {
 
   for (let index = indexes.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
-    [indexes[index], indexes[randomIndex]] = [indexes[randomIndex], indexes[index]];
+    [indexes[index], indexes[randomIndex]] = [
+      indexes[randomIndex],
+      indexes[index],
+    ];
   }
 
   return indexes;
-}
-
-function pickNextTrustedByLogo(
-  slotIndex: number,
-  slots: LogoSlot[],
-  rotatingLogos: TrustedByLogo[],
-  reservedLogoNames: Set<string>,
-) {
-  const currentName = slots[slotIndex]?.current.name;
-  const occupiedNames = new Set([
-    ...slots.map(slot => slot.current.name),
-    ...reservedLogoNames,
-  ]);
-
-  let candidates = rotatingLogos.filter(
-    logo => logo.name !== currentName && !occupiedNames.has(logo.name),
-  );
-
-  if (candidates.length === 0) {
-    candidates = rotatingLogos.filter(logo => logo.name !== currentName);
-  }
-
-  if (candidates.length === 0) {
-    return null;
-  }
-
-  return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
 function usePrefersReducedMotion() {
@@ -132,32 +124,23 @@ function TrustedBySection({
   transitionDurationMs,
   staggerDelayMs,
 }: HomeIndexProps["trustedBy"]) {
-  const initialLogos = buildInitialTrustedByLogos(fixedLogoNames);
-  const rotatingLogos = trustedByLogos.filter(
-    logo => !initialLogos.some(initialLogo => initialLogo.name === logo.name),
-  );
-  const [slots, setSlots] = useState<LogoSlot[]>(
-    () =>
-      initialLogos.map(logo => ({
-        current: logo,
-        phase: "visible",
-      })),
+  const logoBins = buildTrustedByLogoBins(fixedLogoNames);
+  const [slots, setSlots] = useState<LogoSlot[]>(() =>
+    logoBins.map((logos) => ({
+      logos,
+      currentIndex: 0,
+      phase: "visible",
+    })),
   );
   const prefersReducedMotion = usePrefersReducedMotion();
   const slotsRef = useRef(slots);
-  const rotatingLogosRef = useRef(rotatingLogos);
   const transitionDurationMsRef = useRef(transitionDurationMs);
-  const reservedLogoNamesRef = useRef(new Set<string>());
   const rotationTimeoutIdsRef = useRef(new Set<number>());
   const phaseTimeoutIdsRef = useRef(new Set<number>());
 
   useEffect(() => {
     slotsRef.current = slots;
   }, [slots]);
-
-  useEffect(() => {
-    rotatingLogosRef.current = rotatingLogos;
-  }, [rotatingLogos]);
 
   useEffect(() => {
     transitionDurationMsRef.current = transitionDurationMs;
@@ -173,34 +156,23 @@ function TrustedBySection({
       window.clearTimeout(timeoutId);
     }
     phaseTimeoutIdsRef.current.clear();
-
-    reservedLogoNamesRef.current.clear();
   };
 
   const runSlotTransition = (slotIndex: number) => {
     const currentSlots = slotsRef.current;
-    const availableRotatingLogos = rotatingLogosRef.current;
     const currentSlot = currentSlots[slotIndex];
 
-    if (!currentSlot || currentSlot.phase !== "visible" || availableRotatingLogos.length === 0) {
+    if (
+      !currentSlot ||
+      currentSlot.phase !== "visible" ||
+      currentSlot.logos.length <= 1
+    ) {
       return;
     }
 
-    const reservedLogoNames = reservedLogoNamesRef.current;
-    const nextLogo = pickNextTrustedByLogo(
-      slotIndex,
-      currentSlots,
-      availableRotatingLogos,
-      reservedLogoNames,
-    );
+    const nextIndex = (currentSlot.currentIndex + 1) % currentSlot.logos.length;
 
-    if (!nextLogo) {
-      return;
-    }
-
-    reservedLogoNames.add(nextLogo.name);
-
-    setSlots(previousSlots =>
+    setSlots((previousSlots) =>
       previousSlots.map((slot, index) =>
         index === slotIndex
           ? {
@@ -214,11 +186,12 @@ function TrustedBySection({
     const swapTimeoutId = window.setTimeout(() => {
       phaseTimeoutIdsRef.current.delete(swapTimeoutId);
 
-      setSlots(previousSlots =>
+      setSlots((previousSlots) =>
         previousSlots.map((slot, index) =>
           index === slotIndex
             ? {
-                current: nextLogo,
+                ...slot,
+                currentIndex: nextIndex,
                 phase: "fading-in",
               }
             : slot,
@@ -227,9 +200,8 @@ function TrustedBySection({
 
       const settleTimeoutId = window.setTimeout(() => {
         phaseTimeoutIdsRef.current.delete(settleTimeoutId);
-        reservedLogoNamesRef.current.delete(nextLogo.name);
 
-        setSlots(previousSlots =>
+        setSlots((previousSlots) =>
           previousSlots.map((slot, index) =>
             index === slotIndex
               ? {
@@ -250,7 +222,7 @@ function TrustedBySection({
   useEffect(() => {
     clearScheduledAnimations();
 
-    if (prefersReducedMotion || rotatingLogos.length === 0) {
+    if (prefersReducedMotion || slots.every((slot) => slot.logos.length <= 1)) {
       return undefined;
     }
 
@@ -279,42 +251,35 @@ function TrustedBySection({
     return () => {
       clearScheduledAnimations();
     };
-  }, [
-    prefersReducedMotion,
-    rotatingLogos.length,
-    rotationIntervalMs,
-    slots.length,
-    staggerDelayMs,
-  ]);
+  }, [prefersReducedMotion, rotationIntervalMs, slots.length, staggerDelayMs]);
 
   return (
     <section className="mt-12" aria-label={heading}>
       <div className="space-y-5">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          <p className="text-sm font-semibold uppercase text-muted-foreground">
             {heading}
           </p>
         </div>
-        <div className="grid grid-cols-1 items-center gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 items-center gap-y-6 lg:grid-cols-3 lg:gap-x-10">
           {slots.map((slot, index) => (
             <div
               key={index}
-              className={cn(
-                "animate-in fade-in slide-in-from-bottom-2 duration-700 motion-reduce:animate-none",
-                SLOT_VISIBILITY_CLASSNAMES[index] ?? "",
-              )}
+              className="animate-in fade-in slide-in-from-bottom-2 duration-700 motion-reduce:animate-none"
               style={{ animationDelay: `${index * 120}ms` }}
             >
-              <img
-                src={slot.current.src}
-                alt=""
-                aria-hidden="true"
-                className={cn(
-                  "h-[4.5rem] w-full object-contain object-left transition-opacity dark:invert",
-                  slot.phase === "fading-out" ? "opacity-0" : "opacity-100",
-                )}
-                style={{ transitionDuration: `${transitionDurationMs}ms` }}
-              />
+              <div className="flex h-16 items-center justify-center overflow-hidden">
+                <img
+                  src={slot.logos[slot.currentIndex].src}
+                  alt=""
+                  aria-hidden="true"
+                  className={cn(
+                    "max-h-full w-full object-contain object-center transition-opacity dark:invert",
+                    slot.phase === "fading-out" ? "opacity-0" : "opacity-100",
+                  )}
+                  style={{ transitionDuration: `${transitionDurationMs}ms` }}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -375,7 +340,7 @@ export default function HomeIndex({
 
         {featuredPosts.length > 0 ? (
           <ul className="space-y-8">
-            {featuredPosts.map(post => (
+            {featuredPosts.map((post) => (
               <li key={post.slug}>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-muted-foreground">-</span>
@@ -385,15 +350,15 @@ export default function HomeIndex({
                   >
                     {post.title}
                   </a>
-                  <span className="text-sm text-muted-foreground">{post.published_at}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {post.published_at}
+                  </span>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <div className="py-6 text-muted-foreground">
-            {featuredPostsEmpty}
-          </div>
+          <div className="py-6 text-muted-foreground">{featuredPostsEmpty}</div>
         )}
       </section>
     </div>
