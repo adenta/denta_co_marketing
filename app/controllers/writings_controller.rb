@@ -14,8 +14,7 @@ class WritingsController < ApplicationController
       description: "Writing."
     }
     @props = {
-      writings: PostBlueprint.render_as_hash(posts.reject(&:project?)),
-      projects: PostBlueprint.render_as_hash(posts.select(&:project?)),
+      posts: PostBlueprint.render_as_hash(posts),
       subscribeForm: {
         createPath: api_v1_blog_subscriptions_path,
         title: I18n.t("blog_subscriptions.card.title"),
