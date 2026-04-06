@@ -10,6 +10,7 @@ module Content
         },
         optional: {
           "draft" => :boolean,
+          "featured" => :boolean,
           "tags" => :string_array
         }
       )
@@ -19,6 +20,7 @@ module Content
           title: "Example",
           published_on: "2026-04-01",
           draft: false,
+          featured: true,
           tags: %w[ops product]
         },
         path: Pathname("example.md")
@@ -27,6 +29,7 @@ module Content
       assert_equal "Example", metadata["title"]
       assert_equal Date.new(2026, 4, 1), metadata["published_on"]
       assert_equal false, metadata["draft"]
+      assert_equal true, metadata["featured"]
       assert_equal %w[ops product], metadata["tags"]
     end
 

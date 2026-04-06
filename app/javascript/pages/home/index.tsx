@@ -15,10 +15,10 @@ type HomePost = {
 type HomeIndexProps = {
   title: string;
   subtitle: string;
-  recentPostsHeading: string;
-  recentPostsPath: string;
-  recentPostsEmpty: string;
-  recentPosts: HomePost[];
+  featuredPostsHeading: string;
+  featuredPostsPath: string;
+  featuredPostsEmpty: string;
+  featuredPosts: HomePost[];
   links: {
     linkedin: HomeLink;
     calendar: HomeLink;
@@ -41,10 +41,10 @@ function ExternalLink({ link }: { link: HomeLink }) {
 export default function HomeIndex({
   title,
   subtitle,
-  recentPostsHeading,
-  recentPostsPath,
-  recentPostsEmpty,
-  recentPosts,
+  featuredPostsHeading,
+  featuredPostsPath,
+  featuredPostsEmpty,
+  featuredPosts,
   links,
 }: HomeIndexProps) {
   return (
@@ -65,16 +65,16 @@ export default function HomeIndex({
       <section className="mt-16 border-t border-border pt-8">
         <div className="mb-5 flex items-end justify-between gap-4">
           <a
-            href={recentPostsPath}
+            href={featuredPostsPath}
             className="text-xl font-semibold tracking-tight text-primary underline underline-offset-8 transition-colors hover:text-primary/80 sm:text-2xl"
           >
-            {recentPostsHeading}
+            {featuredPostsHeading}
           </a>
         </div>
 
-        {recentPosts.length > 0 ? (
+        {featuredPosts.length > 0 ? (
           <ul className="space-y-8">
-            {recentPosts.map(post => (
+            {featuredPosts.map(post => (
               <li key={post.slug}>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-muted-foreground">-</span>
@@ -91,7 +91,7 @@ export default function HomeIndex({
           </ul>
         ) : (
           <div className="py-6 text-muted-foreground">
-            {recentPostsEmpty}
+            {featuredPostsEmpty}
           </div>
         )}
       </section>

@@ -46,6 +46,34 @@ module Blog
       end
     end
 
+    test "featured_blog_posts includes only featured blog entries" do
+      with_repository do |repository, root:, **|
+        write_post(
+          root.join("featured.md"),
+          title: "Featured",
+          excerpt: "Featured excerpt",
+          published_on: "2026-04-03",
+          featured: true
+        )
+        write_post(
+          root.join("plain.md"),
+          title: "Plain",
+          excerpt: "Plain excerpt",
+          published_on: "2026-04-02"
+        )
+        write_post(
+          root.join("project.md"),
+          title: "Project",
+          excerpt: "Project excerpt",
+          published_on: "2026-04-04",
+          featured: true,
+          tags: [ "project" ]
+        )
+
+        assert_equal %w[featured], repository.featured_blog_posts.map(&:slug)
+      end
+    end
+
     test "blog_posts excludes project-tagged entries" do
       with_repository do |repository, root:, **|
         write_post(
@@ -267,7 +295,7 @@ module Blog
       end
     end
 
-    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Andrew Denta", draft: false, tags: nil)
+    def write_post(path, title:, excerpt:, published_on:, body: "# Heading\n\nBody", author: "Andrew Denta", draft: false, featured: false, tags: nil)
       tags_front_matter = Array(tags).map { |tag| "  - #{tag}" }.join("\n")
 
       File.write(
@@ -279,6 +307,7 @@ module Blog
           published_on: #{published_on}
           author: #{author}
           draft: #{draft}
+          featured: #{featured}
           #{tags ? "tags:\n#{tags_front_matter}" : nil}
           ---
 

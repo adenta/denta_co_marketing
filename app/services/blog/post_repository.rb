@@ -15,6 +15,7 @@ module Blog
       optional: {
         "author" => :string,
         "draft" => :boolean,
+        "featured" => :boolean,
         "tags" => :string_array
       }
     )
@@ -43,6 +44,10 @@ module Blog
 
     def project_posts(include_drafts: false)
       published_posts(include_drafts:).select(&:project?)
+    end
+
+    def featured_blog_posts(include_drafts: false)
+      blog_posts(include_drafts:).select(&:featured?)
     end
 
     def post_by_slug!(slug, include_drafts: false)
@@ -89,6 +94,7 @@ module Blog
         html_body: rendered.html,
         source_updated_at: path.mtime.in_time_zone,
         draft: metadata["draft"],
+        featured: metadata["featured"],
         tags: metadata["tags"]
       )
     rescue Content::FrontMatterParser::ParseError, Content::MetadataSchema::ValidationError, Content::MarkdownRenderer::ShortcodeError => error
@@ -104,7 +110,7 @@ module Blog
         "blog-post",
         Digest::SHA256.hexdigest(path.to_s),
         path.mtime.to_f,
-        "v4"
+        "v5"
       ]
     end
   end

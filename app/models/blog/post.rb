@@ -11,6 +11,7 @@ module Blog
       html_body:,
       source_updated_at: nil,
       draft: false,
+      featured: false,
       tags: []
     )
       @slug = slug
@@ -21,6 +22,7 @@ module Blog
       @html_body = html_body
       @source_updated_at = source_updated_at
       @draft = draft
+      @featured = featured
       @tags = Array(tags).map(&:to_s).uniq.freeze
     end
 
@@ -30,6 +32,10 @@ module Blog
 
     def project?
       tags.include?("project")
+    end
+
+    def featured?
+      @featured == true
     end
 
     def path

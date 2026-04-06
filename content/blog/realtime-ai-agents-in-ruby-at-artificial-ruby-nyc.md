@@ -2,6 +2,7 @@
 title: Realtime AI Agents in Ruby at Artificial Ruby NYC
 excerpt: On February 18, 2026, I spoke at Artificial Ruby in New York City about building realtime AI agents in Ruby, using my open source Pokemon-playing project to show where agent systems get interesting.
 published_on: 2026-02-18
+featured: true
 tags:
   - ai
   - ruby

@@ -52,9 +52,9 @@ en:
     index:
       title: "I put agents in production."
       subtitle: "Building the AI future since 2021. Software is changing fast. It's exciting and terrifying. The rules you learned might already be outdated."
-      recent_posts:
-        heading: "Recent writing"
-        empty: "New posts are on the way."
+      featured_posts:
+        heading: "Featured articles"
+        empty: "Featured articles are on the way."
       links:
         linkedin:
           label: "LinkedIn"
