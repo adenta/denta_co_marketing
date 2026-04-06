@@ -7,11 +7,11 @@ tags:
   - case-study
 ---
 
-Between late 2021 and mid-2022, I built a full-stack creator commerce platform for a venture-backed startup in the creator economy space. The product gave service-based creators a branded public storefront plus the operating system behind it: onboarding, scheduling, bookable offers, lead capture, contracts, invoicing, and payments.
+Between late 2021 and mid-2022, I built a full-stack creator commerce platform for a venture-backed startup in the creator economy space. The product gave service-based creators a branded public storefront and the back-office software behind it: onboarding, scheduling, bookable offers, lead capture, contracts, invoicing, and payments.
 
 The users were small influencers and independent operators in interior design. Most of them were running real businesses through a messy pile of tools: Instagram DMs, Calendly, Google Docs, Stripe links, spreadsheets, and a lot of manual follow-up.
 
-The job was simple: make them look and operate like real studios.
+The job was to help them look and operate like real studios.
 
 ## Business Impact
 
@@ -61,7 +61,7 @@ Visitor lands on creator page
 -> creator manages delivery from the dashboard
 ```
 
-That was the point. A creator could publish an offer, take a booking, collect money, and manage the client relationship without bouncing between six different products.
+A creator could publish an offer, take a booking, collect money, and manage the client relationship without bouncing between six different products.
 
 ## Outcome
 

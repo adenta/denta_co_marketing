@@ -1,6 +1,6 @@
 ---
-title: Before ChatGPT, We Were Building AI for Healthcare Reimbursement
-excerpt: Built an early healthcare fintech product that linked personal accounts, classified medical spend, and helped users recover money through AI-assisted reimbursement review.
+title: Before ChatGPT, I Was Building AI for Healthcare Reimbursement
+excerpt: I built an early healthcare fintech product that connected personal accounts, figured out which transactions were actually medical, and helped users recover money through reimbursement workflows.
 published_on: 2022-11-09
 tags:
   - project
@@ -10,54 +10,69 @@ tags:
   - healthcare
 ---
 
-In late 2022, before ChatGPT made generative AI the talk of the town, I was working on a healthcare fintech product. The problem was much more useful: figuring out which bank and credit card transactions were actually medical.
+In late 2022, before ChatGPT made generative AI the talk of the town, I was building a healthcare fintech product.
 
-The product connected accounts, pulled transaction history, identified health and wellness spend, and helped people recover money through reimbursement workflows like HSA and FSA claims.
+The problem was not "personal finance," really. The problem was: people spend money on healthcare in messy ways, and later they have no clean way to figure out what was actually medical, what might be reimbursable, and what they should do next.
 
-This was not a budgeting app. It was an early attempt at applying AI to a real operational problem people actually had.
+The product connected financial accounts, pulled transaction history, identified likely health and wellness spend, and helped people work through reimbursement flows like HSA and FSA claims.
+
+The interesting part was the plumbing. I was linking accounts through Plaid, ingesting transaction data, and using that data in healthcare-specific workflows like spend review and provider pricing.
 
 ## Business Impact
 
-- Turned raw bank and credit card feeds into a healthcare-specific data product instead of a generic personal finance dashboard
-- Gave beta users one place to connect accounts, review likely medical spend, and compare provider pricing before care
-- Built an AI-assisted workflow for classifying medical spend and reviewing reimbursement opportunities
+- Turned raw bank and credit card feeds into a healthcare-specific data product
+- Gave users one place to connect accounts, review likely medical spend, and understand what might be reimbursable
+- Built a workflow that helped people go from noisy transaction history to something they could actually act on
+- Pointed the product toward medical spend intelligence instead of generic budgeting
 
 ## The Problem
 
-Healthcare spending is hard to reconstruct after the fact.
+Healthcare spending is annoying to reconstruct after the fact.
 
-People pay with a mix of debit cards, credit cards, insurance, and out-of-pocket funds. Merchant names are noisy. Bills show up late. A charge that might be reimbursable through an HSA or FSA often just looks like another line item on a statement.
+People pay with credit cards, debit cards, insurance, out-of-pocket funds, and whatever card happens to be in their wallet that day. Merchant names are vague. Bills come in late. A charge that might matter for reimbursement often just looks like random statement noise.
 
-That is the real product problem we were going after. Not "show me my finances." More like: show me which transactions were actually healthcare, help me understand what I spent, and give me a cleaner path to getting money back where reimbursement rules allowed it.
+So the real product question was:
+
+- Which of these transactions were actually healthcare?
+- What did the user really spend?
+- What might be reimbursable?
+- What should they look at more closely?
 
 ## What I Built
 
-I built a full-stack product that made that workflow real from end to end.
+I built the full-stack product around that workflow.
 
-- User onboarding, account connection, and authenticated product access
-- Backend data pipelines for retrieving, normalizing, and storing transaction activity
-- Structured transaction records, secure data handling, and a hardened production architecture built with HIPAA, SOC 2, and HITRUST readiness in mind
-- Product dashboards for annual healthcare and wellness spend visibility
+- User onboarding and authenticated account access
+- Financial account connection and transaction retrieval
+- Backend pipelines for ingesting, normalizing, and storing transaction history
+- Classification logic for identifying likely healthcare and wellness spend
+- Dashboards for annual healthcare spend visibility
 - Consumer-facing flows for provider pricing, procedure lookup, and reimbursement review
-- Instrumentation and feedback loops to support beta usage and product iteration
+- Secure data handling and a production architecture built with HIPAA, SOC 2, and HITRUST readiness in mind
+- Instrumentation and feedback loops for beta usage and iteration
 
-The most important technical move was not the chart. It was building the data loop underneath the product.
+The hard part was getting the data loop right.
 
-Once users connected their financial data sources, the app could ingest transaction history, turn it into normalized records, and feed that data back into analysis and classification. That is the foundation you need before any AI layer becomes useful. The point was not just to collect data, but to turn it into a product that could identify likely healthcare spend, flag ambiguity, and surface reimbursement opportunities in a way users could actually act on.
+Once a user connected accounts, the product could ingest transaction history, turn messy financial records into structured data, and feed that into analysis and classification. Without that layer, the AI part is mostly theater.
 
-The core workflow looked like this:
+The product only worked if it could identify likely healthcare spend, flag ambiguity, and surface reimbursement opportunities in a way a real person could actually use.
+
+The workflow looked something like this:
 
 ```text
-User creates an account
--> connects relevant financial accounts
--> backend retrieves and processes transaction history
--> app stores transaction records and exports the data for analysis
--> product surfaces likely healthcare spend and pricing context
--> user gets a clearer view of what may be reimbursable or worth challenging
+user creates an account
+-> connects financial accounts
+-> backend retrieves transaction history
+-> app normalizes and stores the data
+-> system identifies likely healthcare spend
+-> product surfaces reimbursement and pricing context
+-> user gets a clearer picture of what happened and what might be worth reviewing
 ```
 
 ## Outcome
 
-This became a real applied AI product, not just a data pipe.
+This was a real product, not just an AI wrapper demo.
 
-The app had authenticated users, linked financial accounts, transaction ingestion, healthcare-specific classification logic, reimbursement review workflows, and a product direction centered on medical spend intelligence rather than generic consumer finance.
+It had authenticated users, linked accounts, transaction ingestion, healthcare-specific classification, reimbursement review flows, and a product direction centered on helping people make sense of medical spend.
+
+That is what I mean when I say I was building AI in healthcare before the current hype cycle. The hard part was turning messy inputs into a workflow that could do useful work for real people.

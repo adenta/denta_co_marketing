@@ -1,29 +1,31 @@
 # GitHub Repo to Case Study Runbook
 
-This runbook explains how to turn an old GitHub repo into a project case study for this site.
+This runbook is for turning an old GitHub repo into a project case study for this site.
 
-It is optimized for:
+The use case is usually:
 
-- private repos cloned with `gh`
-- incomplete memory about the project
-- confidential clients
-- old startup work where the real product has to be reconstructed from code and commit history
+- the repo is private
+- the product is half-forgotten
+- the client may need to stay anonymous
+- the code is more reliable than anyone's memory
+
+The job is to reconstruct what was actually built and write a short post that sounds like Andrew, not like agency copy.
 
 ## Goal
 
-Given a GitHub repo, produce a short, credible project writeup that:
+Given a GitHub repo, produce a markdown-backed project post that:
 
-- identifies the correct time period
-- describes what was actually built
-- avoids naming confidential clients if requested
-- sounds like Andrew's writing, not generic agency copy
-- lands as a markdown-backed project post on this site
+- gets the timeframe right
+- says what the product actually did
+- makes the customer and workflow obvious
+- anonymizes the client when needed
+- sounds direct, specific, and human
 
-## Output Format for This Site
+## Output Format
 
 Project case studies live in:
 
-- [`content/blog`](/Users/andrew/.codex/worktrees/5376/denta_co_marketing/content/blog)
+- [`content/blog`](/Users/andrew/.codex/worktrees/efdb/denta_co_marketing/content/blog)
 
 They need frontmatter like:
 
@@ -38,46 +40,76 @@ tags:
 ---
 ```
 
-The projects index is driven by `tags: [project]`. Individual posts render through the normal post pipeline.
+The projects index is driven by `tags: [project]`. Individual posts render through the normal blog pipeline.
+
+## Voice Rules
+
+Andrew's writing is not polished in a precious way. It is fast, direct, and usually anchored in the real work.
+
+Aim for:
+
+- first-person singular when the work was Andrew's
+- short paragraphs
+- concrete nouns over startup abstractions
+- blunt but controlled phrasing
+- outcome first, then constraints, then implementation detail
+
+Avoid:
+
+- agency language like "streamlined operations" or "enhanced user experience"
+- empty contrast lines like "the point was not X, it was Y" unless the contrast is genuinely sharp
+- fake sophistication
+- pseudo-tags in the body
+- stack dumps unless the user asked for a technical deep dive
+- repeating the same point in three slightly different ways
+
+If a sentence sounds like a LinkedIn ghostwriter or a PM deck, cut it.
+
+## What Good Posts Usually Look Like
+
+Most project posts on this site should be short. A good default shape is:
+
+1. Opening paragraph
+2. Business impact
+3. The problem
+4. What I built
+5. Core workflow
+6. Outcome
+
+That is enough most of the time.
 
 ## Working Rules
 
 - Do not guess the date range if the repo can answer it.
 - Do not describe the product from memory alone if the codebase can answer it.
-- If the client is confidential, replace the client name with category language like "a seed-stage startup in the creator economy space."
-- Review [Free Run](https://www.freerun.tech/) before drafting when you need a style benchmark for concise, high-signal project briefs. We like their content and the way they frame project work, especially the short problem-to-solution-to-impact structure.
-- Keep the writing short and direct.
-- Avoid fake sophistication like loose pseudo-tags in the body.
-- If metrics are missing and the user explicitly allows placeholders, add numbers they can revise later.
+- If the client is confidential, use category language like "a seed-stage startup in the creator economy space."
 - Prefer customer impact over platform vanity metrics.
+- If metrics are missing and the user explicitly allows placeholders, add numbers they can revise later.
+- Keep the post grounded in the workflow, not the abstract category.
 
 ## Step 1: Clone the Repo
 
-For private repos, use `gh`, not unauthenticated `git clone`.
-
-Example:
+For private repos, use `gh`.
 
 ```sh
 gh auth status
 gh repo clone OWNER/REPO /tmp/repo-name-codex
 ```
 
-If the user only asked whether access is possible, first verify:
+If the user only asked whether access is possible, verify with:
 
 ```sh
 gh auth status
 ```
 
-Then clone into `/tmp` and inspect from there.
-
 ## Step 2: Establish the Timeframe
 
-Start by identifying:
+Work out:
 
 - the first commit
-- the most recent commits
-- whether there was a later pivot you should exclude
-- the months with the most activity
+- the main build window
+- whether there was a later pivot
+- the months with the highest activity
 
 Useful commands:
 
@@ -87,22 +119,11 @@ git -C /tmp/repo log --date=short --pretty=format:'%h %ad %an %s' | sed -n '1,80
 git -C /tmp/repo log --date=format:'%Y-%m' --pretty=format:'%ad' | sort | uniq -c
 ```
 
-What to look for:
-
-- initial build window
-- dense product iteration window
-- a later feature branch or pivot that changes what the product is
-
-If a clear pivot exists, explicitly separate:
-
-- "original product"
-- "later pivot"
-
-This matters because users often remember the project loosely and mix phases together.
+If the repo clearly changed direction, separate the phases. Users often remember a product as one thing when the repo shows two or three distinct chapters.
 
 ## Step 3: Reconstruct What Was Built
 
-Do not start with prose. First map the product from the code.
+Do not start drafting yet. First map the product from the code.
 
 Inspect:
 
@@ -111,6 +132,7 @@ Inspect:
 - schema
 - controllers
 - services
+- jobs
 - front-end page and component names
 - third-party integrations
 
@@ -119,34 +141,38 @@ Useful commands:
 ```sh
 sed -n '1,260p' /tmp/repo/config/routes.rb
 rg --glob '*.rb' 'class .* < ApplicationRecord' /tmp/repo/app/models -n
-sed -n '67,260p' /tmp/repo/db/schema.rb
+sed -n '1,260p' /tmp/repo/db/schema.rb
 find /tmp/repo/app/controllers -type f | sort | sed -n '1,260p'
 find /tmp/repo/app/javascript -maxdepth 3 -type f | sort | sed -n '1,260p'
+find /tmp/repo/app/frontend -maxdepth 3 -type f | sort | sed -n '1,260p'
 find /tmp/repo/app/services -type f | sort | sed -n '1,260p'
-rg -n "Stripe|Clerk|Typesense|Sentry|Posthog|Calendly" /tmp/repo/app /tmp/repo/config /tmp/repo/package.json
+find /tmp/repo/app/jobs -type f | sort | sed -n '1,260p'
+rg -n "Stripe|Clerk|Plaid|Typesense|Sentry|Posthog|Calendly|Mapbox" /tmp/repo/app /tmp/repo/config /tmp/repo/package.json
 ```
 
 From that, answer:
 
 - Who were the users?
-- What jobs were they trying to do?
-- What workflows existed end to end?
-- Was this a real product, a prototype, or a marketing shell?
+- What were they trying to get done?
+- What did the workflow look like end to end?
+- Was this a real product, a prototype, or mostly a shell?
 - Which integrations made it operationally real?
 
-The goal is a product description like:
+Translate code evidence into product language.
 
-> branded storefront + booking + scheduling + lead capture + contracts + payments
+Good:
 
-not:
+> branded storefront + booking + contracts + payments + client operations
+
+Bad:
 
 > models for studios, products, pages, schedules, appointments
 
-The latter is evidence, not the final story.
+The second one is evidence. It is not the story.
 
 ## Step 4: Find the Customer Angle
 
-The best case studies talk about the user, not just the code.
+The best case studies are about the job the customer was trying to do.
 
 Use the repo to infer:
 
@@ -154,56 +180,35 @@ Use the repo to infer:
 - workflow pain
 - business stakes
 
-Sources of truth:
+Good sources:
 
 - enum values and business types in models
-- labels in front-end copy
 - onboarding flows
-- fields in lead forms
-- offer/package structure
+- labels in the UI
+- lead form fields
+- billing and package structure
+- integrations that show the product had to work in the real world
 
-Example:
+## Step 5: Draft the Post
 
-- If the repo has business types like interior design and creator-style public profile pages, the customer angle might be small interior design influencers or independent studios selling high-touch services.
+Write the opening like an operator explaining what they built.
 
-## Step 5: Draft the Case Study
-
-For this site, keep the structure tight. A good default is:
-
-1. Opening paragraph
-2. Business impact
-3. The problem
-4. What I built
-5. Core workflow
-6. Outcome
-
-That is usually enough. Add a technical section only if the user wants it.
-
-### Writing Guidelines
-
-- Keep paragraphs short.
-- Prefer strong nouns over abstract startup phrases.
-- Cut repeated words like "platform", "workflow", "solution", and "experience" if they appear too often.
-- Avoid sounding like an agency deck.
-- Sound like Andrew's articles: direct, specific, a little blunt, not overpolished.
-- Do not use the phrase "The job was simple" or treat it as a default opening pattern.
-
-### Good opening pattern
+Good opening pattern:
 
 ```md
 Between late 2021 and mid-2022, I built...
 
 The users were...
 
-The business problem was...
+The problem was...
 ```
 
-### Good impact bullets
+Good impact bullets:
 
 - Put the number in bold.
-- Make them customer-facing.
-- If the user says to invent placeholder metrics, do that and let them revise later.
-- Use creator-language when appropriate: "social impressions", "inquiries", "bookings", "offers", "clients".
+- Keep them customer-facing.
+- Make them plausible.
+- If they are placeholders, make that obvious to the user in your handoff, not in the post body.
 
 Example:
 
@@ -213,28 +218,60 @@ Example:
 - Improved conversion from social impressions to real inquiries by **25 to 35%**
 ```
 
-### Things to avoid
+## Writing Heuristics
 
-- pseudo-tags in plain text like `Creator Economy · Seed Stage`
-- repetitive sections that restate the same point three ways
-- long stack dumps unless requested
-- generic claims like "streamlined operations" without any concrete workflow
+When in doubt:
+
+- lead with what was built
+- make the customer visible early
+- say the ugly part of the workflow out loud
+- list the actual systems and actions, not just categories
+- cut one sentence out of every paragraph if the piece feels swollen
+
+Useful moves:
+
+- "The users were..."
+- "The problem was..."
+- "I built..."
+- "The workflow looked like this:"
+- "By the end..."
+
+Things to avoid:
+
+- "The job was simple"
+- "This was not just X. It was Y." used as filler
+- "leveraged"
+- "streamlined"
+- "seamless"
+- "end-to-end platform" unless you immediately explain what that means
 
 ## Step 6: Add the Markdown File
 
-Create a new file in [`content/blog`](/Users/andrew/.codex/worktrees/5376/denta_co_marketing/content/blog) with:
+Create the post in [`content/blog`](/Users/andrew/.codex/worktrees/efdb/denta_co_marketing/content/blog) with:
 
-- project title
-- short excerpt
+- title
+- excerpt
 - `published_on`
 - `tags: [project, case-study]`
 - markdown body
 
 Use a slug that reads cleanly on the projects page.
 
-## Step 7: Verify It Renders
+## Step 7: Review the Existing Corpus Before Finalizing
 
-At minimum, run the content-related tests:
+Before you finalize a new post, read a few current posts from this site so the tone stays consistent.
+
+Prioritize:
+
+- one or two existing project posts
+- one essay post
+- the most recent writing if there is enough of it
+
+The goal is not to imitate surface quirks. The goal is to keep the level of bluntness, pacing, and specificity consistent.
+
+## Step 8: Verify It Renders
+
+At minimum, run:
 
 ```sh
 bin/rails test test/services/blog/post_repository_test.rb test/controllers/projects_controller_test.rb test/controllers/posts_controller_test.rb
@@ -243,33 +280,33 @@ bin/rails test test/services/blog/post_repository_test.rb test/controllers/proje
 If tests fail:
 
 - update brittle expectations if the content assumptions changed
-- do not leave the suite red if the new project entry is now part of the expected output
+- do not leave the content suite red
 
-## Step 8: Final Review Pass
+## Step 9: Final Review Pass
 
 Before handing it off, check:
 
-- Is the date range correct?
+- Is the timeframe right?
 - Is the client anonymized if needed?
 - Is the customer segment clear?
 - Does the piece say what was actually built?
-- Are the impact bullets bolded and readable?
-- Does it sound like a human wrote it, not a PM deck?
-- Is there anything obviously repetitive that should be cut?
+- Are the impact bullets readable?
+- Does it sound like a person who did the work?
+- Is there anything repetitive or soft that should be cut?
 
 ## Suggested Agent Prompt
 
 Use this when delegating the task to another agent:
 
 ```text
-Clone the target GitHub repo into /tmp using gh if needed. Use the repo itself to reconstruct what product was built, when it was built, and who it was for. Separate any later pivots from the original product if the commit history shows that. Then write a short markdown-backed project case study for this site in content/blog with tags [project, case-study]. Keep the client anonymous if requested. The writing should be punchy, direct, and closer to Andrew Denta's existing articles than generic startup copy. Prefer customer impact over platform metrics. If metrics are missing and I have allowed placeholders, include plausible bolded numbers I can revise later. Finally, run the blog/project controller tests and fix any brittle expectations caused by the new entry.
+Clone the target GitHub repo into /tmp using gh if needed. Use the repo itself to figure out what product was actually built, when it was built, and who it was for. Separate later pivots from the original product if the commit history shows a clear shift. Then write a short markdown-backed project post for this site in content/blog with tags [project, case-study]. Keep the client anonymous if requested. Write like Andrew Denta: direct, specific, lightly blunt, and grounded in the workflow. Prefer customer impact over vanity metrics. If metrics are missing and I have allowed placeholders, include plausible bolded numbers I can revise later. Finally, run the blog and projects tests and fix any brittle expectations caused by the new entry.
 ```
 
 ## Short Version
 
 1. Clone with `gh`.
 2. Use `git log` to find the real timeframe.
-3. Use routes, models, schema, services, and UI file names to reconstruct the product.
-4. Write the post around the customer, problem, workflow, and outcome.
+3. Use routes, models, schema, jobs, services, and UI names to reconstruct the product.
+4. Write the post around the customer, the ugly workflow, what got built, and what changed.
 5. Add it to `content/blog` with project tags.
 6. Run the content tests.
