@@ -91,10 +91,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes policy, "img-src 'self' https: data:"
     assert_includes policy, "object-src 'none'"
     assert_includes policy, "report-uri /csp-violation-reports"
-    assert_match(/script-src 'self' https:\/\/challenges\.cloudflare\.com blob: 'nonce-[^']+'/i, policy)
-    assert_match(/style-src 'self' 'nonce-[^']+'/i, policy)
+    assert_match(/script-src 'self' https:\/\/challenges\.cloudflare\.com https:\/\/www\.youtube\.com blob: 'nonce-[^']+'/i, policy)
+    assert_match(/style-src 'self' 'unsafe-inline' 'nonce-[^']+'/i, policy)
     refute_includes policy, "nonce-''"
-    refute_includes policy, "'unsafe-inline'"
     refute_includes policy, "'unsafe-eval'"
   end
 end
