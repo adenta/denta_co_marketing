@@ -8,7 +8,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes @response.body, "<title>Context Engineering Is Only Half the Battle | Andrew Denta</title>"
-    assert_includes @response.body, "Why scaffolds matter just as much as context engineering when you want reliable AI-assisted software delivery."
+    assert_includes @response.body, "Why scaffolds matter just as much as context engineering when you want reliable self building software."
     assert_includes @response.body, "turbo-mount-blog--you-tube-embed"
     assert_includes @response.body, "8IkufN4_Tr0"
     assert_includes @response.body, "Back to writing"
