@@ -6,4 +6,5 @@ class PostBlueprint < Blueprinter::Base
   field :author
   field :published_at
   field :excerpt
+  field :project?
 end

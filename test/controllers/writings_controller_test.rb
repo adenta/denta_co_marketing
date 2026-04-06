@@ -1,19 +1,20 @@
 require "test_helper"
 
 class WritingsControllerTest < ActionDispatch::IntegrationTest
-  test "writing index is publicly accessible and renders writing and project entries" do
+  test "writing index is publicly accessible and renders a unified post list" do
     get writing_path
 
     assert_response :success
     assert_includes @response.body, "writings/index"
     assert_includes @response.body, "<title>Writing | Andrew Denta</title>"
-    assert_includes @response.body, "&quot;writings&quot;:["
-    assert_includes @response.body, "&quot;projects&quot;:["
+    assert_includes @response.body, "&quot;posts&quot;:["
     assert_includes @response.body, "Context Engineering Is Only Half the Battle"
     assert_includes @response.body, "Why scaffolds matter just as much as context engineering when you want reliable self building software."
     assert_includes @response.body, content_post_path("context-engineering-is-only-half")
     assert_includes @response.body, "creator-commerce-platform-for-a-seed-stage-startup"
+    assert_includes @response.body, "&quot;project?&quot;:true"
     refute_includes @response.body, "Add markdown files to publish the first post."
+    refute_includes @response.body, "No project entries yet."
     assert_includes @response.body, '<html lang="en">'
     assert_includes @response.body, '<meta name="description" content="Writing.">'
     assert_includes @response.body, '<link rel="canonical" href="http://example.com/writing">'

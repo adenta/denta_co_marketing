@@ -14,15 +14,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "Back to writing"
   end
 
-  test "project posts render with a project badge and do not track a blog page view" do
+  test "project posts do not track a blog page view and omit the show page badge" do
     assert_no_difference('Ahoy::Event.where(name: "Viewed blog post").count') do
       get content_post_path("creator-commerce-platform-for-a-seed-stage-startup")
     end
 
     assert_response :success
     assert_includes @response.body, "<title>Creator Commerce Platform for a Seed-Stage Startup | Andrew Denta</title>"
-    assert_includes @response.body, "Project"
-    assert_includes @response.body, "bg-orange-100"
+    refute_includes @response.body, "bg-orange-100"
     assert_includes @response.body, "Back to writing"
     refute_includes @response.body, "Subscribe for new posts"
   end

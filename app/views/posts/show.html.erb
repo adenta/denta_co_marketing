@@ -11,11 +11,6 @@
       <%= link_to back_label, back_path, class: "inline-flex text-sm text-muted-foreground transition-colors hover:text-foreground" %>
 
       <div class="space-y-4">
-        <% if @post.project? %>
-          <span class="inline-flex w-fit items-center rounded-full border border-orange-200 bg-orange-100 px-2.5 py-1 text-xs font-medium tracking-wide text-orange-700 uppercase dark:border-orange-400/30 dark:bg-orange-500/15 dark:text-orange-200">
-            Project
-          </span>
-        <% end %>
         <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
         <div class="flex flex-wrap items-center gap-2 border-t pt-4 text-sm text-muted-foreground">
           <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
