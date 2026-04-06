@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   resource :developer_session, only: [ :create ]
   resource :session, only: [ :new, :destroy ]
   resources :passwords, only: [ :new, :edit ], param: :token
-  get "writing" => "blog_posts#index", as: :blog_posts
-  get "projects" => "projects#index", as: :projects
+  get "writing" => "writings#index", as: :writing
+  get "projects" => redirect("/writing"), as: :projects
   get "p/:slug" => "posts#show", as: :content_post
   resources :chats, only: [ :index, :show ]
   mount Blazer::Engine, at: "blazer"

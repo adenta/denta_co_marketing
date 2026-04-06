@@ -9,7 +9,7 @@ xml.urlset xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
   end
 
   xml.url do
-    xml.loc absolute_page_url(blog_posts_path)
+    xml.loc absolute_page_url(writing_path)
     xml.lastmod @latest_publication_date.iso8601 if @latest_publication_date.present?
     xml.changefreq "weekly"
     xml.priority "0.8"

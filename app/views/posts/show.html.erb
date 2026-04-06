@@ -2,8 +2,8 @@
   <%= stylesheet_link_tag "blog", "data-turbo-track": "reload" %>
 <% end %>
 
-<% back_path = @post.project? ? projects_path : blog_posts_path %>
-<% back_label = @post.project? ? "Back to projects" : "Back to writing" %>
+<% back_path = writing_path %>
+<% back_label = "Back to writing" %>
 
 <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
   <div class="max-w-3xl">
@@ -11,6 +11,11 @@
       <%= link_to back_label, back_path, class: "inline-flex text-sm text-muted-foreground transition-colors hover:text-foreground" %>
 
       <div class="space-y-4">
+        <% if @post.project? %>
+          <span class="inline-flex w-fit items-center rounded-full border border-orange-200 bg-orange-100 px-2.5 py-1 text-xs font-medium tracking-wide text-orange-700 uppercase dark:border-orange-400/30 dark:bg-orange-500/15 dark:text-orange-200">
+            Project
+          </span>
+        <% end %>
         <h1 class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"><%= @post.title %></h1>
         <div class="flex flex-wrap items-center gap-2 border-t pt-4 text-sm text-muted-foreground">
           <time datetime="<%= @post.published_on.iso8601 %>"><%= @post.published_on.to_fs(:long) %></time>
@@ -31,7 +36,7 @@
 
     <% unless @post.project? %>
       <div class="mt-8">
-        <%= render "blog_posts/subscribe_card" %>
+        <%= render "writings/subscribe_card" %>
       </div>
     <% end %>
   </div>

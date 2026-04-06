@@ -23,7 +23,7 @@ class HomeController < ApplicationController
         staggerDelayMs: 140
       },
       featuredPostsHeading: I18n.t("home.index.featured_posts.heading"),
-      featuredPostsPath: blog_posts_path,
+      featuredPostsPath: writing_path,
       featuredPostsEmpty: I18n.t("home.index.featured_posts.empty"),
       featuredPosts: PostBlueprint.render_as_hash(featured_posts),
       links: {

@@ -93,8 +93,7 @@
     <% developer_sign_in_enabled = Rails.env.development? || Rails.env.test? %>
     <% nav_items = [
       { key: "home", label: "Home", href: root_path },
-      { key: "projects", label: "Projects", href: projects_path },
-      { key: "writing", label: "Writing", href: blog_posts_path }
+      { key: "writing", label: "Writing", href: writing_path }
     ] %>
     <header class="sticky top-0 z-40 border-b bg-background">
       <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">

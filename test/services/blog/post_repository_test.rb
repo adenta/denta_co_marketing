@@ -94,26 +94,6 @@ module Blog
       end
     end
 
-    test "project_posts includes only project-tagged entries" do
-      with_repository do |repository, root:, **|
-        write_post(
-          root.join("writing.md"),
-          title: "Writing",
-          excerpt: "Writing excerpt",
-          published_on: "2026-04-01"
-        )
-        write_post(
-          root.join("project.md"),
-          title: "Project",
-          excerpt: "Project excerpt",
-          published_on: "2026-04-02",
-          tags: [ "project" ]
-        )
-
-        assert_equal %w[project], repository.project_posts.map(&:slug)
-      end
-    end
-
     test "includes drafts when requested" do
       with_repository do |repository, root:, **|
         write_post(

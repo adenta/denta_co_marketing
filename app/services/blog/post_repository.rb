@@ -42,10 +42,6 @@ module Blog
       published_posts(include_drafts:).reject(&:project?)
     end
 
-    def project_posts(include_drafts: false)
-      published_posts(include_drafts:).select(&:project?)
-    end
-
     def featured_blog_posts(include_drafts: false)
       blog_posts(include_drafts:).select(&:featured?)
     end

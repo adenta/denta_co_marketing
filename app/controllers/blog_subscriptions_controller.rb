@@ -5,7 +5,7 @@ class BlogSubscriptionsController < ApplicationController
     subscription = BlogSubscription.find_for_confirmation(params[:token])
 
     if subscription.nil?
-      redirect_to blog_posts_path, alert: I18n.t("blog_subscriptions.confirm.invalid")
+      redirect_to writing_path, alert: I18n.t("blog_subscriptions.confirm.invalid")
       return
     end
 
@@ -15,6 +15,6 @@ class BlogSubscriptionsController < ApplicationController
       ahoy.track("Confirmed blog subscription", source: "email_confirmation")
     end
 
-    redirect_to blog_posts_path, notice: I18n.t("blog_subscriptions.confirm.success")
+    redirect_to writing_path, notice: I18n.t("blog_subscriptions.confirm.success")
   end
 end
