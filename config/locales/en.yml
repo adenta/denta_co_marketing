@@ -52,6 +52,9 @@ en:
     index:
       title: "I put agents in production."
       subtitle: "Building the AI future since 2021. Software is changing fast. It's exciting and terrifying. The rules you learned might already be outdated."
+      trusted_by:
+        heading: "Trusted by teams moving fast"
+        subtitle: "The same agent workflows behind launches, internal tools, and support systems at ambitious companies."
       featured_posts:
         heading: "Featured articles"
         empty: "Featured articles are on the way."

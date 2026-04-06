@@ -6,6 +6,8 @@
 
 vite_origin = ViteRuby.config.origin
 vite_websocket_origin = "#{ViteRuby.config.protocol == "https" ? "wss" : "ws"}://#{ViteRuby.config.host_with_port}"
+vite_localhost_origin = "#{ViteRuby.config.protocol}://localhost:#{ViteRuby.config.port}"
+vite_localhost_websocket_origin = "#{ViteRuby.config.protocol == "https" ? "wss" : "ws"}://localhost:#{ViteRuby.config.port}"
 
 Rails.application.configure do
   config.content_security_policy do |policy|
@@ -25,8 +27,8 @@ Rails.application.configure do
     policy.style_src :self
 
     if Rails.env.development?
-      policy.connect_src *policy.connect_src, vite_origin, vite_websocket_origin
-      policy.script_src *policy.script_src, :unsafe_eval, vite_origin
+      policy.connect_src *policy.connect_src, vite_origin, vite_websocket_origin, vite_localhost_origin, vite_localhost_websocket_origin
+      policy.script_src *policy.script_src, :unsafe_eval, vite_origin, vite_localhost_origin
       policy.style_src *policy.style_src, :unsafe_inline
     end
 
