@@ -192,6 +192,14 @@
   box-shadow: 0 10px 30px color-mix(in oklab, black 5%, transparent);
 }
 
+@media (min-width: 768px) {
+  .blog-prose > p:first-child:has(> img:only-child) {
+    float: right;
+    width: min(19rem, 42%);
+    margin: 0.35rem 0 1.25rem 1.5rem;
+  }
+}
+
 @media (max-width: 767px) {
   .blog-prose table:has(td > img),
   .blog-prose table:has(td > img) thead,

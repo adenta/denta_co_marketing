@@ -21,3 +21,9 @@
 - `app/javascript/turbo-mount.js` eagerly registers `app/javascript/pages/**/*.tsx` and `app/javascript/components/**/*.tsx`.
 - `app/javascript/hooks/useApiRequest.ts` is the default client helper for JSON mutations against `/api/v1/...`.
 - `test/integration/implicit_page_fallback_test.rb` exercises the fallback behavior, including the rule that an explicit ERB template takes precedence.
+
+## Writing Voice
+
+- Match the existing `content/blog/*.md` voice: direct, concrete, slightly opinionated, and grounded in the actual business or operational problem.
+- Do not use phrases like "the idea was simple" / "X was simple" / "the execution was not simple." That framing does not match the house voice.
+- Avoid generic startup-demo language when a sharper, more specific description of the system, audience, or operational constraint is available.
