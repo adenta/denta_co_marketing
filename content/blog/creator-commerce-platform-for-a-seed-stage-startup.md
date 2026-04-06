@@ -1,7 +1,7 @@
 ---
 title: Creator Commerce Platform for a Seed-Stage Startup
 excerpt: Built a full-stack platform that gave creators a branded storefront plus booking, scheduling, contracts, payments, and client operations in one product.
-published_on: 2026-04-06
+published_on: 2022-06-17
 tags:
   - project
   - case-study
