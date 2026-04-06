@@ -2,6 +2,7 @@
 title: AI Agent for Keeping Public Toll Rate Data in Sync
 excerpt: Built an AI agent that checked toll rates against public source-of-truth websites and schedules, separated real data issues from website noise, and showed exactly which records needed updating.
 published_on: 2026-04-06
+featured: true
 tags:
   - project
   - case-study

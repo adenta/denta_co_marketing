@@ -2,6 +2,7 @@
 title: Reid Hoffman Real-Time AI Avatar at Masters of Scale 2025
 excerpt: Built a realtime AI avatar experience that turned Reid Hoffman into an interactive presence for exhibition at the Masters of Scale 2025 conference presented by WaitWhat, in partnership with HeyGen, Proto Hologram, and Make Believe.
 published_on: 2025-11-01
+featured: true
 tags:
   - project
   - ai
