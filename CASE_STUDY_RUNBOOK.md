@@ -185,6 +185,7 @@ That is usually enough. Add a technical section only if the user wants it.
 - Cut repeated words like "platform", "workflow", "solution", and "experience" if they appear too often.
 - Avoid sounding like an agency deck.
 - Sound like Andrew's articles: direct, specific, a little blunt, not overpolished.
+- Do not use the phrase "The job was simple" or treat it as a default opening pattern.
 
 ### Good opening pattern
 
@@ -193,7 +194,7 @@ Between late 2021 and mid-2022, I built...
 
 The users were...
 
-The job was simple: ...
+The business problem was...
 ```
 
 ### Good impact bullets
