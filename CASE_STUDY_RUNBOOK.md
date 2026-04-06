@@ -58,6 +58,8 @@ Avoid:
 
 - agency language like "streamlined operations" or "enhanced user experience"
 - empty contrast lines like "the point was not X, it was Y" unless the contrast is genuinely sharp
+- quippy contrast setups like "The hard part was not X. The hard part was Y."
+- perspective drift where the piece starts in the voice of the publish date and then slips into later hindsight
 - fake sophistication
 - pseudo-tags in the body
 - stack dumps unless the user asked for a technical deep dive
@@ -240,6 +242,9 @@ Things to avoid:
 
 - "The job was simple"
 - "This was not just X. It was Y." used as filler
+- "The hard part was not X. The hard part was Y."
+- "The problem was not X. It was Y."
+- tense and perspective shifts that make a March 2024 post sound like it was written months later
 - "leveraged"
 - "streamlined"
 - "seamless"
