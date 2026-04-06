@@ -19,7 +19,7 @@ The users were drivers on the road and carrier admins back at the office. Driver
 
 ## The Problem
 
-The problem was not just hours. It was all the little line items that pile up in trucking.
+The problem went past hours. It included all the little line items that pile up in trucking.
 
 - Start and end times were easy to miss or log late
 - Extra pay like detention, TONU, per diem, and lumper charges had to be tracked separately

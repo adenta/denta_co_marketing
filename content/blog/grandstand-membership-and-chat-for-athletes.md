@@ -11,7 +11,7 @@ This year, I built the React Native app and the Rails web and backend systems fo
 
 Grandstand is a membership business for athletes. Fans can follow for free, pay to get closer access, unlock premium posts and video, and participate in a tighter chat-based community than they are going to get from public social platforms.
 
-This was not meant to be another broad social app. It was closer to a paid fan club with better product design around identity, access, and communication.
+It was closer to a paid fan club than a broad social app, with better product design around identity, access, and communication.
 
 ## Business Impact
 
@@ -54,7 +54,7 @@ That included:
 - lightweight admin workflows for managing athletes, memberships, and fan lists
 - web landing pages for athlete signup and conversion
 
-Under the hood, we leaned heavily on [GetStream](https://getstream.io/) for chat, feeds, reactions, and notification-style activity. That mattered because the communication layer was not a side feature. It was the product.
+Under the hood, we leaned heavily on [GetStream](https://getstream.io/) for chat, feeds, reactions, and notification-style activity. The communication layer was central to the product.
 
 The core workflow looked like this:
 
