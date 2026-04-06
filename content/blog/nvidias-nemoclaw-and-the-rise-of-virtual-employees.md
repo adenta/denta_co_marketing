@@ -2,7 +2,6 @@
 title: Putting AI Agents in Production
 excerpt: Ok, so. You want to build autonomous virtual employees that can take a long-running, complex task and run with it, checking in when they need approval.
 published_on: 2026-03-13
-featured: true
 tags:
   - ai
   - agents
