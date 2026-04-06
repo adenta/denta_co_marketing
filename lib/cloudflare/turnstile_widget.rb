@@ -5,7 +5,7 @@ module Cloudflare
   class TurnstileWidget
     API_BASE_URL = "https://api.cloudflare.com/client/v4".freeze
     DEFAULT_NAME = "denta_co_marketing blog signup".freeze
-    DEFAULT_DOMAINS = %w[denta.co mail.denta.co].freeze
+    DEFAULT_DOMAINS = %w[denta.co www.denta.co mail.denta.co].freeze
 
     Result = Struct.new(:action, :sitekey, :secret, :domains, :mode, keyword_init: true)
 
