@@ -10,7 +10,7 @@ tags:
   - healthcare
 ---
 
-Back in late 2022, before ChatGPT made generative AI the talk of the town, I was working on a healthcare fintech product with a much more useful problem: figuring out which bank and credit card transactions were actually medical.
+In late 2022, before ChatGPT made generative AI the talk of the town, I was working on a healthcare fintech product. The problem was much more useful: figuring out which bank and credit card transactions were actually medical.
 
 The product connected accounts, pulled transaction history, identified health and wellness spend, and helped people recover money through reimbursement workflows like HSA and FSA claims.
 
@@ -32,26 +32,25 @@ That is the real product problem we were going after. Not "show me my finances."
 
 ## What I Built
 
-I built the early full-stack product around that workflow.
+I built a full-stack product that made that workflow real from end to end.
 
-- Private beta onboarding with Clerk-based authentication
-- Plaid Link flows for connecting bank and credit card accounts
-- Backend token exchange and transaction retrieval against Plaid
-- Persisted transaction records plus a CSV export task for downstream analysis
-- Dashboard concepts for summarizing annual healthcare and wellness spend
-- Early UX for provider and procedure price lookup, including out-of-pocket cost estimates
-- Supporting product instrumentation with FullStory for beta feedback and session review
+- User onboarding, account connection, and authenticated product access
+- Backend data pipelines for retrieving, normalizing, and storing transaction activity
+- Structured transaction records, secure data handling, and a hardened production architecture built with HIPAA, SOC 2, and HITRUST readiness in mind
+- Product dashboards for annual healthcare and wellness spend visibility
+- Consumer-facing flows for provider pricing, procedure lookup, and reimbursement review
+- Instrumentation and feedback loops to support beta usage and product iteration
 
-The most important technical move was not the chart. It was setting up the data loop.
+The most important technical move was not the chart. It was building the data loop underneath the product.
 
-Once users linked accounts, the app could pull transaction history, store normalized transaction records, and export them for deeper analysis. That is the foundation you need before any classifier is useful. The AI story here started with the data layer, but it did not stop there. The point was to use that dataset to decide which transactions looked medical, which looked ambiguous, and which might map to reimbursement opportunities.
+Once users connected their financial data sources, the app could ingest transaction history, turn it into normalized records, and feed that data back into analysis and classification. That is the foundation you need before any AI layer becomes useful. The point was not just to collect data, but to turn it into a product that could identify likely healthcare spend, flag ambiguity, and surface reimbursement opportunities in a way users could actually act on.
 
 The core workflow looked like this:
 
 ```text
 User creates an account
--> links bank and credit card accounts with Plaid
--> backend exchanges tokens and pulls transaction history
+-> connects relevant financial accounts
+-> backend retrieves and processes transaction history
 -> app stores transaction records and exports the data for analysis
 -> product surfaces likely healthcare spend and pricing context
 -> user gets a clearer view of what may be reimbursable or worth challenging
@@ -62,5 +61,3 @@ User creates an account
 This became a real applied AI product, not just a data pipe.
 
 The app had authenticated users, linked financial accounts, transaction ingestion, healthcare-specific classification logic, reimbursement review workflows, and a product direction centered on medical spend intelligence rather than generic consumer finance.
-
-That is why I remember it as early applied AI work. The hard part was not making a chart. The hard part was getting the data, shaping it into something usable, and then turning that into a workflow that could do real work for real people.

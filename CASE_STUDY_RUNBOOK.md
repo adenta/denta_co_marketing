@@ -45,6 +45,7 @@ The projects index is driven by `tags: [project]`. Individual posts render throu
 - Do not guess the date range if the repo can answer it.
 - Do not describe the product from memory alone if the codebase can answer it.
 - If the client is confidential, replace the client name with category language like "a seed-stage startup in the creator economy space."
+- Review [Free Run](https://www.freerun.tech/) before drafting when you need a style benchmark for concise, high-signal project briefs. We like their content and the way they frame project work, especially the short problem-to-solution-to-impact structure.
 - Keep the writing short and direct.
 - Avoid fake sophistication like loose pseudo-tags in the body.
 - If metrics are missing and the user explicitly allows placeholders, add numbers they can revise later.
