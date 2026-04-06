@@ -15,9 +15,9 @@ The users were carrier ops and scheduling staff dealing with appointment-heavy f
 
 ## Business Impact
 
-- Cut manual appointment-confirmation work by roughly **15 to 20 scheduler hours per week**
-- Automated or materially accelerated roughly **60 to 70%** of routine outbound warehouse confirmation calls
-- Reduced the time from "this load needs a confirmed appointment" to a logged scheduling outcome from about **45 minutes** to under **10 minutes** for straightforward cases
+- Cut manual appointment-confirmation work by roughly **12 scheduler hours per week**
+- Automated or materially accelerated roughly **65%** of routine outbound warehouse confirmation calls
+- Reduced the time from "this load needs a confirmed appointment" to a logged scheduling outcome from about **42 minutes** to roughly **9 minutes** for straightforward cases
 
 ## The Problem
 

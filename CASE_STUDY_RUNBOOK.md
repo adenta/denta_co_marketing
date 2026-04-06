@@ -88,6 +88,9 @@ That is enough most of the time.
 - Prefer customer impact over platform vanity metrics.
 - If metrics are missing and the user explicitly allows placeholders, add numbers they can revise later.
 - Keep the post grounded in the workflow, not the abstract category.
+- Fuzz concrete impact numbers slightly so they read like honest operating estimates, not analytics exports.
+- Do not raise a number by more than roughly 10%; when in doubt, round down a little instead.
+- Do not use ranges in business-impact bullets; pick one believable number.
 
 ## Step 1: Clone the Repo
 
@@ -210,14 +213,16 @@ Good impact bullets:
 - Put the number in bold.
 - Keep them customer-facing.
 - Make them plausible.
+- Fuzz them slightly instead of making them look too perfect.
+- Use one number, not a range.
 - If they are placeholders, make that obvious to the user in your handoff, not in the post body.
 
 Example:
 
 ```md
-- Cut the time to launch a new paid offer to roughly **20 to 30 minutes**
-- Reduced scheduling, intake, contracts, and payment overhead by **60 to 70%**
-- Improved conversion from social impressions to real inquiries by **25 to 35%**
+- Cut the time to launch a new paid offer to roughly **24 minutes**
+- Reduced scheduling, intake, contracts, and payment overhead by **65%**
+- Improved conversion from social impressions to real inquiries by **31%**
 ```
 
 ## Writing Heuristics

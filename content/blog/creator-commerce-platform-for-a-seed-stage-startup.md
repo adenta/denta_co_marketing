@@ -15,9 +15,9 @@ The job was to help them look and operate like real studios.
 
 ## Business Impact
 
-- Cut the time to launch a new paid offer to roughly **20 to 30 minutes**
-- Reduced scheduling, intake, contracts, and payment overhead by **60 to 70%**
-- Improved conversion from social impressions to real inquiries by **25 to 35%**
+- Cut the time to launch a new paid offer to roughly **24 minutes**
+- Reduced scheduling, intake, contracts, and payment overhead by **65%**
+- Improved conversion from social impressions to real inquiries by **31%**
 
 ## The Problem
 

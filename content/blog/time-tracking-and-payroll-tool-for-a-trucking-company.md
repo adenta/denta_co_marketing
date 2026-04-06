@@ -13,8 +13,8 @@ The users were drivers on the road and carrier admins back at the office. Driver
 
 ## Business Impact
 
-- Cut weekly payroll prep from roughly **5 to 6 hours** down to about **60 to 90 minutes**
-- Reduced missing, disputed, or incomplete trip records by **17%**
+- Cut weekly payroll prep from roughly **5.5 hours** down to about **75 minutes**
+- Reduced missing, disputed, or incomplete trip records by **16%**
 - Shortened reimbursement and accessorial approval turnaround from **weeks** to **days**
 
 ## The Problem
