@@ -14,19 +14,19 @@ class Cloudflare::TurnstileWidgetTest < ActiveSupport::TestCase
         result: {
           "sitekey" => "sitekey",
           "secret" => "secret",
-          "domains" => %w[denta.co mail.denta.co],
+          "domains" => Cloudflare::TurnstileWidget::DEFAULT_DOMAINS,
           "mode" => "managed",
         },
       ),
     ]
 
     with_stubbed_singleton_method(Net::HTTP, :start, fake_http_start(responses)) do
-      result = client.ensure!(name: "signup", domains: %w[denta.co mail.denta.co])
+      result = client.ensure!(name: "signup", domains: Cloudflare::TurnstileWidget::DEFAULT_DOMAINS)
 
       assert_equal :created, result.action
       assert_equal "sitekey", result.sitekey
       assert_equal "secret", result.secret
-      assert_equal %w[denta.co mail.denta.co], result.domains
+      assert_equal Cloudflare::TurnstileWidget::DEFAULT_DOMAINS, result.domains
     end
   end
 
@@ -49,19 +49,19 @@ class Cloudflare::TurnstileWidgetTest < ActiveSupport::TestCase
         success: true,
         result: {
           "sitekey" => "sitekey",
-          "domains" => %w[denta.co mail.denta.co],
+          "domains" => Cloudflare::TurnstileWidget::DEFAULT_DOMAINS,
           "mode" => "managed",
         },
       ),
     ]
 
     with_stubbed_singleton_method(Net::HTTP, :start, fake_http_start(responses)) do
-      result = client.ensure!(name: "signup", domains: %w[denta.co mail.denta.co])
+      result = client.ensure!(name: "signup", domains: Cloudflare::TurnstileWidget::DEFAULT_DOMAINS)
 
       assert_equal :updated, result.action
       assert_equal "sitekey", result.sitekey
       assert_nil result.secret
-      assert_equal %w[denta.co mail.denta.co], result.domains
+      assert_equal Cloudflare::TurnstileWidget::DEFAULT_DOMAINS, result.domains
     end
   end
 
@@ -82,14 +82,14 @@ class Cloudflare::TurnstileWidgetTest < ActiveSupport::TestCase
         result: {
           "sitekey" => "sitekey",
           "secret" => "secret",
-          "domains" => %w[denta.co mail.denta.co],
+          "domains" => Cloudflare::TurnstileWidget::DEFAULT_DOMAINS,
           "mode" => "managed",
         },
       ),
     ]
 
     with_stubbed_singleton_method(Net::HTTP, :start, fake_http_start(responses)) do
-      result = client.ensure!(name: "signup", domains: %w[denta.co mail.denta.co])
+      result = client.ensure!(name: "signup", domains: Cloudflare::TurnstileWidget::DEFAULT_DOMAINS)
 
       assert_equal :created, result.action
       assert_equal "sitekey", result.sitekey
