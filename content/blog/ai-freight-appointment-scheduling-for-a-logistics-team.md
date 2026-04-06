@@ -57,4 +57,4 @@ That was the value. The agent handled the repetitive, annoying, error-prone work
 
 This turned into a real internal product for a narrow, high-friction operations job. It connected live order data, scheduling rules, generative AI appointment suggestions, and outbound communication in one place.
 
-The end result was an operational agent with enough real context to do useful work: read the shipment, understand the constraints, suggest the move, and tee up the email. That is a very different thing from an "AI in logistics" demo.
+The end result was an operational agent with enough real context to do useful work: read the shipment, understand the constraints, suggest the move, and tee up the email.
