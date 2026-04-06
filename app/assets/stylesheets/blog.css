@@ -186,6 +186,10 @@
   background: color-mix(in oklab, var(--muted) 70%, transparent);
 }
 
+.blog-prose thead:has(th:empty):not(:has(th:not(:empty))) {
+  display: none;
+}
+
 .blog-prose th,
 .blog-prose td {
   border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
@@ -199,6 +203,21 @@
   border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
   border-radius: 1rem;
   box-shadow: 0 10px 30px color-mix(in oklab, black 5%, transparent);
+}
+
+@media (max-width: 767px) {
+  .blog-prose table:has(td > img),
+  .blog-prose table:has(td > img) thead,
+  .blog-prose table:has(td > img) tbody,
+  .blog-prose table:has(td > img) tr,
+  .blog-prose table:has(td > img) td {
+    display: block;
+    width: 100%;
+  }
+
+  .blog-prose table:has(td > img) td + td {
+    padding-top: 0;
+  }
 }
 
 .blog-video-embed {
