@@ -7,7 +7,7 @@ tags:
   - case-study
 ---
 
-Between October and early November 2022, I built a trucking operations tool for a company that needed cleaner driver time tracking and less payroll cleanup.
+Between October and early November 2022, I built a trucking operations tool for a company that needed cleaner driver time tracking and a lot less payroll cleanup.
 
 The users were drivers on the road and carrier admins back at the office. Drivers needed a dead simple way to clock into a load, clock out when it was done, and attach the extra stuff payroll always misses. Admins needed one place to review everything before it turned into payroll.
 
@@ -27,7 +27,7 @@ The problem was not just hours. It was all the little line items that pile up in
 - Payroll teams had to manually piece together hours, extras, and expenses before they could pay anyone
 - Admins had no clean approval layer between what drivers submitted and what payroll exported
 
-So the same thing happened every week: payroll took too long, small mistakes turned into annoying disputes, and the back office had to reconstruct what had already happened.
+So the same thing happened every week: payroll took too long, small mistakes turned into annoying disputes, and the back office had to reconstruct work that had already happened.
 
 ## What I Built
 
@@ -59,4 +59,4 @@ Driver clocks into a load
 
 ## Outcome
 
-By the end, this was not just a punch clock. It was a working back-office tool for a trucking company: drivers could log real trip activity as it happened, admins could approve it, and payroll could finally run off something cleaner than memory, texts, and spreadsheet cleanup.
+By the end, this was more than a punch clock. It was a working back-office tool for a trucking company: drivers could log real trip activity as it happened, admins could approve it, and payroll could finally run off something cleaner than memory, texts, and spreadsheet cleanup.

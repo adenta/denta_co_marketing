@@ -7,11 +7,11 @@ tags:
   - case-study
 ---
 
-I built an internal AI agent for a logistics company handling appointment-heavy freight moves. It pulled live order data into one place, read through facility notes, surfaced the right contacts, suggested appointment times, and drafted outbound scheduling emails.
+I built an internal AI agent for a logistics company dealing with appointment-heavy freight moves. It pulled live order data into one place, read facility notes, surfaced the right contacts, suggested appointment times, and drafted outbound scheduling emails.
 
 The users were freight operations staff trying to schedule pickup and delivery appointments without missing receiving windows, blowing up transit logic, or getting buried in bad data.
 
-The point was not to make a nicer dashboard. The point was to collapse a bloated manual scheduling process into something one operator could run with generative AI.
+The goal was simple: take a bloated manual scheduling process and compress it into something one operator could actually run.
 
 ## Business Impact
 
@@ -25,11 +25,11 @@ Operators were juggling order data, stop details, facility comments, contact rec
 
 That falls apart fast when volume goes up. A strong scheduler can still waste hours digging for the right contact, checking whether a facility is appointment-only, figuring out whether a pickup time is actually realistic, or rewriting the same appointment request over and over.
 
-This team did not need another dashboard full of vanity charts. They needed an agent that could absorb the ugly parts of the job and get a human to a real appointment faster.
+They needed something that could absorb the ugly parts of the job and get a human to a real appointment faster.
 
 ## What I Built
 
-I built the product around the scheduling workflow itself, not around generic operations software theater.
+I built the product around the scheduling workflow itself.
 
 - Authentication and organization-based access for internal operators
 - Shipment search against a live freight API using order IDs
@@ -51,10 +51,10 @@ Scheduler searches for an order
 -> tracks follow-up as a task until the appointment is locked in
 ```
 
-That was the value. The agent did not exist to make AI look impressive. It existed to eat the repetitive, annoying, error-prone work that used to require a much bigger team.
+That was the value. The agent handled the repetitive, annoying, error-prone work that used to require a much bigger team.
 
 ## Outcome
 
 This turned into a real internal product for a narrow, high-friction operations job. It connected live order data, scheduling rules, generative AI appointment suggestions, and outbound communication in one place.
 
-The end result was not a flashy AI demo. It was an operational agent with enough real context to do useful work: read the shipment, understand the constraints, suggest the move, and tee up the email. That was the difference between "AI in logistics" as a pitch and AI actually taking headcount out of the workflow.
+The end result was an operational agent with enough real context to do useful work: read the shipment, understand the constraints, suggest the move, and tee up the email. That is a very different thing from an "AI in logistics" demo.

@@ -7,6 +7,6 @@ tags:
   - acquisition
 ---
 
-This week, [InnovationMap covered Velostics' acquisition of Terusama](https://houston.innovationmap.com/velostics-acquires-terusama-gaurav-khandelwal-2654771925.html). If you want the full story, go check out their article.
+This week, [InnovationMap covered Velostics' acquisition of Terusama](https://houston.innovationmap.com/velostics-acquires-terusama-gaurav-khandelwal-2654771925.html). If you want the full story, their article has it.
 
-When Terusama started, we really wanted to tackle dock operations, but pivoted early on to become a truck scheduling platform. After meeting Gaurav, it made a ton of sense for Terusama scheduling technology to power the [Velostics](https://www.velostics.com/) YMS suite. the I am proud of what we built for customers like [Mark Anthony Brewing](https://www.mabrewing.com/), [White Claw Hard Seltzer](https://www.whiteclaw.com/), [Mike's Hard Lemonade](https://www.mikeshard.com/), and [Cayman Jack](https://www.caymanjack.com/), and glad the software will continue working for years to come!
+When Terusama started, we wanted to tackle dock operations, but we pivoted early into truck scheduling. After meeting Gaurav, it made a lot of sense for Terusama's scheduling technology to power the [Velostics](https://www.velostics.com/) YMS suite. I am proud of what we built for customers like [Mark Anthony Brewing](https://www.mabrewing.com/), [White Claw Hard Seltzer](https://www.whiteclaw.com/), [Mike's Hard Lemonade](https://www.mikeshard.com/), and [Cayman Jack](https://www.caymanjack.com/), and I am glad the software will keep working for years to come.
