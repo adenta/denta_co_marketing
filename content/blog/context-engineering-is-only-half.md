@@ -2,6 +2,7 @@
 title: Context Engineering Is Only Half the Battle
 excerpt: Why scaffolds matter just as much as context engineering when you want reliable self building software.
 published_on: 2025-07-07
+featured: true
 ---
 
 The next decade of software engineering will revolve around Context Engineering. We no longer write the thing, we write the thing _that writes the thing_.
