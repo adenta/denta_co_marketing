@@ -289,7 +289,7 @@ function TrustedBySection({
 
   return (
     <section className="mt-12" aria-label={heading}>
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             {heading}
@@ -310,7 +310,7 @@ function TrustedBySection({
                 alt=""
                 aria-hidden="true"
                 className={cn(
-                  "h-16 w-full object-contain object-left transition-opacity dark:invert",
+                  "h-[4.5rem] w-full object-contain object-left transition-opacity dark:invert",
                   slot.phase === "fading-out" ? "opacity-0" : "opacity-100",
                 )}
                 style={{ transitionDuration: `${transitionDurationMs}ms` }}

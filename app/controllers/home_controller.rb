@@ -17,7 +17,7 @@ class HomeController < ApplicationController
       trustedBy: {
         heading: I18n.t("home.index.trusted_by.heading"),
         subtitle: I18n.t("home.index.trusted_by.subtitle"),
-        fixedLogoNames: [ "apex-ops", "northstar-ai", "summit-health" ],
+        fixedLogoNames: [ "insight", "reid", "jp-morgan" ],
         rotationIntervalMs: 3400,
         transitionDurationMs: 260,
         staggerDelayMs: 140

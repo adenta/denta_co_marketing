@@ -4,7 +4,7 @@ export type TrustedByLogo = {
   src: string;
 };
 
-const logoModules = import.meta.glob("../../assets/home/trusted-by/*.{png,webp}", {
+const logoModules = import.meta.glob("../../assets/home/trusted-by/*.{png,webp,jpeg,jpg}", {
   eager: true,
   import: "default",
   query: "?url",
@@ -20,7 +20,7 @@ function titleizeLogoName(name: string) {
 export const trustedByLogos = Object.entries(logoModules)
   .map(([path, src]) => {
     const fileName = path.split("/").pop() ?? "";
-    const name = fileName.replace(/\.(png|webp)$/, "");
+    const name = fileName.replace(/\.(png|webp|jpeg|jpg)$/, "");
 
     return {
       name,
