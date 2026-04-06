@@ -4,11 +4,14 @@
 
 `bin/setup` installs the repo's git hooks with Lefthook.
 
-The pre-commit hook runs `bin/rubocop-changed`, which auto-corrects and re-stages only staged Ruby files. It refuses to touch staged Ruby files that still have unstaged edits, because auto-correcting those files would collapse partial staging.
+The pre-commit hook runs `bin/optimize-staged-images` for staged raster files in `public/`, then `bin/rubocop-changed` for staged Ruby files. Both commands auto-fix and re-stage files they change.
+
+The image optimizer only touches staged `public/**/*.jpg`, `public/**/*.jpeg`, `public/**/*.png`, and `public/**/*.webp` files. It refuses to touch staged image files that still have unstaged edits, because rewriting those files would collapse partial staging.
 
 You can run the same command manually before pushing:
 
 ```sh
+bin/optimize-staged-images
 bin/rubocop-changed
 ```
 

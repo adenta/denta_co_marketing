@@ -1,4 +1,6 @@
 pre-commit:
   commands:
+    optimize-images:
+      run: bin/optimize-staged-images
     rubocop:
       run: bin/rubocop-changed

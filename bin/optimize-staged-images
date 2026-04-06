@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require_relative "../lib/image_optimization/staged_public_image_optimizer"
+
+success = ImageOptimization::StagedPublicImageOptimizer.new.run
+exit(success ? 0 : 1)
