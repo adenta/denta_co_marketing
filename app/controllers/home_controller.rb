@@ -14,6 +14,14 @@ class HomeController < ApplicationController
     @props = {
       title: I18n.t("home.index.title"),
       subtitle: I18n.t("home.index.subtitle"),
+      trustedBy: {
+        heading: I18n.t("home.index.trusted_by.heading"),
+        subtitle: I18n.t("home.index.trusted_by.subtitle"),
+        fixedLogoNames: [ "apex-ops", "northstar-ai", "summit-health" ],
+        rotationIntervalMs: 3400,
+        transitionDurationMs: 260,
+        staggerDelayMs: 140
+      },
       featuredPostsHeading: I18n.t("home.index.featured_posts.heading"),
       featuredPostsPath: blog_posts_path,
       featuredPostsEmpty: I18n.t("home.index.featured_posts.empty"),
