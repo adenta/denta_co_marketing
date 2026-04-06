@@ -268,7 +268,7 @@ function TrustedBySection({
               className="animate-in fade-in slide-in-from-bottom-2 duration-700 motion-reduce:animate-none"
               style={{ animationDelay: `${index * 120}ms` }}
             >
-              <div className="flex h-16 items-center justify-center overflow-hidden">
+              <div className="flex h-16 items-center justify-center overflow-hidden rounded-xl dark:bg-white dark:px-3 dark:py-2">
                 <img
                   src={slot.logos[slot.currentIndex].src}
                   alt=""
