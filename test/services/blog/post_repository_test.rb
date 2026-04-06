@@ -46,7 +46,7 @@ module Blog
       end
     end
 
-    test "featured_blog_posts includes only featured blog entries" do
+    test "featured_blog_posts includes featured entries including project posts" do
       with_repository do |repository, root:, **|
         write_post(
           root.join("featured.md"),
@@ -70,7 +70,7 @@ module Blog
           tags: [ "project" ]
         )
 
-        assert_equal %w[featured], repository.featured_blog_posts.map(&:slug)
+        assert_equal %w[project featured], repository.featured_blog_posts.map(&:slug)
       end
     end
 

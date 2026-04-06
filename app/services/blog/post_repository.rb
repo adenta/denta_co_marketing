@@ -43,7 +43,7 @@ module Blog
     end
 
     def featured_blog_posts(include_drafts: false)
-      blog_posts(include_drafts:).select(&:featured?)
+      published_posts(include_drafts:).select(&:featured?)
     end
 
     def post_by_slug!(slug, include_drafts: false)
