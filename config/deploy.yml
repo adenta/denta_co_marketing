@@ -22,6 +22,7 @@ proxy:
   hosts:
     - mail.denta.co
     - denta.co
+    - www.denta.co
 
 # Credentials for your image host.
 registry:
